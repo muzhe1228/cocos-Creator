@@ -1,0 +1,92 @@
+var gulp = require("gulp");
+var fileInline = require("gulp-file-inline");
+var htmlmin = require("gulp-htmlmin");
+var rev = require("gulp-rev");
+var imagemin = require("gulp-imagemin");
+var revCollector = require("gulp-rev-collector");
+var del = require("del");
+var javascriptObfuscator = require("gulp-javascript-obfuscator");
+
+gulp.task("cp-src", function (cb) {
+    gulp.src(["./build/web-mobile/src/**"])
+        .pipe(gulp.dest("./build/web-mobile/")
+            .on("end", cb));
+});
+/**
+ * 图片自动化压缩任务
+ */
+gulp.task("imagemin", gulp.series('cp-src', function (cb) {
+    return gulp.src(["./build/web-mobile/**/*.png"])
+        .pipe(imagemin([
+            imagemin.gifsicle({interlaced: true}),
+            imagemin.jpegtran({progressive: true}),
+            imagemin.optipng({optimizationLevel: 5})
+        ]))
+        .pipe(gulp.dest("./build/web-mobile/"))
+        .on("end", cb);
+}));
+/**
+ * 减少loading页面出现前的白屏时间
+ */
+gulp.task("htmlmin", gulp.series('imagemin', function (cb) {
+    return gulp.src("./build/web-mobile/*.html")
+        .pipe(fileInline())
+        .pipe(htmlmin({
+            collapseWhitespace: true,
+            removeComments: true,
+            minifyCSS: true
+        }))
+        .pipe(gulp.dest("./build/web-mobile/")
+            .on("end", cb));
+}));
+/**
+ * 代码混淆，禁止chrome调试，绑定域名等
+ */
+gulp.task("obfuscator", gulp.series('htmlmin', function (cb) {
+    return gulp.src(["./build/web-mobile/project*.js"])
+        .pipe(javascriptObfuscator({
+            compact: true,
+            deadCodeInjection: false,
+            debugProtection: false,
+            debugProtectionInterval: false,
+            disableConsoleOutput: false,
+            domainLock: [".bbpk.com", ".pk1955.com"],
+            mangle: true,
+            renameGlobals: false,
+            rotateStringArray: true,
+            seed: 0,
+            selfDefending: false,
+            stringArrayEncoding: false,
+            stringArray: true,
+            target: "browser",
+            unicodeEscapeSequence: false
+        }))
+        .pipe(gulp.dest("./build/web-mobile")
+            .on("end", cb));
+}));
+/**
+ * 
+ */
+gulp.task("resRev", gulp.series('obfuscator', function (cb) {
+    return gulp.src(["./build/web-mobile/**/*.js", "./build/web-mobile/*.png"])
+        .pipe(rev())
+        .pipe(gulp.dest("./build/web-mobile/"))
+        .pipe(rev.manifest())
+        .pipe(gulp.dest("./build/web-mobile/")
+            .on("end", cb));
+}));
+/**
+ * 
+ */
+gulp.task("default", gulp.series('resRev', function (cb) {
+    del(["./build/web-mobile/src"]);
+    gulp.src(["./build/web-mobile/*.json", "./build/web-mobile/index.html"])
+        .pipe(revCollector())
+        .pipe(gulp.dest("./build/web-mobile/"));
+    gulp.src(["./build/web-mobile/*.json", "./build/web-mobile/main*.js"])
+        .pipe(revCollector({
+            replaceReved: true
+        }))
+        .pipe(gulp.dest("./build/web-mobile/")
+            .on("end", cb));
+}));

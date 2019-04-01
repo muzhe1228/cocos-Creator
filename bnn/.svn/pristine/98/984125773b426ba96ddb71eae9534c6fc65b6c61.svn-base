@@ -1,0 +1,104 @@
+import WindowController from "./WindowController";
+import {CurrencyType} from "../model/CurrencyType";
+import RechargeInfo from "../model/RechargeInfo";
+import QrCode from "../view/QrCode";
+import AppManager from "../manager/AppManager";
+
+// 充值弹窗控制器
+
+const {ccclass, property} = cc._decorator;
+
+@ccclass
+export default class RechargeWindowController extends WindowController {
+
+    @property(cc.ToggleContainer)
+    private tabs: cc.ToggleContainer = null;
+
+    @property(cc.Node)
+    private qrItem: cc.Node = null;
+
+    @property(cc.Label)
+    private limitText: cc.Label = null;
+
+    @property(cc.Node)
+    private urlItem: cc.Node = null;
+
+    @property(cc.Label)
+    private url: cc.Label = null;
+
+    private checkedTab: cc.Toggle = null;
+
+    onLoad () {
+        super.onLoad();
+        this.hideAddress();
+
+        let tabList = this.tabs.toggleItems;
+        for (let tab of tabList) {
+            tab.node.on('toggle', this.toggleTab, this);
+            if (tab.isChecked)
+                this.checkedTab = tab;
+        }
+
+        this.urlItem.on(cc.Node.EventType.TOUCH_START, this.onCopyClick, this);
+    }
+
+    onEnable () {
+        if (! this.qrItem.opacity) {
+            this.toggleTab(this.checkedTab);
+        }
+    }
+
+    private toggleTab (toggle: cc.Toggle) {
+        this.checkedTab = toggle;
+        this.hideAddress();
+        this.requestAddress(CurrencyType[toggle.node.name])
+    }
+
+    private requestAddress (currencyType: number) {
+        enum ApiRoot {
+            '/ethes' = CurrencyType.ETH,
+            '/btces' = CurrencyType.BTC,
+            '/usdtes' = CurrencyType.USDT
+        }
+        this.httpUtils.post(
+            ApiRoot[currencyType] + "/query/recharge",
+            {
+                "token": this.getToken(),
+                "currencyType": 1
+            },
+            true,
+            this.requestAddressCallback.bind(this)
+        );
+    }
+
+    private requestAddressCallback (res) {
+        let rechargeInfo = new RechargeInfo(res.data);
+        this.renderAddress(rechargeInfo);
+        this.showAddress();
+    }
+
+    private renderAddress (rechargeInfo: RechargeInfo) {
+        let address = rechargeInfo.getAddress();
+        this.url.string = address;
+        this.qrItem.getComponentInChildren(QrCode).drawQrCode(address);
+        let limit = rechargeInfo.getLimit().toString();
+        this.limitText.string = '* ' + limit + ' ' + this.checkedTab.node.name + ' 起充';
+    }
+
+    private showAddress () {
+        this.qrItem.opacity = 255;
+        this.urlItem.opacity = 255;
+    }
+
+    private hideAddress () {
+        this.qrItem.opacity = 0;
+        this.urlItem.opacity = 0;
+    }
+
+    private onCopyClick() {
+        let text = this.url.string;
+        let success = AppManager.copyToClipBoard(text);
+        success ? this.alert('复制成功') : this.alert('复制失败，可能系统不支持');
+    }
+
+}

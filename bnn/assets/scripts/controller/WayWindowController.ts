@@ -1,0 +1,217 @@
+import Grid from "../view/Grid";
+import WindowController from "./WindowController";
+
+// 路子弹窗控制器
+
+const {ccclass, property} = cc._decorator;
+
+@ccclass
+export default class WayWindowController extends WindowController {
+
+    @property(cc.Node)
+    private content: cc.Node = null;
+
+    @property(cc.ScrollView)
+    private scrollView: cc.ScrollView = null;
+
+    // 单元格预设体
+    @property(cc.Prefab)
+    private cellPrefab: cc.Prefab = null;
+
+    private readonly MAX_PAGE: number = 5;
+
+    // 初始化方法
+    public init (wayInfo: any) {
+        // 监听底部加载更多页
+        this.setListenBounceBottom(true);
+        // 添加表头
+        let gridHeader = this.addGrid(1);
+        this.drawCellLine(gridHeader);
+        this.addGridHeader(gridHeader);
+        // 如果空数据则自己请求
+        wayInfo ? this.renderAddCells(wayInfo)
+            : this.requestWayInfo(1, this.renderAddCells.bind(this));
+        // 如果没有更多页则关闭底部监听
+        if (wayInfo && ! wayInfo.data.hasNextPage)
+            this.setListenBounceBottom(false);
+        // 滚动到最顶部
+        this.scrollView.scrollToTop(0);
+    }
+
+    onDisable () {
+        this.content.destroyAllChildren();
+    }
+
+    // 设置是否监听滚动到底部
+    private setListenBounceBottom (on: boolean) {
+        on ? this.scrollView.node.on('bounce-bottom', this.onBounceBottom, this)
+            : this.scrollView.node.off('bounce-bottom');
+    }
+
+    // 监听回调，加载更多页
+    private onBounceBottom (event) {
+        this.setListenBounceBottom(false);
+        this.requestWayInfo(
+            this.content.childrenCount + 1,
+            this.renderAddCells.bind(this));
+    }
+
+    // 请求路子数据，第一页page是1
+    public requestWayInfo (page: number, callback: Function) {
+        this.httpUtils.post(
+            "/hns/niuniu/findWay",
+            {
+                "token": this.getToken(),
+                "roomId": this.getRoomId(),
+                "page": page, "pageSize": 20
+            },
+            true,
+            callback);
+    }
+
+    public requestWayWins (callback: Function) {
+        this.httpUtils.post(
+            "/hns/niuniu/findWayVo",
+            {
+                "token": this.getToken(),
+                "roomId": this.getRoomId(),
+            },
+            true,
+            callback);
+    }
+
+    // 渲染单元格内容
+    public renderAddCells (wayInfo: any) {
+        if (! this.node.active) return;
+        if (! wayInfo.data.size) {
+            this.alert("暂无数据");
+            return;
+        }
+        let grid = this.addGrid(wayInfo.data.size);
+        this.drawCellLine(grid);
+        this.fillGrid(grid, wayInfo);
+        // 有下一页或者没有超过5个表格则可以继续滚动加载
+        if (wayInfo.data.hasNextPage && this.content.childrenCount <= this.MAX_PAGE) {
+            this.setListenBounceBottom(true);
+        } else {
+            this.alert("无法查询更早的数据");
+        }
+    }
+
+    // 向子节点中添加指定行数的表格
+    private addGrid (rows: number): Grid {
+        let node = new cc.Node();
+        node.width = this.content.width;
+        node.height = rows * 60;
+        let grid = node.addComponent(Grid);
+        grid.cellPrefab = this.cellPrefab;
+        grid.columns = 6;
+        grid.rows = rows;
+        let Widget = node.addComponent(cc.Widget);
+        Widget.isAlignHorizontalCenter = true;
+        this.content.addChild(node, undefined, 'Grid');
+        return grid
+    }
+
+    // 添加表头
+    private addGridHeader (grid: Grid) {
+        let content = ['期数', '', '庄', '闲1', '闲2', '闲3'];
+        for (let x = 0; x < grid.columns; x++) {
+            let cell = grid.cellMatrix[x][0];
+            let labels = cell.getChildByName('Labels');
+            labels.getChildByName('TopLabel').active = false;
+            let bottomNode = labels.getChildByName('BottomLabel');
+            bottomNode.getComponent(cc.Label).string = content[x];
+        }
+    }
+
+    // 绘制边框线
+    private drawCellLine (grid: Grid) {
+        for (let y = 0; y < grid.rows; y++) {
+            for (let x = 0; x < grid.columns; x++) {
+                let cell = grid.cellMatrix[x][y];
+                cell.addComponent(cc.Graphics);
+                let ctx = cell.getComponent(cc.Graphics);
+                ctx.strokeColor.fromHEX('#232D46');
+                ctx.lineWidth = 2;
+                // 上边线
+                ctx.moveTo(0, 0);
+                ctx.lineTo(cell.width, 0);
+                // 右边线
+                if (x === 0) {
+                    ctx.moveTo(cell.width, 0);
+                    ctx.lineTo(cell.width, -cell.height);
+                }
+                // 下边线
+                ctx.moveTo(cell.width, -cell.height);
+                ctx.lineTo(0, -cell.height);
+                // 左边线
+                if (x === 1) {
+                    ctx.moveTo(0, -cell.height);
+                    ctx.lineTo(0, 0);
+                }
+                ctx.stroke();
+            }
+        }
+    }
+
+    // 填充表格内容
+    private fillGrid (grid: Grid, wayInfo: any) {
+        let wayList = wayInfo.data.list;
+
+        enum EnumCardIndex {
+            cardBanker = 0,
+            cardSky = 1,
+            cardLand = 2,
+            cardMysterious = 3,
+        }
+
+        enum EnumNiuIndex {
+            niuBanker = 0,
+            niuSky = 1,
+            niuLand = 2,
+            niuMysterious = 3,
+        }
+
+        enum EnumOddIndex {
+            niuOddSky = 1,
+            niuOddLand = 2,
+            niuOddMysterious = 3
+        }
+
+        for (let y = 0; y < grid.rows; y++) {
+            for (let x = 0; x < grid.columns; x++) {
+                let cell = grid.cellMatrix[x][y];
+
+                let labels = cell.getChildByName('Labels');
+                let topNode = labels.getChildByName('TopLabel');
+                let topLabel = topNode.getComponent(cc.Label);
+                let bottomNode = labels.getChildByName('BottomLabel');
+                let bottomLabel = bottomNode.getComponent(cc.Label);
+
+                // 第一列 期数
+                if (x === 0) {
+                    topNode.active = false;
+                    bottomLabel.string = wayList[y]['blockId'];
+                }
+                // 第二列
+                else if (x === 1) {
+                    topLabel.string = 'Hash';
+                    bottomLabel.string = '结果';
+                }
+                // 之后所有列
+                else {
+                    topLabel.string = wayList[y][EnumCardIndex[x-2]];
+                    bottomLabel.string = wayList[y][EnumNiuIndex[x-2]];
+                    bottomNode.color = x === 2 ? new cc.Color().fromHEX('#DDBE6B')
+                        : new cc.Color().fromHEX('#85A0E4');
+                    if (x >= 3) {
+                        let winNode = bottomNode.getChildByName('WinIcon');
+                        winNode.active = wayList[y][EnumOddIndex[x-2]] < 0;
+                    }
+                }
+            }
+        }
+    }
+
+}

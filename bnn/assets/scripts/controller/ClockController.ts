@@ -1,0 +1,88 @@
+import BaseComponent from "../utils/BaseComponent";
+
+// 计时器
+
+const {ccclass, property} = cc._decorator;
+
+@ccclass
+export default class ClockController extends BaseComponent {
+
+    @property(cc.Label)
+    private timeLabel: cc.Label = null;
+
+    @property(cc.Sprite)
+    private background: cc.Sprite = null;
+
+    @property(Number)
+    private time: number = 0;
+
+    private spriteFrames: cc.SpriteFrame[] = [];
+
+    onLoad () {
+        this.preloadResSpriteFrames();
+    }
+
+    private preloadResSpriteFrames () {
+        for (let i = 1; i <= 4; i++) {
+            cc.loader.loadRes('2x/bg/bg_时间倒计时_0' + i, cc.SpriteFrame,
+                (error, resource) => { this.spriteFrames.push(resource) })
+        }
+    }
+
+    // 设置倒计时
+    public setTime(t: number) {
+        this.timeLabel.node.opacity = 255;
+        this.time = Math.max(0, Math.floor(t));
+        let endTime = Date.now() + this.time * 1000;
+
+        // 取消计时器
+        this.unscheduleAllCallbacks();
+
+        // 链式计时器，每过一秒回调一次，计算与终止时间的间隔
+        let nextTime = () => {
+            this.scheduleOnce(() => {
+                this.time = Math.max(0,
+                    Math.floor((endTime - Date.now()) / 1000));
+                this.showTime();
+                if (this.time > 0)
+                    nextTime();
+            }, 1);
+        };
+        nextTime();
+
+        // 立即显示一次
+        this.showTime();
+    }
+
+    private showTime() {
+        let audioUrl: string;
+
+        if (this.time <= 5) {
+            this.timeLabel.node.color = cc.Color.RED;
+            // play audio
+            if (this.time === 0) {
+                audioUrl = "sounds/倒计时结束后叮叮";
+            } else {
+                audioUrl = "sounds/倒计时" + this.time.toString();
+            }
+            this.playAudioClip(audioUrl);
+        } else {
+            this.timeLabel.node.color = cc.Color.WHITE;
+        }
+
+        if (this.time <= 9) {
+            this.timeLabel.string = "0" + this.time;
+        } else {
+            this.timeLabel.string = this.time.toString();
+        }
+
+        // 背景轮盘动态转动
+        if (! this.spriteFrames.length) return;
+        if (this.time === 0) {
+            this.background.spriteFrame = this.spriteFrames[0];
+        } else {
+            this.background.spriteFrame = this.spriteFrames[this.time % 3 + 1];
+        }
+    }
+
+}

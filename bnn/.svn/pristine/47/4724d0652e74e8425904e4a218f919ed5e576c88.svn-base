@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "ce04d8b4-02aa-4056-a83f-b9fffe8d11a1",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "bgc_庄家": {
+      "ver": "1.0.3",
+      "uuid": "0a2a81ac-d8a6-4e13-a786-dd425aeb09c0",
+      "rawTextureUuid": "ce04d8b4-02aa-4056-a83f-b9fffe8d11a1",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 882,
+      "height": 162,
+      "rawWidth": 882,
+      "rawHeight": 162,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

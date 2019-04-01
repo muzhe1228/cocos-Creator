@@ -1,0 +1,115 @@
+import WindowController from "../controller/WindowController";
+import ChatMessageController from "./ChatMessageController";
+import AppManager from "../manager/AppManager";
+
+// 聊天输入条控制器
+
+const { ccclass, property } = cc._decorator;
+
+@ccclass
+export default class ChatBarController extends WindowController {
+
+    @property(cc.Button)
+    private sendButton: cc.Button = null;
+
+    @property(cc.EditBox)
+    private editBox: cc.EditBox = null;
+
+    @property(ChatMessageController)
+    private chatMessage: ChatMessageController = null;
+
+    public showBar: boolean = false;
+
+    onLoad () {
+        super.onLoad();
+        this.setSendClickable(true);
+        this.editBox.node.on('text-changed', (target: cc.EditBox) => {
+            AppManager.textChangedForAndroid(target.string);
+        }, this);
+        this.editBox.node.on('editing-did-began', (target: cc.EditBox) => {
+            AppManager.textChangedForAndroid(target.string);
+        }, this);
+    }
+
+    public switch () {
+        this.showBar ? this.close() : this.open()
+    }
+
+    public open () {
+        this.backMaskNode.active = true;
+        this.showBar = true;
+        this.moveChatBar(true, this.editBox.setFocus.bind(this.editBox));
+        this.chatMessage.show(60, true);
+    }
+
+    public close () {
+        this.backMaskNode.active = false;
+        this.showBar = false;
+        this.moveChatBar(false);
+        this.chatMessage.show(3, false);
+    }
+
+    // 设置发送按钮是否可点击
+    public setSendClickable(bool: boolean) {
+        if (bool) {
+            let cb = () => {
+                this.requestChatSend(this.editBox.string);
+                this.playAudioClip("sounds/界面交互点击");
+            };
+            this.sendButton.node.on(
+                cc.Node.EventType.TOUCH_END, cb, this);
+            this.editBox.node.on(
+                'editing-return', cb, this);
+            this.sendButton.interactable = true;
+        } else {
+            this.sendButton.node.off(cc.Node.EventType.TOUCH_END);
+            this.editBox.node.off('editing-return');
+            this.sendButton.interactable = false;
+        }
+    }
+
+    // 移入或移出聊天框
+    private moveChatBar (show: boolean, callback?: Function) {
+        let worldX = this.node.width * this.node.anchorX;
+        let worldY = this.node.height * this.node.anchorY;
+        if (! show) worldY = -worldY;
+        let pos = this.node.parent.convertToNodeSpaceAR(cc.v2(worldX, worldY));
+        let moveTo = cc.moveTo(this.fadeTime, pos);
+        this.node.stopAllActions();
+        let actions = callback?
+            cc.sequence(moveTo, cc.delayTime(0.01), cc.callFunc(callback)): moveTo;
+        this.node.runAction(actions);
+    }
+
+    // 发送消息的接口请求
+    public requestChatSend(text: string) {
+        if (! text) return;
+        this.setSendClickable(false);
+        this.httpUtils.post(
+            "/hns/niuniu/sendChat",
+            {
+                "token": this.getToken(),
+                "roomId": this.getRoomId(),
+                "content": text
+            },
+            true,
+            this.requestChatSendCallback.bind(this),
+            true
+        );
+    }
+
+    // 接口回调
+    private requestChatSendCallback(res) {
+        if (res.code == 0)
+            this.clearEditBox();
+        this.setSendClickable(true);
+        if (this.showBar)
+            this.editBox.setFocus();
+    }
+
+    // 清空输入框
+    public clearEditBox () {
+        this.editBox.string = '';
+    }
+
+}

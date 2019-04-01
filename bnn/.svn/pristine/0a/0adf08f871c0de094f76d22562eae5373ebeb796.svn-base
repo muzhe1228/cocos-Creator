@@ -1,0 +1,266 @@
+import WebsocketUtils from "../network/WebsocketUtils";
+import { CommonConsts } from "../utils/CommonConsts";
+import RoomBlock from "../view/RoomBlock";
+import NoticeController from "./NoticeController";
+import { roomType, paySetting } from "../model/roomType";
+import BaseComponent from "../utils/BaseComponent";
+import IWebSocketDelegate from "../network/IWebSocketDelegate";
+import { Room } from "../model/Room";
+import NoticeInfo from "../model/NoticeInfo";
+import AppManager from "../manager/AppManager";
+import SceneManager from "../manager/SceneManager";
+
+const { ccclass, property } = cc._decorator;
+
+@ccclass
+export default class RoomList extends BaseComponent implements IWebSocketDelegate {
+
+    @property(cc.Prefab)
+    private leftTitle: cc.Prefab = null;
+
+    @property(cc.Prefab)
+    private room: cc.Prefab = null;
+
+    @property(cc.Node)
+    private topNode: cc.Node = null;
+
+    @property(cc.Node)
+    private botNode: cc.Node = null;
+
+    @property(cc.Button)
+    private backButton: cc.Button = null;
+
+    @property(cc.Button)
+    private fastGameButton: cc.Button = null;
+
+
+    private roomList: any = [];
+
+    // 公告
+    private notice: NoticeController = null;
+
+    websocket: WebsocketUtils = null;
+
+    // LIFE-CYCLE CALLBACKS:
+
+    onLoad() {
+        // 用于App原生平台调用，监听锁屏等切换至后台事件
+        window["setGameVisible"] = SceneManager.setVisible.bind(SceneManager);
+
+        this.backButton.node.on(cc.Node.EventType.TOUCH_END, this.backGame, this);
+        this.fastGameButton.node.on(cc.Node.EventType.TOUCH_END, this.fastStartGame, this);
+
+        this.getTenList();
+        this.getPingList();
+        this.prepareWebsocket();
+
+        this.roomList = this.node.getComponentsInChildren(RoomBlock);
+
+        this.notice = cc
+            .find("Canvas/main/mainFooter/Notice/Message")
+            .getComponent(NoticeController);
+
+        cc.director.preloadScene("game");
+    }
+
+    onDestroy() {
+        super.onDestroy();
+        this.websocket.close();
+    }
+
+    //设置左侧title分区十倍and平倍
+    private setLeftTitle() {
+        let shiBei = cc.instantiate(this.leftTitle);
+        let pingBei = cc.instantiate(this.leftTitle);
+        shiBei.parent = this.topNode;
+        pingBei.parent = this.botNode;
+        for (let i = 0; i < 2; i++) {
+            let resultSprite = "2x/roomList/shiBei",
+                node = shiBei;
+            if (i === 1) {
+                resultSprite = "2x/roomList/pingBei";
+                node = pingBei;
+            }
+            this.loadResSprite(resultSprite, node.getComponent(cc.Sprite))
+        }
+    }
+
+    //设置房间位置和加载房间
+    private setRoomList(dataList: any) {
+        dataList.forEach(item => {
+            if (item.paySetting) {
+                let roomPre = cc.instantiate(this.room);
+                roomPre.getComponent(RoomBlock).renderRoom(item);
+                roomPre.parent = this.topNode;
+                roomPre.on(
+                    cc.Node.EventType.TOUCH_END,
+                    this.clickRoom.bind(this, item),
+                    this
+                );
+            } else {
+                let roomPreBot = cc.instantiate(this.room);
+                roomPreBot.getComponent(RoomBlock).renderRoom(item);
+                roomPreBot.parent = this.botNode;
+                roomPreBot.on(
+                    cc.Node.EventType.TOUCH_END,
+                    this.clickRoom.bind(this, item),
+                    this
+                );
+            }
+        });
+    }
+
+    //房间填充数据
+    private setRoomData(dataList: any, ping?: boolean) {
+        dataList.forEach((item, index) => {
+            if (ping) {
+                index = 3 + index;
+            }
+            this.roomList[index].setData(item);
+            this.roomList[index].node.on(
+                cc.Node.EventType.TOUCH_END,
+                this.clickRoom.bind(this, item),
+                this
+            );
+        });
+    }
+
+    //获取十倍牛牛列表
+    private getTenList() {
+        this.httpUtils.post(
+            "/hns/niuniu/selectTenMultipleRoomList",
+            { page: 0, size: 3 },
+            true,
+            res => {
+                // this.setRoomList(res.data.list);
+                this.setRoomData(res.data.list);
+            }
+        );
+    }
+
+    //获取平倍牛牛列表
+    private getPingList() {
+        this.httpUtils.post(
+            "/hns/niuniu/selectFlatMultipleRoomList",
+            { page: 0, size: 3 },
+            true,
+            res => {
+                // this.setRoomList(res.data.list);
+                this.setRoomData(res.data.list, true);
+            }
+        );
+    }
+
+    /**
+     * 解析url参数并且连接websocket
+     */
+    private prepareWebsocket(): boolean {
+        this.websocket = new WebsocketUtils(CommonConsts.socketBaseUrl, this);
+        let b = this.websocket.open();
+        if (!b) {
+            console.log("连接游戏服务器失败!");
+            //todo...
+        }
+
+        return b;
+    }
+
+    onSocketOpen?(socket: WebSocket, event: Event): void {
+        let json = {
+            userId: this.getUserId(),
+            gameType: 0,
+            roomId: 0,
+            type: 0
+        };
+        //请求 WebSocket 房间信息
+        this.websocket.sendRawData(JSON.stringify(json));
+    }
+
+    onSocketError(socket: WebSocket, event: Event): void {
+        // this.alert("网络异常，正在重连...");
+    }
+
+    onSocketMessage?(socket: WebSocket, event: MessageEvent): void {
+        if (event.data[0] != "{") return;
+        let msgJson = JSON.parse(event.data);
+        let socketType = msgJson.socketType;
+
+        if (socketType == 13) {
+            //房间状态
+            // TODO 使用Model对象传递数据
+            this.handleSocketRoom(msgJson);
+        } else if (socketType == 1) {
+            // 公告
+            let noticeInfo = new NoticeInfo(msgJson);
+            this.onSocketNotice(noticeInfo);
+        }
+    }
+
+    //返回
+    public backGame() {
+        this.playAudioClip("sounds/界面交互点击");
+        AppManager.gotoHomePage();
+    }
+
+    //点击房间
+    public clickRoom(data: any) {
+        this.setRoomInfo(data);
+        this.playAudioClip("sounds/界面交互点击");
+        cc.director.loadScene("game");
+    }
+
+    //快速开始
+    public fastStartGame() {
+        this.httpUtils.post(
+            "/hns/niuniu/selectRoom",
+            {
+                token: this.getToken()
+            },
+            true,
+            res => {
+                this.setRoomInfo(res.data);
+                this.playAudioClip("sounds/界面交互点击");
+                cc.director.loadScene("game");
+            }
+        );
+    }
+
+    private setRoomInfo (data) {
+        BaseComponent.roomInfo = new Room(
+            data.roomId,
+            roomType[data.roomType],
+            paySetting[data.paySetting]
+        );
+    }
+
+    private handleSocketRoom(data: any) {
+        let botList = this.botNode.children;
+        let topList = this.botNode.children;
+        switch (data.roomId) {
+            case 1:
+                this.roomList[5].setPeople(data);
+                break;
+            case 2:
+                this.roomList[4].setPeople(data);
+                break;
+            case 3:
+                this.roomList[3].setPeople(data);
+                break;
+            case 4:
+                this.roomList[2].setPeople(data);
+                break;
+            case 5:
+                this.roomList[1].setPeople(data);
+                break;
+            case 6:
+                this.roomList[0].setPeople(data);
+                break;
+        }
+    }
+
+    // 公告
+    private onSocketNotice(noticeInfo: NoticeInfo) {
+        this.notice.render(noticeInfo);
+    }
+
+}
