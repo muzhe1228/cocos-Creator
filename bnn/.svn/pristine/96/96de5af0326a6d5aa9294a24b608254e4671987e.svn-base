@@ -1,0 +1,79 @@
+const {ccclass, property} = cc._decorator;
+import {roomStatus, roomType} from "../model/roomType";
+
+@ccclass
+export default class RoomBlock extends cc.Component {
+
+    @property(cc.Label)
+    titleLabel: cc.Label = null;
+
+    @property(cc.Label)
+    PKNum: cc.Label = null;
+
+    @property(cc.Label)
+    peopleNum: cc.Label = null;
+
+    @property(cc.Label)
+    maxPk: cc.Label = null;
+
+    @property(cc.Label)
+    isOpen: cc.Label = null;
+    private readonly YELLOW = cc.color(255, 254, 245, 176);
+
+    // onLoad () {}
+
+    start() {
+    }
+
+    public renderRoom(data: any) {
+        let index = data.roomType;
+        let resultSprite = "2x/roomList/room_" + index.toString();
+        let self = this;
+        cc.loader.loadRes(resultSprite, cc.SpriteFrame, function (err, spriteFrame) {
+            if (err) {
+                console.log(err);
+            } else {
+                self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame;
+                self.titleLabel.string = roomType[index];
+                self.PKNum.string = self.numRes(data.bottomBets) + "Pk";
+                self.peopleNum.string = data.peopleNumber + "人";
+                self.maxPk.string = "≥" + self.numRes(data.minBets) + "Pk";
+            }
+        });
+    }
+
+    public setData(data: any) {
+        this.isOpen.string = roomStatus[data.roomStatus];
+        this.PKNum.string = this.numRes(data.bottomBets) + "Pk";
+        this.peopleNum.string = data.peopleNumber + "人";
+        this.maxPk.string = "≥" + this.numRes(data.minBets) + "Pk";
+    }
+
+    public setPeople(data: any) {
+        this.peopleNum.string = data.peopleNumber + "人";
+        this.isOpen.string = roomStatus[data.roomStatus];
+    }
+
+    // update (dt) {}
+
+    //牛牛房间Pk格式化
+    private numRes(number) {
+        if (number >= 1e7) {
+            return this.toThousands(number / 1e6) + "m";
+        } else if (number >= 1e4) {
+            return this.toThousands(number / 1e3) + "k";
+        } else {
+            return this.toThousands(number);
+        }
+    }
+
+    //千分符
+    private toThousands(num) {
+        let re = /\d{1,3}(?=(\d{3})+$)/g;
+        let n1 = num.toString();
+        n1 = n1.replace(/^(\d+)((\.\d+)?)$/, (s, s1, s2) => {
+            return s1.replace(re, "$&,") + s2;
+        });
+        return n1;
+    }
+}

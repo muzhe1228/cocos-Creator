@@ -1,0 +1,101 @@
+import WindowButtonController from "./WindowButtonController";
+import BidWindowController from "./BidWindowController";
+import ScrollNumber from "../view/ScrollNumber";
+import BankerInfo from "../model/BankerInfo";
+import BidBankerInfo from "../model/BidBankerInfo";
+
+// 竞庄控制器
+
+const {ccclass, property} = cc._decorator;
+
+@ccclass
+export default class BidBankerController extends WindowButtonController {
+
+    @property({override: true})
+    protected windowController: BidWindowController = null;
+
+    @property(ScrollNumber)
+    private priceScroll: ScrollNumber = null;
+
+    @property(cc.Node)
+    private buttonSwitchPoint: cc.Node = null;
+
+    private buttonSwitchPos: cc.Vec2 = null;
+
+    private buttonOriginPos: cc.Vec2 = null;
+
+    private blockInput: cc.BlockInputEvents = null;
+
+    private price: number;
+
+    private isFocus: boolean = false;
+
+    onLoad () {
+        super.onLoad();
+        this.button.node.parent.opacity = 0;
+        this.buttonSwitchPos = this.buttonSwitchPoint.position;
+        this.buttonOriginPos = this.button.node.parent.position;
+    }
+
+    public showButton () {
+        if (! this.isFocus)
+            this.button.node.parent.opacity = 255;
+    }
+
+    public renderBidInfo (bidInfo: BidBankerInfo) {
+        if (! this.button.node.parent.opacity)
+            this.showButton();
+        this.price = bidInfo.getBidPrice();
+        this.priceScroll.setNumber(this.price);
+        this.windowController.setPrice(this.price);
+        this.windowController.setCandidate(
+            bidInfo.getBidderNick(), bidInfo.getBidderHeadUrl());
+    }
+
+    public renderBankerInfo (bankerIsSelf: boolean, bankerInfo: BankerInfo) {
+        this.switchPosition(bankerIsSelf);
+        if (! this.isFocus) {
+            this.windowController.switchHeader(false);
+            this.windowController.setRound(
+                bankerInfo.getMaxRound() - bankerInfo.getRemainRound() + 1);
+        }
+    }
+
+    // 开启竞庄弹窗，隐藏按钮，并强制不能取消
+    public openFocus (time: number) {
+        this.isFocus = true;
+        this.windowController.open();
+        this.windowController.setListenBackTouch(false);
+        this.windowController.switchHeader(true);
+        this.blockInput = this.windowController.backMaskNode.addComponent(cc.BlockInputEvents);
+        this.button.node.parent.opacity = 0;
+        this.windowController.setTime(time);
+    }
+
+    // 关闭竞庄弹窗，显示按钮
+    public closeFocus () {
+        if (this.blockInput) {
+            this.windowController.setListenBackTouch(true);
+            this.windowController.backMaskNode.removeComponent(this.blockInput);
+        }
+        this.windowController.close();
+        this.button.node.parent.opacity = 255;
+        this.isFocus = false;
+    }
+
+    // 根据庄是否是自己，切换竞庄按钮的位置
+    private switchPosition (bankerIsSelf: boolean) {
+        let pos = bankerIsSelf ? this.buttonSwitchPos: this.buttonOriginPos;
+        let buttonParent = this.button.node.parent;
+        buttonParent.stopAllActions();
+        let moveTo = cc.moveTo(0.5, pos).easing(cc.easeIn(3));
+        buttonParent.runAction(moveTo);
+    }
+
+    protected onTouchCallback (button) {
+        this.playAudioClip("sounds/界面交互点击");
+        this.windowController.switch();
+        this.windowController.setPrice(this.price)
+    }
+
+}
