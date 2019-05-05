@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+	<link rel="stylesheet" href="./css/icon/style.css">
+	<link rel="stylesheet/less" href="./css/index.less">
+	<link rel="stylesheet/less" href="./css/searchInp.less">
+	<link rel="icon" type="image/x-icon" href="./favicon.ico">
+	<script src="./js/jquery.min.js"></script>
+	<script src="./js/less.min.js"></script>
+	<script src="./js/common.js"></script>
+	<script src="./js/indexTop.js"></script>
+	<script src="./js/footer.js"></script>
+	<script src="./js/index.js"></script>
+</head>
+<body>
+<div class="bookAddCcyMode">
+	<div class="bookAddCcy">
+		<div class="bookAddCcy-title clear-f">
+			<p class="size f-l">创建币种</p>
+			<i class="icon-ken_close f-r addCcyClose"></i>
+		</div>
+		<div class="bookAddCcy-info">
+			<div class="addCcy-wrap clear-f">
+				<p class="label-name">简称：</p>
+				<p class="inp-wrap">
+					<input type="text" id="addCcy">
+					<img src="./static/images/book/icon_mb.png" alt="">
+				</p>
+				<ul class="addCcyList">
+					<li><img class="f-l" src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1524738854323.jpg"
+							 alt="">
+						<p class="addCcyName f-l">BTC <span>bitcoin</span></p></li>
+					<li><img class="f-l" src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1524738854323.jpg"
+							 alt="">
+						<p class="addCcyName f-l">BTC</p></li>
+					<li><img class="f-l" src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1524738854323.jpg"
+							 alt="">
+						<p class="addCcyName f-l">BTC</p></li>
+					<li><img class="f-l" src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1524738854323.jpg"
+							 alt="">
+						<p class="addCcyName f-l">BTC</p></li>
+					<li><img class="f-l" src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1524738854323.jpg"
+							 alt="">
+						<p class="addCcyName f-l">BTC</p></li>
+					<li><img class="f-l" src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1524738854323.jpg"
+							 alt="">
+						<p class="addCcyName f-l">BTC</p></li>
+					<li><img class="f-l" src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1524738854323.jpg"
+							 alt="">
+						<p class="addCcyName f-l">BTC</p></li>
+					<li><img class="f-l" src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1524738854323.jpg"
+							 alt="">
+						<p class="addCcyName f-l">BTC</p></li>
+					<li><img class="f-l" src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1524738854323.jpg"
+							 alt="">
+						<p class="addCcyName f-l">BTC</p></li>
+				</ul>
+			</div>
+		</div>
+		<div class="bookAddCcy-btn clear-f">
+			<button class="f-l" disabled>确定</button>
+			<button class="f-l">取消</button>
+		</div>
+	</div>
+</div>
+</body>
+<script>
+    $(document).ready(function () {
+        $('.bookAddCcy-info,.bookAddCcy').click(function (event) {
+            return false
+        })
+        $('.bookAddCcy').click(function () {
+            $('.addCcy-wrap').find('.addCcyList').slideUp()
+        })
+        $('#addCcy').on('input propertychange', function () {
+            var _this = $(this)
+            console.log(_this.val())
+            // clearTimeout(timer)
+            // timer = setTimeout(function () {
+            //     if (_this.val().trim()) {
+            //         getSearch(_this.val())
+            //     } else {
+            //         $('.currencyList').html('<li class="title">币种</li><li class="notData">暂无数据</li>')
+            //         $('.exchangeList').html('<li class="title">交易所</li><li class="notData">暂无数据</li>')
+            //     }
+            // }, 300)
+        }).focus(function () {
+            $('.addCcy-wrap').find('.addCcyList').slideDown()
+        })
+        $('.addCcyClose').click(function () {
+            $('.bookAddCcyMode').fadeOut()
+        })
+        $(document).click(function () {
+            $('.addCcy-wrap').find('.addCcyList').slideUp()
+            $('.bookAddCcyMode').fadeOut()
+        })
+    })
+</script>
+</html>

@@ -1,0 +1,424 @@
+@import "variable.styl"
+/* body下的直接 .el-menu--horizontal 是顶级导航的*/
+.el-menu--horizontal {
+  margin-left: 0
+  border-bottom: 0 !important;
+}
+
+.el-menu--horizontal .el-menu--popup {
+  min-width: 100px
+}
+
+.el-menu--horizontal .el-menu .el-menu-item {
+  text-align: left
+  padding: 0 13px
+}
+
+.el-dropdown-menu {
+  z-index: 9999 !important
+}
+
+.el-input__inner {
+  height: 32px
+  padding: 0 16px
+  outline: none
+  line-height: 32px
+  border-color: $border-color
+  &:hover {
+    border-color: #dedede
+  }
+  &:focus {
+    border-color: $main-color
+  }
+}
+
+.el-pagination.is-background .el-pager li.active {
+  background-color: #e2bd51;
+}
+
+//.con_nav_r .el-input--suffix .el-icon-search {
+//  font-size: 18px;
+//  line-height: 32px;
+//  color: #666;
+//  cursor: pointer;
+//}
+//
+
+.con_nav {
+  .slide-fade-enter-active {
+    transition: all .8s linear
+  }
+  .slide-fade-leave-active {
+    transition: all .8s linear
+  }
+  .slide-fade-enter, .slide-fade-leave-to {
+    transform: translateX(10px)
+    opacity: 0
+  }
+  .el-input__inner {
+    background-color: #fff
+    border-color: transparent
+    font-size: $font-s
+    color: $size-ssmain
+    &:focus, &:hover {
+      border-color: transparent
+    }
+  }
+  .el-select:hover .el-input__inner {
+    border-color: transparent
+  }
+  .info-search {
+    .el-input__inner {
+      padding-left: 14px
+      padding-right: 36px
+      width: 270px
+      background-color: #f2f2f2
+      border-radius: 0
+      &:focus {
+        background-color: #fff
+        border-color: $border-color
+      }
+    }
+    .el-input__suffix {
+      right: 0
+      color: $size-main
+      hover-hand()
+      i {
+        padding: 6px 8px
+        line-height: 32px
+        font-size: $font-l !important
+      }
+    }
+  }
+  .el-select .el-input.is-focus .el-input__inner {
+    border-color: transparent
+  }
+}
+
+.el-select-dropdown__item.hover, .el-select-dropdown__item:hover {
+  background-color: #f2f2f2
+}
+
+.el-select-dropdown__item {
+  color: #999
+}
+
+.el-select-dropdown__item.selected {
+  color: $size-main
+}
+
+.login, .register, .edit_pwd, .forgetPwd {
+  .el-dialog {
+    padding-bottom: 24px
+    main-radius()
+    .el-dialog__header {
+      height: 44px
+      padding: 0 20px
+      display: flex
+      align-items: center
+      margin-bottom: 20px
+      .el-dialog__title {
+        font-size: 16px
+        color: #000
+      }
+      .el-dialog__headerbtn {
+        position: absolute
+        top: 12px
+        right: 24px
+        font-size: 18px
+      }
+    }
+    .el-dialog__body {
+      padding: 0 37px
+      display: flex
+      align-items: center
+      flex-direction: column
+      .el-form {
+        width: 100%
+        p {
+          margin-bottom: 24px
+        }
+        .el-form-item__error {
+          margin-left: 40px
+        }
+        .group {
+          .el-input__inner {
+            border-right: none
+          }
+          .el-input-group__append {
+            hover-hand()
+            background-color: $main-color
+            color: #fff
+            vertical-align: middle
+            border: 1px solid $main-color
+            width: 120px
+            text-align: center
+            height: 42px
+            border-left: none
+            padding: 0
+          }
+        }
+        .el-input__inner {
+          height: 42px
+          background-color: #f0f0f0
+          padding-left: 40px
+          &:focus {
+            background-color: #fff
+            border-color: $main-color
+          }
+        }
+
+      }
+      .el-input__prefix {
+        width: 40px
+        height: 20px
+        span {
+          display: block
+          width: 21px
+          height: 21px
+          margin: 10px
+          background-size: 21px 21px
+          &.pwd {
+            background-image: url("~static/images/loginRegister/icon_lock_unselect.png")
+          }
+          &.phone {
+            background-image: url("~static/images/loginRegister/icon_user_unselect.png")
+          }
+          &.captcha {
+            background-image: url("~static/images/loginRegister/icon_code_unselect.png")
+          }
+          &.phone1 {
+            background-image: url("~static/images/loginRegister/icon_mb_unselect.png")
+          }
+        }
+      }
+      .is-success, .is-error {
+        .el-input__inner {
+          background-color: #fff
+          border-color: $main-color
+          &:focus {
+            border-color: $main-color
+            background-color: #fff
+          }
+        }
+        .el-input__prefix {
+          span {
+            &.pwd {
+              background-image: url("~static/images/loginRegister/icon_lock_select.png") !important
+            }
+            &.phone {
+              background-image: url("~static/images/loginRegister/icon_user_select.png") !important
+            }
+            &.captcha {
+              background-image: url("~static/images/loginRegister/icon_code_select.png")
+            }
+            &.phone1 {
+              background-image: url("~static/images/loginRegister/icon_mb_select.png")
+            }
+          }
+        }
+      }
+    }
+    .el-dialog__footer {
+      .dialog-footer {
+        padding: 0 17px
+        .el-button {
+          width: 100%
+          margin: 10px 0
+          height: 42px
+          font-size: $font-m
+          border-color: $main-color
+          &.download {
+            color: $main-color
+          }
+        }
+      }
+    }
+  }
+}
+
+.edit_pwd, .forgetPwd {
+  .el-dialog {
+    .el-dialog__footer {
+      .dialog-footer {
+        padding: 0 17px
+        display: flex
+        justify-content: space-between
+        .el-button {
+          width: 48%
+          margin: 10px 0
+          height: 42px
+          font-size: $font-s
+          border-color: $main-color
+          &.download {
+            color: $main-color
+          }
+        }
+      }
+    }
+  }
+}
+
+.page-enter-active, .page-leave-active {
+  transition: all .1s;
+}
+
+.page-enter {
+  //transform: translate(-100%, 0)
+  opacity: 0
+}
+
+.page-leave-active {
+  //transform: translate(100%, 0)
+  opacity: 0
+}
+
+.el-rate {
+  .el-rate__item {
+    .el-rate__icon {
+      margin-right: 3px
+      font-weight: bolder
+      font-size: 16px
+    }
+    &:last-child {
+      .el-rate__icon {
+        margin-right: 0
+      }
+    }
+  }
+}
+
+.el-loading-mask.is-fullscreen {
+  z-index: 99999 !important
+}
+
+.el-notification, .el-message {
+  z-index: 999999 !important
+}
+
+.el-message {
+  min-width: 225px
+  left: 50%
+  top: 50%
+  transform: translate(-50%, -50%)
+}
+
+.cropper-crop-box {
+  .cropper-view-box {
+    display: block;
+    height: 100%;
+    outline-color: $main-color;
+    outline: 1px solid $main-color;
+    overflow: hidden;
+    width: 100%;
+  }
+  .cropper-point {
+    background-color: $main-color !important;
+    border-radius: 50%
+  }
+}
+
+//loding Reset
+.resetLoading {
+  .el-loading-spinner {
+    top: 166px
+  }
+}
+
+.page {
+  background-color: #fff
+  padding: 20px
+  text-align: right
+  .el-pagination.is-background .btn-next, .el-pagination.is-background .btn-prev {
+    padding: 0
+    margin: 0
+    border: 1px solid $border-color
+    height: 35px
+    width: 78px
+    line-height: 20px
+    border-radius: 0
+    color: $size-ssmain
+    background-color: #fff
+    .el-icon {
+      font-size: 16px
+    }
+    &:hover {
+      color: $main-color
+      border-color: $main-color
+    }
+    &.disabled {
+      cursor: not-allowed
+      background-color: $border-color
+      &:hover {
+        color: $size-ssmain
+        border-color: $border-color
+      }
+    }
+  }
+  .el-pagination.is-background .el-pager li {
+    border: 1px solid $border-color
+    height: 35px
+    width: 35px
+    margin: 0 0 0 9px
+    line-height: 33px
+    border-radius: 0
+    color: $size-ssmain
+    background-color: #fff
+    &:last-child {
+      margin-right: 9px
+    }
+    .el-icon {
+      font-size: 16px
+    }
+    &:hover {
+      color: $main-color
+      border-color: $main-color
+    }
+    &.active {
+      border-color: $main-color
+      &:hover {
+        color: #fff
+      }
+    }
+  }
+}
+
+.newPage {
+  display: flex
+  padding: 20px
+  justify-content: flex-end
+  a {
+    width: 35px
+    height: 35px
+    font-size: $font-s
+    line-height: 33px
+    text-align: center
+    border: 1px solid $border-color
+    margin-left: 9px
+    transition: all .2s linear
+    &:first-child, &:last-child {
+      width: 78px
+      height: 35px
+    }
+    &:first-child {
+      margin-left: 0
+    }
+    &:hover {
+      border-color: $main-color
+      color: $main-color
+    }
+    &.active {
+      color: #fff
+      border-color: $main-color
+      background-color: $main-color
+    }
+    &.aDisabled{
+      cursor: not-allowed
+      background-color: $border-color
+      &:hover{
+        color: $size-ssmain
+        border-color: $border-color
+      }
+    }
+  }
+}

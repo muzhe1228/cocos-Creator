@@ -1,0 +1,333 @@
+<template>
+  <div class="get_group_award">
+    <div class="userInfo">
+      <img :src="userPic" alt="">
+      <p>{{userNick}}</p>
+    </div>
+    <div class="award_number">
+      +<span>{{userAwardsName}}</span>
+    </div>
+    <p class="notice">恭喜您组团成功，奖励可在考拉APP中查看</p>
+    <div class="member_award_list">
+      <div class="member_award" v-for="(item, index) in memberList" v-show="item.receiveState!=0">
+        <div class="member">
+          <p class="captain" v-show="item.memberType == 0">团长</p>
+          <img :src="item.pic" alt="" :onerror="errorImg">
+          <p class="nick">{{item.nick}}</p>
+        </div>
+        <div class="number">
+          <span>{{item.awardsName}}</span>
+        </div>
+      </div>
+    <!--  <div class="member_award">
+        <div class="member">
+          <p class="captain">团长</p>
+          <img src="/static/images/billboard/coinla.png" alt="">
+          <p class="nick">kevin</p>
+        </div>
+        <div class="number">
+          <span>55</span><em>CLB</em>
+        </div>
+      </div>
+      <div class="member_award">
+        <div class="member">
+          <img src="/static/images/billboard/coinla.png" alt="">
+          <p class="nick">kevin</p>
+        </div>
+        <div class="number">
+          <span>55</span><em>CLB</em>
+        </div>
+      </div>
+      <div class="member_award">
+        <div class="member">
+          <img src="/static/images/billboard/coinla.png" alt="">
+          <p class="nick">kevin</p>
+        </div>
+        <div class="number">
+          <span>55</span><em>CLB</em>
+        </div>
+      </div>
+      <div class="member_award">
+        <div class="member">
+          <img src="/static/images/billboard/coinla.png" alt="">
+          <p class="nick">kevin</p>
+        </div>
+        <div class="number">
+          <span>55</span><em>CLB</em>
+        </div>
+      </div>-->
+    </div>
+    <div class="see_award_list_text" @click="groupAward">
+      查看奖励记录
+      <img src="/static/images/group/symbol.png" alt="">
+    </div>
+    <div class="btn">
+      <p class="group_btn" @click="selectGroupNum">我要组团</p>
+      <p class="download_btn" @click="download()">下载考拉行情APP</p>
+    </div>
+    <!--引导app下载-->
+    <p class="yd" v-show="downloadAppLead" @click="downloadAppLead = false">
+      <img src="/static/images/download/yd.png" alt="">
+    </p>
+  </div>
+</template>
+
+<script>
+  import {validates, validateHandles} from 'assets/js/reg'
+  import {shareWeixin, isIos, openInApp} from 'assets/js/case'
+  import {getCoinlaSingle} from 'assets/js/httpAll'
+  export default {
+    name: 'getGroupAward',
+    metaInfo:{
+      title: '获取奖励'
+    },
+    data () {
+      return {
+        awardsName: this.$route.params.awardsName,
+        downloadAppLead: false, //下载app引导
+        codeData: '',
+        wxGroupData: '',
+        memberList: [],
+        errorImg: "this.onerror=null;this.src='/static/images/billboard/coinla.png'", //默认图片
+        userPic: '',
+        userNick: '',
+        userAwardsName: ''
+      }
+    },
+    mounted () {
+      this.selectGroup()
+    },
+    methods: {
+      //跳转到我的奖励列表页面
+      groupAward (){
+        this.$router.push({name: 'groupAward', params: {
+          uuid: this.$route.params.uuid,
+          awardsName: this.$route.params.awardsName,
+          infoId: this.$route.params.infoId,
+          headersToken: this.$route.params.headersToken
+        }})
+      },
+      //下载app
+      download () {
+        if (isIos()) {
+          alert('download')
+          window.location.href = 'https://itunes.apple.com/cn/app/coinla/id1359706851?mt=8'
+        } else {
+          let ua = navigator.userAgent.toLowerCase();
+          if (ua.match(/MicroMessenger/i) == "micromessenger" || ua.match(/QQ/i)=='qq') {
+            this.downloadAppLead = true
+          } else {
+            window.location.href = 'https://api.coinla.com/download/android'
+          }
+        }
+      },
+      //成团数量接口
+      selectGroupNum () {
+          alert(this.$route.params.headersToken)
+        if(this.$route.params.headersToken){
+          getCoinlaToken('/groupActivity/selectGroupNumber', {
+            activityId: 2,
+          }, this.$route.params.headersToken).then((res) => {
+            let resData = res.data.data
+            if(resData < 10){
+              this.organizeGroup()
+            }else{
+              this.$toast({message: '发团次数超过10次不可再发团', duration: 1500})
+            }
+          }).catch((err) => {
+            this.$toast({message: '失败', duration: 1500})
+          })
+        }else{
+          this.showAccountToast = true //未登录账号,绑定app弹框显示
+        }
+//        getCoinlaToken('/groupActivity/selectGroupNumber', {
+//          activityId: 2,
+//        }, this.$route.params.headersToken).then((res) => {
+//          let resData = res.data.data
+//          if(resData < 10){
+//              alert('小于10次')
+//            this.organizeGroup()
+//          }else{
+//            this.$toast({message: '发团次数超过10次不可再发团', duration: 1500})
+//          }
+//        }).catch((err) => {
+//          this.$toast({message: '失败', duration: 1500})
+//        })
+      },
+      //我要组团接口
+      organizeGroup () {
+        alert(JSON.stringify(this.$route.params.uuid))
+        getCoinlaToken('/groupActivity/insertGroup', {
+          activityId: 2,
+          uuid: this.$route.params.uuid,
+        }, this.$route.params.headersToken).then((res) => {
+          let resData = res.data.data
+          this.$router.push({name: 'group', params: {infoId: resData.infoId}})
+        }).catch((err) => {
+          this.$toast({message: '失败', duration: 1500})
+        })
+      },
+      selectGroup () {
+        //如果是微信打开不传token,app打开传token
+        let postData = {
+          activityId: 2,
+          infoId: this.$route.query.infoId || this.$route.params.infoId,
+        }
+        getCoinlaSingle('/groupActivity/selectGroup', postData).then((res) => {
+          let _this = this
+          let resData = res.data.data
+          if(res.data.code == 0){
+            _this.memberList = resData.memberList
+            let list = resData.memberList
+            for(let i = 0, len = resData.memberList.length; i < len; i++){
+              if(list[i].uuid == this.$route.params.uuid){
+                this.userNick = list[i].nick
+                this.userPic = list[i].pic
+                this.userAwardsName = list[i].awardsName
+                return false
+              }
+            }
+          }else{
+            this.$toast({message: res.data.message, duration: 1500})
+          }
+        }).catch((err) => {})
+      }
+    }
+  }
+</script>
+
+<style scoped lang="stylus">
+  .get_group_award{
+    min-height: 100vh
+    padding: 0 0.32rem 1rem
+    background: url(/static/images/group/get_group_award_bac.png) no-repeat
+    background-size: 100% 100%
+    overflow: hidden
+    em{
+      font-style: normal
+    }
+    .userInfo{
+      width: 100%
+      text-align: center
+      img{
+        width: 1.4rem
+        height: 1.4rem
+        border-radius: 50%
+        overflow: hidden
+        margin: 0.34rem auto 0.18rem
+      }
+      p{
+        color: #fff
+        font-size:0.36rem
+      }
+    }
+    .award_number{
+      width: 4.2rem
+      height: 1.52rem
+      margin: 0 auto
+      background: url(/static/images/group/award_number_img.png) no-repeat
+      background-size: 100% 100%
+      line-height: 1.52rem
+      text-align: center
+      color: #f78353
+      font-size: 0.48rem
+    }
+    .notice{
+      color: #fff
+      font-size: 0.28rem
+      text-align: center
+      margin: 0.12rem auto 0.2rem
+    }
+    .member_award_list{
+      border-radius: 0.2rem
+      overflow: hidden
+      .member_award{
+        display: flex
+        height: 1.44rem
+        line-height: 1.44rem
+        padding-left: 0.32rem
+        background-color: #e4faff
+        .member{
+          display: flex
+          align-items: center
+          position: relative
+          width: 50%
+          overflow: hidden
+          .captain{
+            position: absolute
+            left: 0.13rem
+            top: 0.18rem
+            width: 0.62rem
+            height: 0.24rem
+            line-height: 0.24rem
+            text-align: center
+            color: #fff
+            background-color: #f56d6d
+            font-size: 0.18rem
+            border-radius: 3px
+          }
+          .nick{
+            margin-left: 0.14rem
+            color: #49abc2
+            font-size: 0.24rem
+          }
+          img{
+            border-radius: 50%
+            border: 1px solid #9fdcea
+            width: 0.88rem
+            height: 0.88rem
+          }
+        }
+        .number{
+          width: 50%
+          text-align: center
+          color: #f78353
+          font-size: 0.36rem
+        }
+      }
+      .member_award:nth-child(even){
+        background-color: #effbfd
+      }
+    }
+    .see_award_list_text{
+      color: #fff
+      font-size: 0.28rem
+      text-align: center
+      margin: 0.26rem 0 0.32rem
+      img{
+        width: 0.22rem
+        height: 0.2rem
+        margin-left: 0.1rem
+      }
+    }
+    .btn{
+      display: flex
+      justify-content: space-between
+      p{
+        height: 0.66rem
+        width: 2.72rem
+        line-height: 0.66rem
+        text-align: center
+        color: #fff
+        font-size: 0.28rem
+        background-color: #f56d6d
+        border-radius: 0.32rem
+      }
+    }
+    .yd {
+      width: 100%
+      height: 100%
+      position: fixed
+      background-color: rgba(0, 0, 0, .5)
+      left: 0
+      top: 0
+      z-index: 9999
+      img {
+        position: absolute
+        right: 10px
+        width: 6.1rem
+        top: 0
+      }
+    }
+  }
+</style>

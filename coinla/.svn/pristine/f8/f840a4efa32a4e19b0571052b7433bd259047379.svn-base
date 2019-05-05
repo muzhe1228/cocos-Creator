@@ -1,0 +1,42 @@
+@import "~assets/stylus/variable.styl"
+.login, .register {
+  .el-dialog__body {
+    .login-logo {
+      padding-bottom: 10px
+    }
+    .login-title {
+      font-size: $font-l
+      color: $size-main
+      font-weight: bold
+      margin-bottom: 30px
+    }
+  }
+  .toAnto{
+    text-align: center
+    margin: 10px 0 20px 0
+    font-size: 14px
+    span{
+      cursor: pointer
+      color: $main-color
+      opacity: .6
+      &:hover {
+        opacity: 1
+        text-decoration: underline
+      }
+    }
+  }
+  .forgetPwd {
+    position: absolute
+    right: 0
+    bottom: -30px
+    margin-bottom: 0
+    line-height: 26px
+    cursor: pointer
+    color: $main-color
+    opacity: .6
+    &:hover {
+      opacity: 1
+      text-decoration: underline
+    }
+  }
+}

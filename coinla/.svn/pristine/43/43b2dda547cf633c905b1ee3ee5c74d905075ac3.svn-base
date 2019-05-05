@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+	<link rel="stylesheet" href="./css/icon/style.css">
+	<link rel="stylesheet/less" href="./css/index.less">
+	<link rel="stylesheet/less" href="./css/searchInp.less">
+	<link rel="icon" type="image/x-icon" href="./favicon.ico">
+	<script src="./js/jquery.min.js"></script>
+	<script src="./js/less.min.js"></script>
+	<script src="./js/common.js"></script>
+	<script src="./js/indexTop.js"></script>
+	<script src="./js/footer.js"></script>
+	<script src="./js/index.js"></script>
+</head>
+<body>
+<section class="searchInp">
+	<p class="searchWrap">
+		<input type="text" class="searchThis">
+		<i class="icon-kensearch searchIcon"></i>
+	</p>
+	<div class="searchList">
+		<ul class="currencyList">
+			<li class="title">币种</li>
+			<li class="">
+				<img alt="" src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1521709034431.jpg">
+				<p>艾达币(ADA)</p>
+			</li>
+			<li class="">
+				<img alt="" src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1521709034431.jpg">
+				<p>艾达币(ADA)</p>
+			</li>
+			<li class="">
+				<img alt="" src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1521709034431.jpg">
+				<p>艾达币(ADA)</p>
+			</li>
+			<li class="">
+				<img alt="" src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1521709034431.jpg">
+				<p>艾达币(ADA)</p>
+			</li>
+		</ul>
+		<ul class="exchangeList">
+			<li class="title">交易所</li>
+			<li class="">
+				<img alt="" src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1528444310591.jpg">
+				<p>ABCC</p>
+			</li>
+			<li class="">
+				<img alt="" src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1528444310591.jpg">
+				<p>ABCC</p>
+			</li>
+			<li class="">
+				<img alt="" src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1528444310591.jpg">
+				<p>ABCC</p>
+			</li>
+			<li class="">
+				<img alt="" src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1528444310591.jpg">
+				<p>ABCC</p>
+			</li>
+			<li class="">
+				<img alt="" src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1528444310591.jpg">
+				<p>ABCC</p>
+			</li>
+		</ul>
+	</div>
+</section>
+</body>
+<script>
+	$(document).ready(function () {
+	    $('.searchInp').click(function () {
+			return false
+        })
+		$('.searchThis').on('input propertychange',function () {
+			$.post('')
+        }).focus(function () {
+			$(this).parents('.searchInp').find('.searchList').slideDown(500)
+        })
+		$(document).click(function () {
+			$('.searchList').slideUp()
+        })
+    })
+</script>
+</html>

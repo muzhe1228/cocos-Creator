@@ -1,0 +1,407 @@
+<template>
+  <div class="get_group_award">
+    <div class="userInfo">
+      <img src="/static/images/billboard/coinla.png" alt="">
+      <p>kevin</p>
+    </div>
+    <div class="award_number">
+      +<span>78</span><em>CLB</em>
+    </div>
+    <p class="notice">恭喜您组团成功，奖励可在考拉APP中查看</p>
+    <div class="member_award_list">
+        <div class="member_award">
+          <div class="member">
+            <p class="captain">团长</p>
+            <img src="/static/images/billboard/coinla.png" alt="">
+            <p class="nick">kevin</p>
+          </div>
+          <div class="number">
+            <span>55</span><em>CLB</em>
+          </div>
+        </div>
+        <div class="member_award">
+          <div class="member">
+            <img src="/static/images/billboard/coinla.png" alt="">
+            <p class="nick">kevin</p>
+          </div>
+          <div class="number">
+            <span>55</span><em>CLB</em>
+          </div>
+        </div>
+        <div class="member_award">
+          <div class="member">
+            <img src="/static/images/billboard/coinla.png" alt="">
+            <p class="nick">kevin</p>
+          </div>
+          <div class="number">
+            <span>55</span><em>CLB</em>
+          </div>
+        </div>
+        <div class="member_award">
+          <div class="member">
+            <img src="/static/images/billboard/coinla.png" alt="">
+            <p class="nick">kevin</p>
+          </div>
+          <div class="number">
+            <span>55</span><em>CLB</em>
+          </div>
+        </div>
+    </div>
+    <div class="see_award_list_text">查看奖励记录<img src="/static/images/group/symbol.png" alt=""></div>
+    <div class="btn">
+      <p class="group_btn">我要组团</p>
+      <p class="download_btn">下载考拉行情APP</p>
+    </div>
+    <!--遮罩层弹框-->
+    <div class="shadow_wrap" v-show="!showAccountToast">
+      <div class="bind_app_toast">
+        <h3>绑定卡拉行情账号</h3>
+        <div class="userMessage">
+          <div class="account">
+            <span class="account_text"><em>账</em><em>号 :</em></span>
+            <input type="text" placeholder="输入手机号或邮箱" v-model="bindData.account" @change="changeInfo('account')">
+          </div>
+          <div class="captcha">
+            <span class="captcha_text">验证码 :</span>
+            <input type="text" placeholder="输入验证码" v-model="bindData.captcha" @change="changeInfo('captcha')">
+            <button @click="getcaptcha" :disabled = 'isDisabled'>{{captchaText}}</button>
+          </div>
+        </div>
+        <p class="notice_text">发起组团拆红包需绑定考拉行情APP账号</p>
+        <div class="btn">
+          <p class="cancle_btn">取消</p>
+          <p class="bind_btn" @click="bindAccount">立即绑定</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  import {validates, validateHandles} from 'assets/js/reg'
+  import {getCoinlaSingle} from 'assets/js/httpAll'
+  export default {
+    name: 'getGroupAward',
+    metaInfo:{
+      title: '获取奖励'
+    },
+    data () {
+      return {
+        isDisabled: false,
+        bindData: {
+          account: '',
+          captcha: '',
+          client: 0,
+          recommendCode: this.$route.query.inviteCode
+        },
+        captchaText: '获取验证码',
+        showAccountToast: false, //绑定app账号弹框
+      }
+    },
+    methods: {
+      //获取验证码
+      getcaptcha () {
+        let validateData = validateHandles.phoneEmail(this.bindData.account)
+        if(!validateData){
+          let timer = null
+          let _this = this
+          let num = 60
+          getCoinlaSingle('/captcha/sms', {account: this.bindData.account, type: 1}).then((res) => {
+            if(res.data.code == 0){
+              this.$toast({message: '验证码已发送', duration: 1500})
+              this.isDisabled = true
+              timer = setInterval(() => {
+                num--
+                console.log(num)
+                _this.captchaText = num + 's'
+                if(num <= 0){
+                  clearInterval(timer)
+                  this.isDisabled = false
+                  _this.captchaText = '获取验证码'
+                }
+              }, 1000)
+            }else{
+              this.$toast({message: res.data.code< 0 ? '失败': res.message, duration: 1500})
+            }
+          }).catch((err) => {})
+        }else{
+          this.$toast({message: validateData, duration: 1500})
+        }
+      },
+      //点击立即绑定, 注册登录
+      bindAccount () {
+        let validateAccountData = validateHandles.phoneEmail(this.bindData.account)
+        let validateCaptchaData = validateHandles.captcha(this.bindData.captcha)
+        if(validateAccountData){
+          this.$toast({message: validateAccountData, duration: 1500})
+        }else if(validateCaptchaData){
+          this.$toast({message: validateCaptchaData, duration: 1500})
+        }else{
+          getCoinlaSingle('/user/login/registerOrLogin', this.bindData).then((res) => {
+            if(res.data.code == 0){
+              this.$toast({message: '绑定成功', duration: 1500})
+              this.showAccountToast = false
+            }else{
+              this.$toast({message: res.data.code< 0 ? '失败' : res.message, duration: 1500})
+            }
+          }).catch((err) => {})
+        }
+      },
+      //注册登录之后，新用户出现下载考拉详情弹框，老用户不需要
+      //验证输入框内容，blur，change
+      changeInfo (type) {
+        let validateAccountData = validateHandles.phoneEmail(this.bindData.account)
+        let validateCaptchaData = validateHandles.captcha(this.bindData.captcha)
+        if(type == 'account'){
+          if(validateAccountData){
+            this.$toast({message: validateAccountData, duration: 1500})
+          }
+        }else{
+          if(validateCaptchaData){
+            this.$toast({message: validateCaptchaData, duration: 1500})
+          }
+        }
+      }
+    }
+  }
+</script>
+
+<style scoped lang="stylus">
+  .get_group_award{
+    min-height: 100vh
+    padding: 0 0.32rem 1rem
+    background: url(/static/images/group/get_group_award_bac.png) no-repeat
+    background-size: 100% 100%
+    overflow: hidden
+    em{
+      font-style: normal
+    }
+    .userInfo{
+      width: 100%
+      text-align: center
+      img{
+        width: 1.4rem
+        height: 1.4rem
+        border-radius: 50%
+        overflow: hidden
+        margin: 0.34rem auto 0.18rem
+      }
+      p{
+        color: #fff
+        font-size:0.36rem
+      }
+    }
+    .award_number{
+      width: 4.2rem
+      height: 1.52rem
+      margin: 0 auto
+      background: url(/static/images/group/award_number_img.png) no-repeat
+      background-size: 100% 100%
+      line-height: 1.52rem
+      text-align: center
+      color: #f78353
+      font-size: 0.48rem
+    }
+    .notice{
+      color: #fff
+      font-size: 0.28rem
+      text-align: center
+      margin: 0.12rem auto 0.2rem
+    }
+    .member_award_list{
+      border-radius: 0.2rem
+      overflow: hidden
+      .member_award{
+        display: flex
+        height: 1.44rem
+        line-height: 1.44rem
+        padding-left: 0.32rem
+        background-color: #e4faff
+        .member{
+          display: flex
+          align-items: center
+          position: relative
+          width: 50%
+          overflow: hidden
+          .captain{
+            position: absolute
+            left: 0.13rem
+            top: 0.18rem
+            width: 0.62rem
+            height: 0.24rem
+            line-height: 0.24rem
+            text-align: center
+            color: #fff
+            background-color: #f56d6d
+            font-size: 0.18rem
+            border-radius: 3px
+          }
+          .nick{
+            margin-left: 0.14rem
+            color: #49abc2
+            font-size: 0.24rem
+          }
+          img{
+            border-radius: 50%
+            border: 1px solid #9fdcea
+            width: 0.88rem
+            height: 0.88rem
+          }
+        }
+        .number{
+          width: 50%
+          text-align: center
+          color: #f78353
+          font-size: 0.36rem
+        }
+      }
+      .member_award:nth-child(even){
+        background-color: #effbfd
+      }
+    }
+    .see_award_list_text{
+      color: #fff
+      font-size: 0.28rem
+      text-align: center
+      margin: 0.26rem 0 0.32rem
+      img{
+        width: 0.22rem
+        height: 0.2rem
+        margin-left: 0.1rem
+      }
+    }
+    .btn{
+      display: flex
+      justify-content: space-between
+      p{
+        height: 0.66rem
+        width: 2.72rem
+        line-height: 0.66rem
+        text-align: center
+        color: #fff
+        font-size: 0.28rem
+        background-color: #f56d6d
+        border-radius: 0.32rem
+      }
+    }
+    //遮罩层弹框
+    .shadow_wrap {
+      position: fixed
+      width: 100%
+      height: 100%
+      z-index: 998
+      left: 0
+      top: 0
+      background: rgba(0, 0, 0, .6)
+      .bind_app_toast{
+        width: 6.21rem
+        padding: 0 0.55rem 0.7rem
+        position: absolute
+        top: 50%
+        left: 50%
+        transform: translate(-50%, -50%)
+        z-index: 999
+        background-color: #fff
+        border-radius: 0.2rem
+        h3{
+          text-align: center
+          margin: 0.96rem auto 0.53rem
+          color: #2f3133
+          font-size: 0.36rem
+        }
+        .userMessage{
+          .account, .captcha{
+            display: flex
+            align-items: center
+            width: 100%
+            height: 0.82rem
+            padding: 0 0.21rem 0 0.24rem
+            color: #605e5e
+            font-size: 0.28rem
+            margin-bottom: 0.25rem
+            background-color: #f8f7f7
+            border-radius: 0.2rem
+            overflow: hidden
+          }
+          .account_text, .captcha_text{
+            display: block
+            text-align: right
+            width: 1.05rem
+          }
+          .account_text{
+            display: flex
+            em{
+              display: block
+              width: 50%
+              text-align: left
+              justify-content: space-between
+            }
+          }
+          .captcha{
+            button{
+              display: block
+              width: 1.16rem
+              //width: 216rem
+              height: 0.4rem
+              line-height: 0.4rem
+              font-size: 0.20rem
+              border: 1px solid #5dd2fd
+              border-radius: 0.2rem
+              text-align: center
+            }
+          }
+          input, button{
+            line-height: normal
+            border: none
+            background: none
+          }
+          input{
+            padding: 0.1rem 0 0.1rem 0.15rem
+            flex: 1
+            color: #333
+          }
+        }
+        .notice_text{
+          color: #b6b6b6
+          font-size: 0.22rem
+          text-align: center
+          margin: 0.22rem auto 0.74rem
+
+        }
+        .btn{
+          p{
+            width: 1.92rem
+            height: 0.6rem
+            line-height: 0.6rem
+            border-radius: 0.2rem
+            font-size: 0.3rem
+            background-color: #ebebeb
+            color: #bab9b9
+          }
+          .bind_btn{
+            background-color: #f64819
+            color: #fff
+          }
+        }
+      }
+    }
+    input:
+    :input-placeholder {
+      color: #d7d7d7 !important;
+    }
+    input:
+    :-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+      color: #d7d7d7 !important;
+    }
+    input:-moz-placeholder, textarea:-moz-placeholder {
+      color: #d7d7d7 !important;
+    }
+    input:
+    :-moz-placeholder, textarea::-moz-placeholder {
+      color: #d7d7d7 !important;
+    }
+    input:-ms-input-placeholder, textarea:-ms-input-placeholder {
+      color: #d7d7d7 !important;
+    }
+  }
+</style>

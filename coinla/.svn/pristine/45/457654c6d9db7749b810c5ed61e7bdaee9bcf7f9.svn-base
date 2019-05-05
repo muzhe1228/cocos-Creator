@@ -1,0 +1,323 @@
+import Vue from 'vue'
+import Router from 'vue-router'
+
+Vue.use(Router)
+
+const _361080eb = () => import('..\\pages\\appDownload.vue' /* webpackChunkName: "pages_appDownload" */).then(m => m.default || m)
+const _f821d9ce = () => import('..\\pages\\user.vue' /* webpackChunkName: "pages_user" */).then(m => m.default || m)
+const _4255796e = () => import('..\\pages\\user\\index.vue' /* webpackChunkName: "pages_user_index" */).then(m => m.default || m)
+const _83e10390 = () => import('..\\pages\\user\\msg.vue' /* webpackChunkName: "pages_user_msg" */).then(m => m.default || m)
+const _404c20cf = () => import('..\\pages\\user\\action.vue' /* webpackChunkName: "pages_user_action" */).then(m => m.default || m)
+const _647ca4f1 = () => import('..\\pages\\exchange\\index.vue' /* webpackChunkName: "pages_exchange_index" */).then(m => m.default || m)
+const _0c55ccda = () => import('..\\pages\\About\\index.vue' /* webpackChunkName: "pages_About_index" */).then(m => m.default || m)
+const _4a6e6f2c = () => import('..\\pages\\Join\\index.vue' /* webpackChunkName: "pages_Join_index" */).then(m => m.default || m)
+const _0ba6be14 = () => import('..\\pages\\search.vue' /* webpackChunkName: "pages_search" */).then(m => m.default || m)
+const _0d12d2cc = () => import('..\\pages\\search\\index.vue' /* webpackChunkName: "pages_search_index" */).then(m => m.default || m)
+const _b42158ce = () => import('..\\pages\\search\\exchange.vue' /* webpackChunkName: "pages_search_exchange" */).then(m => m.default || m)
+const _e2b04b8c = () => import('..\\pages\\template\\index.vue' /* webpackChunkName: "pages_template_index" */).then(m => m.default || m)
+const _0f280757 = () => import('..\\pages\\Book.vue' /* webpackChunkName: "pages_Book" */).then(m => m.default || m)
+const _e82aa56a = () => import('..\\pages\\Book\\index.vue' /* webpackChunkName: "pages_Book_index" */).then(m => m.default || m)
+const _3a71a14c = () => import('..\\pages\\Book\\invest.vue' /* webpackChunkName: "pages_Book_invest" */).then(m => m.default || m)
+const _47b9ff36 = () => import('..\\pages\\Book\\anAlyze.vue' /* webpackChunkName: "pages_Book_anAlyze" */).then(m => m.default || m)
+const _76b3ef06 = () => import('..\\pages\\Book\\anAlyze\\index.vue' /* webpackChunkName: "pages_Book_anAlyze_index" */).then(m => m.default || m)
+const _21336cda = () => import('..\\pages\\Book\\anAlyze\\location.vue' /* webpackChunkName: "pages_Book_anAlyze_location" */).then(m => m.default || m)
+const _0c7dbc27 = () => import('..\\pages\\avatar.vue' /* webpackChunkName: "pages_avatar" */).then(m => m.default || m)
+const _58ebf774 = () => import('..\\pages\\Optional\\index.vue' /* webpackChunkName: "pages_Optional_index" */).then(m => m.default || m)
+const _b22281cc = () => import('..\\pages\\Rank.vue' /* webpackChunkName: "pages_Rank" */).then(m => m.default || m)
+const _3e0577b0 = () => import('..\\pages\\Rank\\index.vue' /* webpackChunkName: "pages_Rank_index" */).then(m => m.default || m)
+const _229abf73 = () => import('..\\pages\\Rank\\trend.vue' /* webpackChunkName: "pages_Rank_trend" */).then(m => m.default || m)
+const _6c00cfab = () => import('..\\pages\\Rank\\currency.vue' /* webpackChunkName: "pages_Rank_currency" */).then(m => m.default || m)
+const _961e9bd4 = () => import('..\\pages\\Rank\\bourse.vue' /* webpackChunkName: "pages_Rank_bourse" */).then(m => m.default || m)
+const _bd93ae7a = () => import('..\\pages\\coin\\index.vue' /* webpackChunkName: "pages_coin_index" */).then(m => m.default || m)
+const _4f76b060 = () => import('..\\pages\\test.vue' /* webpackChunkName: "pages_test" */).then(m => m.default || m)
+const _1fd58002 = () => import('..\\pages\\APP\\index.vue' /* webpackChunkName: "pages_APP_index" */).then(m => m.default || m)
+const _3ffc2637 = () => import('..\\pages\\coin\\_id\\index.vue' /* webpackChunkName: "pages_coin__id_index" */).then(m => m.default || m)
+const _663fdb2a = () => import('..\\pages\\coin\\_id\\index\\index.vue' /* webpackChunkName: "pages_coin__id_index_index" */).then(m => m.default || m)
+const _0e7d8db6 = () => import('..\\pages\\coin\\_id\\index\\trend.vue' /* webpackChunkName: "pages_coin__id_index_trend" */).then(m => m.default || m)
+const _305c4e1a = () => import('..\\pages\\coin\\_id\\index\\market.vue' /* webpackChunkName: "pages_coin__id_index_market" */).then(m => m.default || m)
+const _190120ed = () => import('..\\pages\\coin\\_id\\index\\history.vue' /* webpackChunkName: "pages_coin__id_index_history" */).then(m => m.default || m)
+const _30f3f305 = () => import('..\\pages\\coin\\_id\\index\\intro.vue' /* webpackChunkName: "pages_coin__id_index_intro" */).then(m => m.default || m)
+const _2167adda = () => import('..\\pages\\coin\\_id\\index\\msg.vue' /* webpackChunkName: "pages_coin__id_index_msg" */).then(m => m.default || m)
+const _7fe216c9 = () => import('..\\pages\\exchange\\_id\\index.vue' /* webpackChunkName: "pages_exchange__id_index" */).then(m => m.default || m)
+const _29d7b999 = () => import('..\\pages\\exchange\\_id\\index\\index.vue' /* webpackChunkName: "pages_exchange__id_index_index" */).then(m => m.default || m)
+const _e6496ef0 = () => import('..\\pages\\exchange\\_id\\index\\msg.vue' /* webpackChunkName: "pages_exchange__id_index_msg" */).then(m => m.default || m)
+const _445cfad6 = () => import('..\\pages\\exchange\\_id\\index\\cost.vue' /* webpackChunkName: "pages_exchange__id_index_cost" */).then(m => m.default || m)
+const _8f95d218 = () => import('..\\pages\\index.vue' /* webpackChunkName: "pages_index" */).then(m => m.default || m)
+const _ef777348 = () => import('..\\pages\\_id.vue' /* webpackChunkName: "pages__id" */).then(m => m.default || m)
+
+
+
+if (process.client) {
+  window.history.scrollRestoration = 'manual'
+}
+const scrollBehavior = function (to, from, savedPosition) {
+  // if the returned position is falsy or an empty object,
+  // will retain current scroll position.
+  let position = false
+
+  // if no children detected
+  if (to.matched.length < 2) {
+    // scroll to the top of the page
+    position = { x: 0, y: 0 }
+  } else if (to.matched.some((r) => r.components.default.options.scrollToTop)) {
+    // if one of the children has scrollToTop option set to true
+    position = { x: 0, y: 0 }
+  }
+
+  // savedPosition is only available for popstate navigations (back button)
+  if (savedPosition) {
+    position = savedPosition
+  }
+
+  return new Promise(resolve => {
+    // wait for the out transition to complete (if necessary)
+    window.$nuxt.$once('triggerScroll', () => {
+      // coords will be used if no selector is provided,
+      // or if the selector didn't match any element.
+      if (to.hash) {
+        let hash = to.hash
+        // CSS.escape() is not supported with IE and Edge.
+        if (typeof window.CSS !== 'undefined' && typeof window.CSS.escape !== 'undefined') {
+          hash = '#' + window.CSS.escape(hash.substr(1))
+        }
+        try {
+          if (document.querySelector(hash)) {
+            // scroll to anchor by returning the selector
+            position = { selector: hash }
+          }
+        } catch (e) {
+          console.warn('Failed to save scroll position. Please add CSS.escape() polyfill (https://github.com/mathiasbynens/CSS.escape).')
+        }
+      }
+      resolve(position)
+    })
+  })
+}
+
+
+export function createRouter () {
+  return new Router({
+    mode: 'history',
+    base: '/',
+    linkActiveClass: 'nuxt-link-active',
+    linkExactActiveClass: 'nuxt-link-exact-active',
+    scrollBehavior,
+    routes: [
+		{
+			path: "/appDownload",
+			component: _361080eb,
+			name: "appDownload"
+		},
+		{
+			path: "/user",
+			component: _f821d9ce,
+			children: [
+				{
+					path: "",
+					component: _4255796e,
+					name: "user"
+				},
+				{
+					path: "msg",
+					component: _83e10390,
+					name: "user-msg"
+				},
+				{
+					path: "action",
+					component: _404c20cf,
+					name: "user-action"
+				}
+			]
+		},
+		{
+			path: "/exchange",
+			component: _647ca4f1,
+			name: "exchange"
+		},
+		{
+			path: "/About",
+			component: _0c55ccda,
+			name: "About"
+		},
+		{
+			path: "/Join",
+			component: _4a6e6f2c,
+			name: "Join"
+		},
+		{
+			path: "/search",
+			component: _0ba6be14,
+			children: [
+				{
+					path: "",
+					component: _0d12d2cc,
+					name: "search"
+				},
+				{
+					path: "exchange",
+					component: _b42158ce,
+					name: "search-exchange"
+				}
+			]
+		},
+		{
+			path: "/template",
+			component: _e2b04b8c,
+			name: "template"
+		},
+		{
+			path: "/Book",
+			component: _0f280757,
+			children: [
+				{
+					path: "",
+					component: _e82aa56a,
+					name: "Book"
+				},
+				{
+					path: "invest",
+					component: _3a71a14c,
+					name: "Book-invest"
+				},
+				{
+					path: "anAlyze",
+					component: _47b9ff36,
+					children: [
+						{
+							path: "",
+							component: _76b3ef06,
+							name: "Book-anAlyze"
+						},
+						{
+							path: "location",
+							component: _21336cda,
+							name: "Book-anAlyze-location"
+						}
+					]
+				}
+			]
+		},
+		{
+			path: "/avatar",
+			component: _0c7dbc27,
+			name: "avatar"
+		},
+		{
+			path: "/Optional",
+			component: _58ebf774,
+			name: "Optional"
+		},
+		{
+			path: "/Rank",
+			component: _b22281cc,
+			children: [
+				{
+					path: "",
+					component: _3e0577b0,
+					name: "Rank"
+				},
+				{
+					path: "trend",
+					component: _229abf73,
+					name: "Rank-trend"
+				},
+				{
+					path: "currency",
+					component: _6c00cfab,
+					name: "Rank-currency"
+				},
+				{
+					path: "bourse",
+					component: _961e9bd4,
+					name: "Rank-bourse"
+				}
+			]
+		},
+		{
+			path: "/coin",
+			component: _bd93ae7a,
+			name: "coin"
+		},
+		{
+			path: "/test",
+			component: _4f76b060,
+			name: "test"
+		},
+		{
+			path: "/APP",
+			component: _1fd58002,
+			name: "APP"
+		},
+		{
+			path: "/coin/:id",
+			component: _3ffc2637,
+			children: [
+				{
+					path: "",
+					component: _663fdb2a,
+					name: "coin-id-index"
+				},
+				{
+					path: "trend",
+					component: _0e7d8db6,
+					name: "coin-id-index-trend"
+				},
+				{
+					path: "market",
+					component: _305c4e1a,
+					name: "coin-id-index-market"
+				},
+				{
+					path: "history",
+					component: _190120ed,
+					name: "coin-id-index-history"
+				},
+				{
+					path: "intro",
+					component: _30f3f305,
+					name: "coin-id-index-intro"
+				},
+				{
+					path: "msg",
+					component: _2167adda,
+					name: "coin-id-index-msg"
+				}
+			]
+		},
+		{
+			path: "/exchange/:id",
+			component: _7fe216c9,
+			children: [
+				{
+					path: "",
+					component: _29d7b999,
+					name: "exchange-id-index"
+				},
+				{
+					path: "msg",
+					component: _e6496ef0,
+					name: "exchange-id-index-msg"
+				},
+				{
+					path: "cost",
+					component: _445cfad6,
+					name: "exchange-id-index-cost"
+				}
+			]
+		},
+		{
+			path: "/",
+			component: _8f95d218,
+			name: "index"
+		},
+		{
+			path: "/:id",
+			component: _ef777348,
+			name: "id"
+		}
+    ],
+    
+    
+    fallback: false
+  })
+}

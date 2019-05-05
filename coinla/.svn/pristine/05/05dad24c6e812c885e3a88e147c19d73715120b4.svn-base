@@ -1,0 +1,155 @@
+<template>
+  <div class="group">
+    <div class="group_banner">
+      <img src="/static/images/group/group_banner.png" alt="">
+      <div class="my_wrap">
+        <div class="my_group">
+          我参与的团
+        </div>
+        <div class="my_awards">
+          我的奖励
+          <p class="icon"></p>
+        </div>
+      </div>
+    </div>
+    <div class="group_main">
+      <div class="group_content">
+        <div class="content">
+          <div class="time">
+            <p>距离组团结束还有</p>
+            <p class="count_down">
+              <span>11</span>
+              <span>11</span>
+              <span>11</span>
+            </p>
+          </div>
+          <div class="content_people">
+
+          </div>
+          <img src="" alt="" class="btn">
+        </div>
+      </div>
+      <div class="group_rule">
+        <img src="/static/images/group/group_rule_title.png" alt="" class="group_rule_title">
+        <div class="rule">
+          <div class="rule_time">
+            <div class="right">
+              <span class="colour"></span>
+            </div>
+          </div>
+          <div class="rule_content">
+            <div class="right">
+              <p></p>
+              <p class="colour"></p>
+            </div>
+          </div>
+          <div class="rule_notice">
+            <div class="right">
+              <p></p>
+              <ul>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+              </ul>
+            </div>
+          </div>
+          <p class="bottom"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  import {shareWeixin, isIos} from 'assets/js/case'
+  import {getCoinlaSingle, getCoinlaToken} from 'assets/js/httpAll'
+  export default {
+    name: 'group',
+    data () {
+      return {
+
+      }
+    },
+    methods: {
+      appTurnLogin () {
+        window.iosLoginSuccess = function (apiParams) {
+          //登录成功之后
+        }
+        window.webkit.messageHandlers.NativeMethod.postMessage("ios_showLogin");//需要显示登录页面调用此
+      }
+    }
+  }
+</script>
+
+<style scoped lang="stylus">
+  .group{
+    &_banner{
+      img{
+        width: 100%
+      }
+      .my_wrap{
+        display: flex
+        justify-content: space-between
+        color: #333
+        font-size: 0.28rem
+        .my_awards{
+          position: relative
+          .icon{
+            position: absolute
+          }
+        }
+      }
+    }
+    &_main{
+      background: url(/static/images/group/group_main.jpg) no-repeat
+      background-size: 100% 100%
+      padding: 0.1rem
+      .group_content{
+        background: url(/static/images/group/group_content_bac.png) no-repeat
+        background-size: 100% 100%
+        .time{
+          display: flex
+          justify-content: center
+          color: #333
+          .count_down{
+            span{
+              background-color: #f00
+            }
+          }
+        }
+      }
+      .group_rule{
+        position: relative
+        background-color: #fff
+        color: #333
+        font-size: 0.24rem
+        line-height: 1
+        img{
+          position: absolute
+          top: -50%
+          left: 50%
+          transform: translate(-50%, -50%)
+        }
+        .rule_time, .rule_content, .rule_notice{
+          display: flex
+          margin: 0.1rem
+          .right{
+            display: block
+            flex: 1
+            -webkit-box-flex: 1
+            -webkit-flex: 1
+          }
+        }
+        .colour{
+          color: #f00
+        }
+        .bottom{
+          text-align: center
+          padding: 0.1rem
+        }
+      }
+    }
+  }
+</style>

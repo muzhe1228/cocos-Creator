@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/highstock5.0.js"></script>
+	<script src="js/exporting.js"></script>
+	<script src="js/highcharts-zh_CN.js"></script>
+</head>
+<style>
+	.highcharts-axis-resizer {
+		stroke: #eee;
+	}
+	
+	.highcharts-axis-resizer:hover {
+		stroke: #ccc;
+	}</style>
+<body>
+<div id="highcharts-graph" style="min-width:400px;height:400px"></div>
+</body>
+<script src="json.js"></script>
+<script src="feixiaohaoComm.js"></script>
+<script src="./js/feixiaohao.js"></script>
+<script src="./js/testHight.js"></script>
+<script>
+    $(document).ready(function () {
+        console.log(chartDataEth.market_cap_by_available_supply)
+    })
+
+</script>
+</html>

@@ -1,0 +1,56 @@
+@import './assets/variable';
+@import './assets/mixin';
+@import "./assets/base";
+@import "./assets/header-footer";
+@import "./assets/reset";
+@import "assets/pageCmn";
+@import "assets/cptCmn";
+
+.index {
+  padding-bottom: 16px;
+  &_cont {
+    margin-top: 16px;
+    .container {
+      .flex;
+      .justify-content(space-between);
+      .cont_left {
+        width: 850px;
+        .con_cont {
+          background-color: #fff;
+          .con_cont_table {
+            .table_cont {
+              li {
+                &:nth-child(2) {
+                  color: #0d93ff;
+                }
+              }
+            }
+            .table_title, .table_cont {
+              li {
+                width: 10.5%;
+                &:nth-child(1) {
+                  width: 6%;
+                }
+                &:nth-child(2) {
+                  width: 19%;
+                }
+                &:nth-child(4), &:nth-child(7) {
+                  width: 13.5%;
+                }
+                &:nth-child(3) {
+                  width: 12%;
+                }
+                &:nth-child(6) {
+                  width: 15%;
+                }
+              }
+            }
+          }
+        }
+      }
+      .cont_right {
+        padding-top: 70px;
+      }
+    }
+  }
+}

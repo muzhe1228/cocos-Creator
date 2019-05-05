@@ -1,0 +1,72 @@
+@import './assets/variable';
+@import './assets/mixin';
+@import "./assets/base";
+@import "./assets/header-footer";
+@import "./assets/reset";
+@import "assets/pageCmn";
+@import "assets/cptCmn";
+
+.optional {
+  padding-bottom: 16px;
+  &_cont {
+    margin-top: 16px;
+    .container {
+      .flex;
+      .justify-content(space-between);
+      .cont_left {
+        width: 850px;
+        background-color: #fff;
+        .con_cont {
+          &_table {
+            .table_cont {
+              li {
+                &:nth-child(1), &:nth-child(2) {
+                  color: #0d93ff;
+                  .hover-hand;
+                }
+              }
+            }
+            .table_title, .table_cont {
+              li {
+                width: 12%;
+                .flex;
+                .align-items(center);
+                font-size: 14px;
+                &:nth-child(1) {
+                  width: 18%;
+                }
+                &:nth-child(5) {
+                  width: 16%;
+                }
+                &:nth-child(6) {
+                  width: 10%;
+                }
+                &:nth-child(7) {
+                  width: 14%;
+                }
+                &:nth-child(8) {
+                  width: 8%;
+                }
+                .delete {
+                  text-decoration: underline;
+                  .transition(all .2s linear);
+                  .hover-hand;
+                  .extend-click;
+                  &:hover {
+                    color: @main-color;
+                  }
+                }
+              }
+            }
+            .yes-login{
+               display: none;
+            }
+          }
+        }
+      }
+      .cont_right {
+        padding-top: 70px;
+      }
+    }
+  }
+}

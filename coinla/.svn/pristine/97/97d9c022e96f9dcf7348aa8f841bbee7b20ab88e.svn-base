@@ -1,0 +1,136 @@
+<template>
+  <div class="analyses container">
+    <div v-if="loading">
+      <h1 class="analyses-title">{{analysesData.title}}</h1>
+      <p class="analyses-date">{{analysesData.startDate | resetTime}}</p>
+      <p class="analyses-img"><img :src="analysesData.pic" preview="1" alt=""></p>
+      <div class="analyses-content" ref="content" v-html="analysesData.content">
+
+      </div>
+    </div>
+    <van-loading v-else class="analyses-loading" type="spinner" color="#debd63"/>
+  </div>
+</template>
+
+<script>
+  import {getCoinlaSingle} from 'assets/js/httpAll'
+  import {shareWeixin, isIos} from 'assets/js/case'
+
+  export default {
+    name: "analyses",
+    data() {
+      return {
+        analysesData: {},
+        loading: false,
+        testIos: ''
+      }
+    },
+    metaInfo: {
+      title: ''
+    },
+    mounted() {
+      this.getData(this.$route.query.bannerId)
+    },
+    methods: {
+      init(note) {
+        let _this = this
+        getCoinlaSingle('/share/multi', {type: 3}).then((res) => {
+          if (res.data.code === 0) {
+            res.data.data.note = res.data.data.note || note
+            res.data.data.shareUrl = window.location.href
+            shareWeixin(window.location.href, res.data.data)
+            if (isIos()) {
+              window.setData = function (params) {
+                _this.testIos = params
+                return res.data.data
+              }
+            } else {
+              window.setData = function (params) {
+                _this.testIos = params
+                // return res.data.data
+              }
+              window.sendData = function () {
+                window.coinla.getData(JSON.stringify(res.data.data))
+              }
+            }
+          }
+        })
+      },
+      getIos() {
+        // alert('yes')
+        //安卓
+        window.coinla.sendCLBRank('coinlaApp')
+        //ios
+        // window.webkit.messageHandlers.NativeMethod.postMessage("getCLBRank");
+      },
+      getData(bannerId) {
+        getCoinlaSingle('/headline/selectBannerDetail', {bannerId: bannerId}).then((res) => {
+          this.loading = true
+          if (res.data.code === 0) {
+            let _this = this
+            this.analysesData = res.data.data
+            this.init(res.data.data.title)
+            this.$nextTick(function () {
+              if (_this.analysesData.content) {
+                let dom = this.$refs.content
+                $(dom).find('lucky').each(function (index, item) {
+                  $(item).attr('preview', 1)
+                })
+              }
+              _this.$previewRefresh()
+            })
+          }
+        }).catch((err) => {
+          this.loading = true
+        })
+      }
+    }
+  }
+</script>
+
+<style lang="stylus">
+  @import "~assets/stylus/variable"
+  .analyses {
+    &-title {
+      font-size: $font-l
+      font-weight: 700
+      padding-top: .36rem
+      text-align: center
+      line-height: 1.5
+    }
+    &-date {
+      font-size: $font-s
+      color: $size-sColor
+      padding: .12rem 0 .36rem 0
+      text-align: center
+    }
+    &-img {
+      img {
+        max-width: 100%
+        margin-bottom: .32rem
+      }
+    }
+    &-content {
+      p, h1, h2, h3, h4, h5, h6 {
+        line-height: 2
+        padding: .1rem
+      }
+      p {
+        font-size: $font-s
+        color: $size-sColor
+      }
+      img {
+        display: block
+        margin: auto
+        max-width: 100% !important
+        height: auto !important
+        margin-bottom: .4rem !important
+      }
+    }
+    &-loading {
+      color: #debd63;
+      margin: auto
+      margin-top: 20px
+    }
+  }
+</style>

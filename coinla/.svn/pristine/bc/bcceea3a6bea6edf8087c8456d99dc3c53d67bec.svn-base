@@ -1,0 +1,20 @@
+// 颜色定义规范
+@color-main:#000;
+@color-cont:#f6f6f6;
+@main-color:#debd63;
+
+//字体颜色规范
+@size-a:#fff;
+@size-main:#454545;
+@size-smain:#999;
+@size-ssmain:#666;
+
+//border 颜色
+@border-color:#EAEAEA;
+
+//字体定义规范
+@font-x:12px;
+@font-s:14px;
+@font-m:16px;
+@font-l:18px;
+@font-xl:20px;

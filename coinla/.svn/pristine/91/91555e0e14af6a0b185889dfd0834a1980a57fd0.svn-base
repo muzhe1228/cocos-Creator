@@ -1,0 +1,77 @@
+<template>
+  <div>
+    <lottery :beforeLottery="beforeLottery" :lotteryBtn="lotteryBtn" :prizesList="prizesList" :prize="prize" :afterLottery="afterLottery"></lottery>
+  </div>
+</template>
+
+<script>
+  import lottery from './lotteryPage/lotteryPage.vue';
+  export default {
+    data() {
+      return {
+        prize:0,
+        prizesList:[
+          {
+            awardPic:"/static/images/lottery/icon-lottery-prize4.png",
+            awardContent: '奖品1'
+          },
+          {
+            awardPic: "/static/images/lottery/icon-lottery-prize2.png",
+            awardContent: '奖品2'
+          },
+          {
+            awardPic:"/static/images/lottery/icon-lottery-prize1.png",
+            awardContent: '奖品3'
+          },
+          {
+            awardPic:"/static/images/lottery/icon-lottery-prize3.png",
+            awardContent: '奖品4'
+          },
+          {
+            awardPic:  "/static/images/lottery/icon-lottery-prize5.png",
+            awardContent: '奖品5'
+          },
+          {
+            awardPic: "/static/images/lottery/icon-lottery-prize6.png",
+            awardContent: '奖品6'
+          },
+          {
+            awardPic: "/static/images/lottery/icon-lottery-prize7.png",
+            awardContent: '奖品7'
+          },
+          {
+            awardPic: "/static/images/lottery/icon-lottery-prize8.png",
+            awardContent: '奖品8'
+          }
+        ],
+        lotteryBtn:{
+          img : "/static/images/lottery/icon-lottery-btn.png"
+        }
+      }
+    },
+    components:{
+      lottery:lottery
+    },
+    methods:{
+      beforeLottery(resolve,reject){
+        /*send ajax to get result and pass to child component*/
+        // get result : this.prize
+        setTimeout(()=>{
+          this.prize =  Math.floor(Math.random() * Number(9 - 1))//控制抽到哪里
+          resolve();
+        },10)
+      },
+      afterLottery(){
+        alert(this.prizesList[this.prize].awardContent)
+      }
+    }
+  };
+</script>
+
+<style lang="stylus">
+  .row .col-4 {
+    width: 33.33333%;
+    float: left;
+    box-sizing: border-box;
+  }
+</style>

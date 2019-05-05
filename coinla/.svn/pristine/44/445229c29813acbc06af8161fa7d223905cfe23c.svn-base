@@ -1,0 +1,415 @@
+<template>
+  <div class="group_record">
+    <div class="group_record_switch_title">
+      <p class="my_group_title" @click="tabToggle('left')" :class="{active: tab}">我发起的团</p>
+      <p class="other_group_title"  @click="tabToggle('right')" :class="{active: !tab}">好友发起的团</p>
+    </div>
+    <div class="group_record_switch_content">
+      <div class="title_wrap">
+        <p class="member_title">组团团员</p>
+        <p class="group_status">团队状态</p>
+      </div>
+      <div class="group_detail_wrap">
+        <div class="detail_content_wrap" v-show="tab">
+          <div class="detail_content" v-for="(item, index) in myGroup" @click="goMyGroup(item.infoId)">
+            <div class="member">
+              <p>团长</p>
+              <img :class="items.memberType == 0?'captain':''" :src="items.pic" v-for="(items, indexs) in item.memberList" :onerror="errorImg">
+              <!--<img class="captain" src="/static/images/billboard/coinla.png" alt="">-->
+              <div v-show="item.memberNum == 2">
+                <img src="/static/images/billboard/coinla.png" alt="">
+                <img src="/static/images/billboard/coinla.png" alt="">
+              </div>
+              <div v-show="item.memberNum == 3">
+                <img src="/static/images/billboard/coinla.png" alt="">
+              </div>
+              <div v-show="item.memberNum == 1">
+                <img src="/static/images/billboard/coinla.png" alt="">
+                <img src="/static/images/billboard/coinla.png" alt="">
+                <img src="/static/images/billboard/coinla.png" alt="">
+              </div>
+            </div>
+            <div class="status" v-show="item.state==0?true:false">
+              <p class="status_text">组团中</p>
+              <p class="count_down">
+                <span>{{myTime}}</span>
+              </p>
+            </div>
+            <div class="status" v-show="item.state==1&&item.myReceiveState==1?true:false">
+              <p class="status_text">组团成功</p>
+              <div class="award_status">
+                <img src="/static/images/group/openAward.png" alt="" class="award_status_img">
+              </div>
+            </div>
+            <div class="status" v-show="item.state==1&&item.myReceiveState==0?true:false">
+              <p class="status_text">组团成功</p>
+              <div class="award_status">
+                <p class="circle"></p>
+                <img src="/static/images/group/unopenAward.png" alt="" class="award_status_img">
+              </div>
+            </div>
+            <div class="status" v-show="item.state==2?true:false">
+              <p class="status_text">已失效</p>
+            </div>
+          </div>
+        </div>
+        <div class="detail_content_wrap" v-show="!tab">
+          <div class="detail_content" v-for="(item, index) in friendsGroup" @click="goFriendsGroup(item.infoId)">
+            <div class="member">
+              <p>团长</p>
+              <img :class="items.memberType == 1?'captain':''" :src="items.pic" v-for="(items, indexs) in item.memberList" :onerror="errorImg">
+              <!--<img class="captain" src="/static/images/billboard/coinla.png" alt="">-->
+              <div v-show="item.memberNum == 2">
+                <img src="/static/images/billboard/coinla.png" alt="">
+                <img src="/static/images/billboard/coinla.png" alt="">
+              </div>
+              <div v-show="item.memberNum == 3">
+                <img src="/static/images/billboard/coinla.png" alt="">
+              </div>
+              <div v-show="item.memberNum == 1">
+                <img src="/static/images/billboard/coinla.png" alt="">
+                <img src="/static/images/billboard/coinla.png" alt="">
+                <img src="/static/images/billboard/coinla.png" alt="">
+              </div>
+            </div>
+            <div class="status" v-show="item.state==0?true:false">
+              <p class="status_text">组团中</p>
+              <p class="count_down">
+                <span>{{friendTime}}</span>
+              </p>
+            </div>
+            <div class="status" v-show="item.state==1&&item.myReceiveState==1?true:false">
+              <p class="status_text">组团成功</p>
+              <div class="award_status">
+                <img src="/static/images/group/openAward.png" alt="" class="award_status_img">
+              </div>
+            </div>
+            <div class="status" v-show="item.state==1&&item.myReceiveState==0?true:false">
+              <p class="status_text">组团成功</p>
+              <div class="award_status">
+                <p class="circle"></p>
+                <img src="/static/images/group/unopenAward.png" alt="" class="award_status_img">
+              </div>
+            </div>
+            <div class="status" v-show="item.state==2?true:false">
+              <p class="status_text">已失效</p>
+            </div>
+          </div>
+          <!--<div class="detail_content">-->
+            <!--<div class="member">-->
+              <!--<p>团长</p>-->
+              <!--<img class="captain" src="/static/images/billboard/coinla.png" alt="">-->
+              <!--<img src="/static/images/billboard/coinla.png" alt="">-->
+              <!--<img src="/static/images/billboard/coinla.png" alt="">-->
+              <!--<img src="/static/images/billboard/coinla.png" alt="">-->
+            <!--</div>-->
+            <!--<div class="status">-->
+              <!--<p class="status_text">组团成功</p>-->
+              <!--<div class="award_status">-->
+                <!--<img src="/static/images/group/openAward.png" alt="" class="award_status_img">-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<div class="detail_content">-->
+            <!--<div class="member">-->
+              <!--<p>团长</p>-->
+              <!--<img class="captain" src="/static/images/billboard/coinla.png" alt="">-->
+              <!--<img src="/static/images/billboard/coinla.png" alt="">-->
+              <!--<img src="/static/images/billboard/coinla.png" alt="">-->
+              <!--<img src="/static/images/billboard/coinla.png" alt="">-->
+            <!--</div>-->
+            <!--<div class="status">-->
+              <!--<p class="status_text">组团成功</p>-->
+              <!--<div class="award_status">-->
+                <!--<p class="circle"></p>-->
+                <!--<img src="/static/images/group/unopenAward.png" alt="" class="award_status_img">-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<div class="detail_content">-->
+            <!--<div class="member">-->
+              <!--<p>团长</p>-->
+              <!--<img class="captain" src="/static/images/billboard/coinla.png" alt="">-->
+              <!--<img src="/static/images/billboard/coinla.png" alt="">-->
+              <!--<img src="/static/images/billboard/coinla.png" alt="">-->
+              <!--<img src="/static/images/billboard/coinla.png" alt="">-->
+            <!--</div>-->
+            <!--<div class="status">-->
+              <!--<p class="status_text">已失效</p>-->
+            <!--</div>-->
+          <!--</div>-->
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  import {shareWeixin, isIos, openInApp} from 'assets/js/case'
+  import {getCoinlaSingle, getCoinlaToken} from 'assets/js/httpAll'
+  import {countDownTime} from 'assets/js/filters'
+  export default {
+    name: 'groupRecord',
+    metaInfo: {
+      title: '我参与的团'
+    },
+    data () {
+      return {
+        errorImg: "this.onerror=null;this.src='/static/images/billboard/coinla.png'", //默认图片
+        tab: true,
+        myGroup: '',
+        friendsGroup: '',
+        endDate: '', //组团活动结束时间，
+        time: '00 : 00 : 00', //组团结束倒计时,
+        myTime: '00 : 00 : 00', //组团结束倒计时,
+        friendTime: '00 : 00 : 00', //组团结束倒计时,
+      }
+    },
+    mounted () {
+      this.getMygroup(0)
+    },
+    methods: {
+      tabToggle (index) {
+        if(index == 'left'){
+          this.tab = true
+          this.getMygroup(0)
+        }else{
+          this.tab = false
+          this.getMygroup(1)
+        }
+      },
+      //跳转我发起的团详情
+      goMyGroup (infoId) {
+        this.$router.push({name: 'group', params: {
+          infoId: infoId
+        }})
+      },
+      //跳转到好友发起的团详情
+      goFriendsGroup (infoId) {
+        this.$router.push({name: 'group', params: {
+          infoId: infoId,
+          uuid: this.$route.params.uuid
+        }})
+      },
+      //0 代表我发起的团， 1代表好友发起的团
+      getMygroup (params) {
+        alert(JSON.stringify({
+          activityId: 2,
+          uuid: this.$route.params.uuid,
+          memberType: params
+        }))
+        let _this = this
+        getCoinlaSingle('/groupActivity/selectMyGroup', {
+          activityId: 2,
+          uuid: this.$route.params.uuid,
+          memberType: params
+        }).then((res) => {
+          if(res.data.code == 0){
+            if(params == 0){
+              //我发起的团
+              let resData = res.data.data
+              this.myGroup = resData
+              for(let i = 0, len = resData.length; i < len; i++){
+                _this.countDownTimeFunc(resData[i].endDate, params)
+              }
+            }else{
+              //好友发起的团
+              let resData = res.data.data
+              this.friendsGroup = resData
+              for(let i = 0, len = resData.length; i < len; i++){
+                _this.countDownTimeFunc(resData[i].endDate, params)
+              }
+            }
+          }else{
+            this.$toast({message: res.data.message, duration: 1500})
+          }
+        }).catch((err) => {
+          this.$toast({message: '请检查网络', duration: 1500})
+        })
+      },
+      //组团结束倒计时
+      countDownTimeFunc (value, params) {
+        let timeHMS = countDownTime(value, '1')
+        if(params == 0){
+          this.myTime = timeHMS.time
+        }else{
+          this.friendTime = timeHMS.time
+        }
+        let timer = setTimeout(() => {
+          if(timeHMS.date >= 0){
+            this.countDownTimeFunc(value, params)
+          }else{
+            clearTimeout(timer)
+          }
+        }, 1000)
+      }
+    }
+  }
+</script>
+
+<style scoped lang="stylus">
+  .group_record{
+    min-height: 100vh
+    padding: 0.48rem 0.32rem 0.46rem
+    background: url(/static/images/group/group_record_bac.png) no-repeat
+    background-size: 100% 100%
+    overflow: hidden
+    &_switch_title{
+      display: flex
+      width: 5.52rem
+      font-size: 0.28rem
+      margin: 0 auto 0.26rem
+      border-radius: 0.2rem
+      overflow: hidden
+      p{
+        width: 2.76rem
+        height: 0.46rem
+        line-height: 0.46rem
+        text-align: center
+        background-color: #2d6af2
+        color: #fff
+      }
+      .active{
+        background-color: #fff
+        color: #168def
+      }
+    }
+    &_switch_content{
+      width: 100%
+      height: 10.4rem
+      border-radius: 0.2rem
+      overflow: hidden
+      .title_wrap{
+        display: flex
+        height: 0.82rem
+        line-height: 0.82rem
+        background-color: #afedfb
+        p{
+          width: 50%
+          text-align: center
+          color: #0b73b9
+          font-size: 0.28rem
+        }
+      }
+      .group_detail_wrap{
+        overflow: hidden
+        .detail_content_wrap{
+          height: 9.78rem
+          overflow-x: hidden
+          overflow-y: scroll
+          background-color: #e4faff
+          .detail_content{
+            display: flex
+            height: 1.44rem
+            overflow: hidden
+            background-color: #effbfd
+            .member{
+              position: relative
+              width: 50%
+              padding-top: 0.28rem
+              overflow: hidden
+              p{
+                position: absolute
+                left: 0.46rem
+                top: 0.18rem
+                width: 0.62rem
+                height: 0.24rem
+                line-height: 0.24rem
+                text-align: center
+                color: #fff
+                background-color: #f56d6d
+                font-size: 0.18rem
+                border-radius: 3px
+              }
+              img{
+                float: left
+                width: 0.88rem
+                height: 0.88rem
+                margin-left: -0.18rem
+                border: 1px solid #9fdcea
+                border-radius: 50%
+                overflow: hidden
+              }
+              .captain{
+                margin-left: 0.32rem
+              }
+            }
+            .status{
+              position: relative
+              width: 50%
+              padding-left: 8px
+              text-align: center
+              display: flex
+              flex-direction: column
+              justify-content: center
+              align-items: center
+              .status_text{
+                font-size: 0.24rem
+                color: #66777b
+              }
+              .count_down{
+                margin-top: 0.18rem
+                color: #89b3bd
+                font-size: 0.2rem
+              }
+              .award_status{
+                position: absolute
+                right: 0.32rem
+                top: 0.38rem
+                p{
+                  position: absolute
+                  right: 0.08rem
+                  top: -0.04rem
+                  width: 0.16rem
+                  height: 0.16rem
+                  background-color: #f56d6d
+                  border-radius: 50%
+                }
+                img{
+                  width: 0.66rem
+                  height: 0.66rem
+                }
+              }
+            }
+          }
+          .detail_content:nth-child(even){
+            background-color: #e4faff
+          }
+        }
+      }
+    }
+  }
+  .detail_content_wrap::-webkit-scrollbar {
+    width: 8px
+    height: 91px
+  }
+  .detail_content_wrap::-webkit-scrollbar-track {
+  //底层滚动条颜色
+    background: transparent
+    border-radius: 4px
+  }
+  .detail_content_wrap::-webkit-scrollbar-thumb {
+  //滚动条颜色
+    background: #90E6FA
+    border-radius: 4px
+  }
+  .detail_content_wrap::-webkit-scrollbar-resizer {
+    background: #FF0BEE
+  }
+  .detail_content_wrap::scrollbar {
+    width: 8px
+    height: 91px
+  }
+  .detail_content_wrap::scrollbar-track {
+  //底层滚动条颜色
+    background: transparent
+    border-radius: 4px
+  }
+  .detail_content_wrap::scrollbar-thumb {
+    background: #90E6FA
+    border-radius: 4px
+  }
+  .detail_content_wrap::scrollbar-resizer {
+    background: #FF0BEE
+  }
+</style>

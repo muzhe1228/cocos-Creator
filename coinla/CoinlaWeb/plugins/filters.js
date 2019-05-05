@@ -1,0 +1,157 @@
+import Vue from 'vue'
+
+
+//千分符
+function toLowerCase (name) {
+  return name.toLowerCase().replace(' ','-')
+}
+
+//千分符
+function toThousands(num) {
+  var re = /\d{1,3}(?=(\d{3})+$)/g
+  var n1 = (num.toString()).replace(/^(\d+)((\.\d+)?)$/, function (s, s1, s2) {
+    return s1.replace(re, "$&,") + s2;
+  })
+  return n1
+}
+
+//颜色判断
+function IsColor(val){
+  if(parseFloat(val)>0){
+    return 'color-green'
+  }else if(parseFloat(val)===0){
+    return 'color-gray'
+  }else {
+    return 'color-red'
+  }
+}
+
+//浮点数转换成小数
+function toFixeds(num, extent) {
+  return num.toFixed(extent)
+}
+
+//价格符号 百分百符号
+export const numRest = function (price, ccy, Is) {
+  if (parseFloat(price)) {
+    if (ccy === '%' && Is) {
+      return price + ccy
+    } else if (ccy === '%') {
+      price = price > 0 ? '+' + price : price
+      return price + ccy
+    } else if (ccy === 1) {
+      if (Is === ',') {
+        return '$' + toThousands(price)
+      }
+      return '$' + price
+    } else if (!ccy) {
+      if (Is === ',') {
+        return '¥' + toThousands(price)
+      }
+      return '¥' + price
+    }
+  } else if (parseFloat(price) === 0) {
+    if (ccy === '%' && Is) {
+      return price + ccy
+    } else if (ccy === '%') {
+      price = price > 0 ? '+' + price : price
+      return price + ccy
+    } else {
+      return '--'
+    }
+  } else {
+    return '未知'
+  }
+}
+
+//隐藏金额
+export const hidPic = function (price, is) {
+  if (is) {
+    return '***'
+  } else {
+    return price
+  }
+}
+
+//url去掉(https://www.|http://www.|www.)
+function urlRest(url) {
+  if (url) {
+    let pattern = /^https:\/\/|http:\/\//i
+    let pattern1 = /\/$/
+    return url.replace(pattern, "").replace(pattern1, "")
+  } else {
+    return
+  }
+}
+
+//判断价格进行整理
+function priceRest(price, ccy) {
+  price = parseFloat(price)
+  if (ccy) {
+    if (!price) {
+      return '--'
+    } else if (price < 1) {
+      return ccy + parseFloat(price.toFixed(8))
+    } else if (price < 100) {
+      return ccy + parseFloat(price.toFixed(4))
+    } else if (price < 10000) {
+      return ccy + toThousands(parseFloat(price.toFixed(2)))
+    } else if (price < 1000000) {
+      return ccy + toThousands(parseFloat(price).toFixed(2))
+    } else if (price < 100000000) {
+      return ccy + toThousands(parseFloat((price / 10000).toFixed(2))) + "万"
+    } else if (100000000 <= price) {
+      return ccy + toThousands(parseFloat((price / 100000000).toFixed(2))) + "亿"
+    }
+  } else {
+    if (price < 1) {
+      return parseFloat(price.toFixed(8))
+    } else if (price < 100) {
+      return parseFloat(price.toFixed(4))
+    } else if (price < 10000) {
+      return parseFloat(price.toFixed(2))
+    } else if (price < 1000000) {
+      return parseFloat(price).toFixed(2)
+    } else if (price < 100000000) {
+      return parseFloat((price / 10000).toFixed(2)) + "万"
+    } else if (100000000 <= price) {
+      return parseFloat((price / 100000000).toFixed(2)) + "亿"
+    }
+  }
+
+}
+
+//判断价格进行整理
+function split(location) {
+  return location.split(' ')
+}
+
+function resetTime(inputTime, type) {
+  var date = new Date(inputTime);
+  var y = date.getFullYear();
+  var m = date.getMonth() + 1;
+  m = m < 10 ? ('0' + m) : m;
+  var d = date.getDate();
+  d = d < 10 ? ('0' + d) : d;
+  var h = date.getHours();
+  h = h < 10 ? ('0' + h) : h;
+  var minute = date.getMinutes();
+  var second = date.getSeconds();
+  minute = minute < 10 ? ('0' + minute) : minute;
+  second = second < 10 ? ('0' + second) : second;
+  if (type) {
+    return y + '-' + m + '-' + d + ' ' + h + ':' + minute + ':' + second;
+  } else {
+    return y + '-' + m + '-' + d;
+  }
+};
+
+Vue.filter('toLowerCase', toLowerCase)//千分符
+Vue.filter('toThousands', toThousands)//千分符
+Vue.filter('IsColor', IsColor)//颜色判断
+Vue.filter('toFixeds', toFixeds)//保留小数位
+Vue.filter('numRest', numRest)//价格百分百添加符号
+Vue.filter('hidPic', hidPic)//价格百分百添加符号
+Vue.filter('urlRest', urlRest)//把网址切掉https。http。www
+Vue.filter('priceRest', priceRest)//数字格式化
+Vue.filter('resetTime', resetTime)//时间格式化 y-m-d

@@ -1,0 +1,665 @@
+<template>
+  <div class="indexWrap" id="canvasImg">
+    <div class="fixed">
+      <div class="fixed-l">
+        <p class="fixed-logo"><img src="/static/images/download/app.png" alt=""></p>
+        <p class="size">
+          <b>CoinLa&nbsp;&nbsp;考拉行情</b>
+          <span>聚合全球行情&nbsp;&nbsp;挖掘数据价值</span>
+        </p>
+      </div>
+      <a href="javascript:0;" @click="turn" class="fixed-r">
+        下载APP
+      </a>
+    </div>
+    <div class="banner downloadApp">
+      <img src="/static/images/download/top_bg_login.jpg" alt="">
+    </div>
+
+    <div class="logo_wrap">
+      <p class="logo">
+        <img src="/static/images/download/logo.png" alt="">
+      </p>
+    </div>
+    <border-img></border-img>
+    <div class="indexFormWrap">
+      <div class="indexForm">
+        <div class="indexFormTop">
+          <div class="text_img">
+            <img src="/static/images/download/icon_iphone.png" alt="">
+          </div>
+
+            <input type="text" v-model="register.account"
+                  @change="changeInp('account')"
+                  @input="checkEmpty(register.account,'account')" placeholder="输入手机号">
+          </div>
+        <div class="form-gulp1">
+          <div class="text_img">
+            <img src="/static/images/download/icon_code.png" alt="">
+          </div>
+
+            <input type="text" v-model="register.captcha"
+                   @change="changeInp('captcha')"
+                   @input="checkEmpty(register.account,'captcha')" placeholder="输入验证码">
+
+          <button class="captcha"><label
+            for="codeImg"  @click="getImgCode">{{num}}</label></button>
+        </div>
+      </div>
+    </div>
+    <div class="submitBtnWrap">
+      <button @click="registerHandle" :disabled="!registerStatus" class="submitBtn">立即注册考拉行情</button>
+    </div>
+    <div class="rule_detail_text">
+      <div class="rules_title">
+        <span class="left"></span>
+        <span class="center">活动规则</span>
+        <span class="right"></span>
+      </div>
+      <div class="rule_detail">
+        <div class="rule-cont">
+          活动期间，成功邀请1个好友，您可获得100CLB；好友再成功邀请他的好友，您再获得50CLB。
+          <p>举例：A邀请B，B邀请C，B为一级好友，C为二级好友。</p>
+        </div>
+        <h4 class="active_text">活动说明:</h4>
+        <ul class="detail_text">
+          <li>
+            1、<p>
+            <span>好友须在注册时填写邀请码或通过邀请链接进行注册，方能生效；</span></p>
+          </li>
+          <li>2、<span>奖励将于被邀请的好友（或好友的好友）注册并下载APP登录成功后系统自动发放；</span></li>
+          <li>3、<span>对于恶意刷奖的用户，考拉行情有权取消其奖励资格；</span></li>
+          <li>3、<span>考拉行情保留对此活动的解释权，并有权随时对上述细则进行调整；</span></li>
+          <li>4、<p>如需帮助，请联系考拉行情客服。<span>微信号: KAOLAhq123。</span></p></li>
+        </ul>
+        <p class="text">本活动最终解释权在法律允许的范围内归考拉行情所有
+        </p>
+      </div>
+    </div>
+    <!--注册成功-->
+    <div class="fixedMode" v-if="flag">
+      <div class="fixedWrap">
+        <div class="fixedTop">
+          <img class="fixedImg" src="/static/images/download/img_right.png" alt="">
+          <p class="fixedIcon">
+            <img class="iconWrap" src="/static/images/download/icon_circle_xhdpi.png" alt="">
+            <img class="iconInfo" src="/static/images/download/icon_right.png" alt="">
+          </p>
+          <p class="fixedSize">{{resSuccess}}</p>
+        </div>
+        <div class="fixedBot">
+          <p class="fixedBotSize">{{message}}</p>
+          <a href="javascript:0;" class="fixedBotBtn" @click="turn">立即下载</a>
+        </div>
+      </div>
+    </div>
+    <div class="modeShade" v-if="modeShade">
+      <div class="mode">
+        <!--<p class="modeSize">请输入验证</p>-->
+        <p class="code-gulp">
+          <input type="text" id="codeImg" placeholder="请输入计算结果" ref="result" v-model="result">
+          <span style="color: #efc186; top:0.2rem ;left:2rem" >=</span>
+          <label for="codeImg" class="codeImg"><img :src="imgSrc" alt=""></label>
+
+        </p>
+        <button class="verify" @click="sendCode(result)" :disabled="isDisabled">发送验证码</button>
+      </div>
+    </div>
+    <img @click="rou" :src="codeUrl" alt="">
+<!--
+    <p class="yd" v-show="flag"><img src="/static/images/download/yd.png" alt="" style="display: block;"></p>
+-->
+<!--
+    <p class="tishi" v-show="flag">{{tishi}}</p>
+-->
+  </div>
+</template>
+
+<script>
+  import {shareWeixin, shareSize, isIos} from 'assets/js/case'
+  import {validates, validateHandles} from 'assets/js/reg'
+  import {getCoinlaSingle, getCoinla} from 'assets/js/httpAll'
+  import borderImg from 'base/borderImg'
+  export default {
+    data() {
+      return {
+        registerStatus: false,
+        register: {
+          account: '',
+          captcha: '',
+          client: 0,
+          recommendCode: this.$route.query.inviteCode
+        },
+        resSuccess: '注册成功',
+        message: '恭喜获得200CLB<br><br>下载App获得更多CLB',
+        codeUrl: '',
+        num:'获取验证码',
+        isDisabled: false,
+        modeShade: false,
+        imgSrc: '',
+        result: '',
+        flag:false,
+      }
+    },
+    metaInfo: {
+      title: '注册考拉App'
+    },
+    components: {
+      borderImg
+    },
+    mounted() {
+      this.shareWX()
+    },
+    methods: {
+      shareWX () {
+        getCoinlaSingle('/share/multi', {type: 1}).then((res) => {
+          if (res.data.code === 0) {
+            shareWeixin(window.location.href, res.data.data)
+            // shareWeixin(res.data.data.shareUrl, res.data.data)
+          }
+        }).catch((err) => {
+          console.log(err)
+        })
+      },
+      /*点击获取图片验证码*/
+      getImgCode () {
+        if(this.registerStatus){
+          this.modeShade = true
+          this.imgSrc = 'https://api.coinla.com/captcha/verify/code?account='+this.register.account+'&t='+Math.random()
+        }
+      },
+      /*点击发送验证码*/
+      sendCode (code) {
+        let timer = null
+        getCoinlaSingle('/captcha/verify/sms',{account:this.register.account,verifyCode: code, type: 1}).then((res) => {
+          this.$toast({message: '验证码已发送', duration: 1500})
+          this.modeShade = false
+          let _this = this
+          let sed = 60;
+          _this.num = sed + 'S'
+          timer = setInterval(function () {
+            sed = sed - 1
+            _this.num = sed + 'S'
+            if(sed <= 0){
+              _this.num = '获取验证码'
+              clearInterval(timer)
+            }
+          }, 1000)
+
+        }).catch((err) => {
+          this.$toast({message: err.message, duration: 1500})
+        })
+      },
+      /*注册按钮*/
+      registerHandle() {
+        let _this = this
+        getCoinlaSingle('/user/login/registerOrLogin', this.register).then((res) => {
+          console.log(this)
+          if (res.data.code == 0) {
+            _this.flag = true
+          } else if (res.data.code == 520) {
+            _this.flag = true
+            console.log(_this)
+            _this.resSuccess = '登录成功'
+            _this.message = '下载App查看CLB数量'
+          } else {
+            _this.$toast({message: res.data.message, duration: 1500})
+          }
+        }).catch((err) => {
+          _this.$toast({message: err.message, duration: 1500})
+        })
+      },
+      changeInp(type) {
+        if (type == 'account') {
+          if (validateHandles.account(this.register.account)) {
+            this.$toast({message: validateHandles.account(this.register.account), duration: 1500})
+          }
+        } else if (type == 'captcha') {
+          if (validateHandles.captcha(this.register.captcha)) {
+            this.$toast({message: validateHandles.captcha(this.register.captcha), duration: 1500})
+          }
+        }
+      },
+      rou() {
+        this.codeUrl = `https://api.coinla.com/captcha/verify/code?account=${this.register.account}&t=${Math.random()}`
+      },
+      checkEmpty() {
+        this.registerStatus = validates.account(this.register.account.trim()) && validates.captcha(this.register.captcha.trim())
+      },
+      turn () {
+        if (isIos()) {
+          window.location.href = 'https://itunes.apple.com/cn/app/coinla/id1359706851?mt=8'
+        } else {
+          this.is_weixn_qq()
+        }
+      },
+      is_weixn_qq() {
+        let ua = navigator.userAgent.toLowerCase();
+        if (ua.match(/MicroMessenger/i) == "micromessenger") {
+          this.show = true
+        } else {
+          window.location.href = 'https://api.coinla.com/download/android'
+        }
+      }
+    }
+  }
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped lang="stylus">
+  .indexWrap {
+    background: linear-gradient( #f54f51, #f44043)
+    margin-top: 58px;
+    min-height: 100vh;
+    width: 100%;
+    /*overflow: hidden;*/
+    text-align: center;
+    -webkit-touch-callout: default;
+    .yesMode {
+      width: 100%
+      height: 100%
+      background-color: rgba(0, 0, 0, .6)
+      z-index: 9999
+      position: fixed
+      /*display: none*/
+      left: 0
+      top: 0
+      #yesImg {
+        position: absolute
+        top: 50%
+        left: 50%
+        transform: translate(-50%, -50%)
+        width: 40%
+        z-index: 99999
+      }
+    }
+    .jietu {
+      position: fixed
+      width: 200px
+      height: 200px
+      left: -100%
+      top: -100%
+      line-height: 200px
+    }
+    .fixed {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      background-color: rgba(153, 153, 153, .9);
+      height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      z-index: 999;
+      font-size: .24rem;
+      &-l {
+        display: flex;
+        .fixed-logo {
+          margin-right: 8px;
+          width: .68rem;
+          height: .68rem;
+          max-height: 50px;
+          max-width: 50px;
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+        .size {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          b {
+            font-size: .26rem;
+            text-align: left;
+          }
+          span {
+            font-size: .22rem;
+          }
+        }
+      }
+      &-r {
+        font-size: .24rem;
+        padding: 7px 15px 5px 15px;
+        border: 1px solid #debd63;
+        background-color: #debd63;
+        color: #000;
+        border-radius: calc((0.24rem + 14px) / 2);
+      }
+    }
+
+    .banner {
+      img {
+        width: 100%;
+        vertical-align: middle;
+      }
+    }
+
+    .logo_wrap,.indexFormWrap,.submitBtnWrap{
+      background-color: #fff
+      width: 90%
+      margin:0 auto
+    }
+    .logo_wrap{
+      border-radius:0.16rem 0.16rem 0 0
+    }
+    .indexFormWrap{
+      padding:0.58rem 0 0.38rem
+      font-size:0.3rem
+    }
+    .logo {
+      padding: 0.76rem 0 0.62rem;
+      text-align: center;
+      img {
+        width: 60%;
+      }
+    }
+    .indexForm {
+      .indexFormTop, .form-gulp1{
+        width: 5.72rem;
+        margin: auto;
+        display: flex
+        align-items: center
+        margin-bottom: 0.3rem
+        height: 0.82rem;
+        border-radius: 0.12rem;
+        background-color: #fff1da;
+        border: 1px solid #f5f5f5;
+      }
+      .text_img{
+        width:0.78rem
+        img{
+          width:0.48rem
+          height:0.42rem
+        }
+      }
+      input {
+        background-color: #fff1da;
+        width: 100%
+        font-size: 0.3rem
+        flex:1
+        border: none
+      }
+      /* input:focus, input.active{
+           border-color: #debd63;
+           background-color: #fff;
+         }*/
+      .form-gulp1 {
+        position: relative;
+        .captcha {
+          display: block
+          height: 100%
+          width: 2.04rem;
+          line-height: 0.82rem
+          background-color: #f44042;
+          color: #fff;
+          border:none
+          border-radius: 0 0.12rem 0.12rem 0
+        }
+      }
+    }
+    .submitBtnWrap{
+      padding-bottom:0.52rem
+      border-radius: 0 0 0.12rem 0.12rem
+    }
+    .submitBtn {
+      font-size: 0.3rem
+      width: 5.72rem;
+      height: 0.82rem;
+      border-radius: 0.12rem;
+      background-color: #ff4042
+      color: #fff;
+      border:none
+      &:disabled {
+       /* background-color: #ccc;
+        border-color: #ccc;*/
+      }
+    }
+    .tishi {
+      /*display: none;*/
+      font-size: 12px;
+      text-align: center;
+      line-height: 46px;
+      color: #fff;
+      /*display: none;*/
+      min-width: 112px;
+      height: 46px;
+      padding: 0 15px;
+      background-color: rgba(0, 0, 0, .6);
+      position: fixed;
+      z-index: 999999;
+      left: 50%;
+      top: 50%;
+      -webkit-transform: translate(-50%, -50%);
+      -moz-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+      -o-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+      border-radius: 4px;
+    }
+    .rule_detail_text{
+      width:90%
+      margin:0 auto
+      color: #fff
+      .rules_title{
+        font-size:0
+        margin: 0.6rem 0 0.26rem
+        text-align: center
+        span{
+          display: inline-block
+        }
+        .center{
+          width: 26%
+          font-size: 0.32rem
+          vertical-align: middle;
+        }
+        .left,.right{
+          width: 37%;
+          height: 1px
+          background-color: #fff
+        }
+      }
+      .rule-cont{
+        line-height:0.53rem
+        text-align: left
+      }
+      .rule_detail{
+        font-size:0.26rem
+        .active_text{
+          margin:0.22rem 0 0.11rem
+          text-align: left
+          font-szie:0.26rem
+        }
+        .detail_text{
+          text-align: justify
+          line-height: 0.53rem;
+          li{
+            display: flex
+            span{
+              display: block
+              -webkit-box-flex: 1;
+              -webkit-flex: 1;
+              flex: 1;
+            }
+          }
+        }
+        .text{
+          padding:0.49rem 0 0.4rem
+          text-align: center
+        }
+      }
+    }
+
+    .yd {
+      display: none;
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      background-color: rgba(0, 0, 0, .5);
+      left: 0;
+      top: 0;
+      z-index: 9999;
+      img {
+        position: absolute;
+        right: 10px;
+        width: 6.1rem;
+        top: 0;
+      }
+    }
+    .fixedMode {
+      /*display: none;*/
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, .5);
+      .fixedWrap {
+        position: relative;
+        left: 50%;
+        top: 20%;
+        width: 6.3rem;
+        max-width: 346px;
+        background-color: #fff;
+        border-radius: 6px;
+        transform: translateX(-50%);
+        .fixedTop {
+          position: relative;
+          left: 0;
+          top: 0;
+          .fixedImg {
+            width: 100%;
+            border-radius: 6px 6px 0 0;
+          }
+          .fixedIcon {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            width: 1.76rem;
+            max-width: 96px;
+            transform: translate(-50%, -48%);
+            .iconWrap {
+              width: 100%;
+            }
+            .iconInfo {
+              position: absolute;
+              width: 1.12rem;
+              max-width: 60px;
+              left: 50%;
+              top: 48%;
+              transform: translate(-50%, -50%);
+            }
+          }
+          .fixedSize {
+            color: #debd63;
+            width: 100%;
+            font-size: .5rem;
+            text-align: center;
+            position: absolute;
+            bottom: .2rem;
+          }
+        }
+        .fixedBot {
+          position: relative;
+          text-align: center;
+          .fixedBotSize {
+            margin-top: .62rem;
+            font-size: .32rem;
+            color: #333;
+          }
+          .fixedBotBtn {
+            margin: .6rem 0;
+            display: inline-block;
+            width: 75%;
+            height: 40px;
+            background-color: #debd63;
+            border-radius: 20px;
+            color: #fff;
+            font-size: 16px;
+            text-align: center;
+            line-height: 40px;
+          }
+        }
+      }
+    }
+    .modeShade {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100vh;
+      z-index: 999;
+      background-color: rgba(0, 0, 0, .6);
+      text-align: center;
+
+      .mode {
+        padding-bottom: 0.47rem
+        height: 3.24rem
+        width: 90%;
+        max-height: 160px;
+        max-width: 330px;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        background-color: #fff;
+        border-radius: 4px;
+        transform: translate(-50%, -50%);
+
+        .verify {
+          font-size: 0.3rem
+          width:5.72rem;
+          height: 0.82rem;
+          line-height: 0.82rem
+          border: 0
+          background-color: #ff4042;
+          border-radius: 0.12rem;
+          color: #fff;
+          margin-top: 0.61rem;
+          position: relative;
+          &:disabled {
+            background-color: #ccc;
+            border-color: #ccc;
+          }
+        }
+        .code-gulp {
+          width: 5.72rem;
+          height: 32px;
+          position: relative;
+          margin: 0.5rem auto 0
+          input {
+            width: 3.36rem;
+            position: absolute;
+            font-size: 0.3rem
+            background-color: #fff1da
+            text-align: center
+            border:none
+            color: #e5c186
+            border-radius: 0.12rem
+            right: 0;
+            top: 0;
+            height:0.82rem
+            overflow: hidden;
+            /*&:focus {
+              border-color: #debd63;
+              background-color: #fff;
+            }*/
+          }
+          label {
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 1;
+            width: 1.88rem;
+            img {
+              height:0.82rem
+              width: 1.88rem
+              border-radius: 0.12rem;
+            }
+          }
+        }
+      }
+    }
+  }
+</style>

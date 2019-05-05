@@ -1,0 +1,2 @@
+webpackJsonp([15],{bOTS:function(e,t){},px8R:function(e,t,a){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var n={render:function(){var e=this.$createElement;return(this._self._c||e)("div",{staticClass:"group_award"})},staticRenderFns:[]};var r=a("VU/8")({name:"groupAward"},n,!1,function(e){a("bOTS")},"data-v-8fbe6fac",null);t.default=r.exports}});
+//# sourceMappingURL=15.4abcbe074298fc8b96f7.js.map

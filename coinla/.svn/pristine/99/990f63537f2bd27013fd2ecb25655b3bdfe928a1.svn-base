@@ -1,0 +1,86 @@
+<template>
+  <div class="text_scroll">
+    <transition class="inner-container2" name="slide" mode="out-in">
+      <p class="text_scroll_content" :key="text.id">恭喜{{text.val.phone}}获得{{text.val.award}}</p>
+    </transition>
+  </div>
+</template>
+
+<script>
+  const totalDuration = 2000;
+  export default {
+    name: 'textScroll',
+    props: [],
+    data() {
+      return {
+        arr: [],
+        number: 0,
+      }
+    },
+    computed: {
+      text () {
+        return {
+          id: this.number,
+          val: this.arr[this.number]
+        }
+      }
+    },
+    mounted() {
+      this.startMove()
+    },
+    methods: {
+      startMove() {
+        //从接口获取数据
+        let arrData = [
+          {
+            phone: '131XXXX3254', award: '2ETH'
+          },
+          {
+            phone: '131XXXX3254', award: '3ETH'
+          },
+          {
+            phone: '131XXXX3254', award: '4ETH'
+          },
+          {
+            phone: '131XXXX3254', award: '5ETH'
+          }
+        ]
+        this.arr = arrData
+        let timer = setTimeout(() => {
+          /*轮播的个数*/
+          if (this.number === 5) {
+            this.number = 0;
+          } else {
+            this.number += 1;
+          }
+          this.startMove();
+        }, totalDuration)
+      },
+    }
+  }
+</script>
+
+<style lang = "stylus">
+  .text_scroll{
+    height: 0.41rem
+    line-height: 0.41rem
+    overflow: hidden;
+    font-size:0.22rem
+    color: #e7202a
+    &_content{
+      height:0.41rem
+      line-height: 0.41rem
+    }
+    /*文字无缝滚动*/
+    .slide-enter-active, .slide-leave-active {
+      transition: all 0.2s linear;
+    }
+    .slide-leave-to {
+      transform: translateY(-20px);
+    }
+    .slide-enter{
+      transform: translateY(20px);
+    }
+  }
+
+</style>

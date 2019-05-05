@@ -1,0 +1,73 @@
+/*!
+ * fullPage 2.9.7
+ * https://github.com/alvarotrigo/fullPage.js
+ * MIT licensed
+ *
+ * Copyright (C) 2013 alvarotrigo.com - A project by Alvaro Trigo
+ */
+#fp-nav {
+    display: none;
+    position: fixed;
+    z-index: 100;
+    top: 50%;
+    /*opacity: 1;*/
+    /*-webkit-transform: translateY(-50%);*/
+    /*-moz-transform: translateY(-50%);*/
+    /*-ms-transform: translateY(-50%);*/
+    /*-o-transform: translateY(-50%);*/
+    /*transform: translateY(-50%);*/
+}
+
+#fp-nav.right {
+    right: .47rem;
+}
+
+#fp-nav.left {
+    left: .47rem;
+}
+
+#fp-nav ul {
+    margin: 0;
+    padding: 0;
+}
+
+#fp-nav ul li {
+    position: relative;
+    height: 64px;
+}
+#fp-nav ul li:nth-child(1){
+    margin-bottom: .3rem;
+}
+#fp-nav ul li a {
+    display: inline-block;
+    width: 4px;
+    height: 64px;
+    cursor: pointer;
+    text-decoration: none;
+    padding: .15rem;
+}
+
+
+#fp-nav ul li a.active span,
+#fp-nav ul li:hover a.active span {
+    opacity: 1;
+}
+
+#fp-nav ul li a span {
+    position: absolute;
+    z-index: 1;
+    width: 4px;
+    height: 64px;
+    background-color: #fff;
+    opacity: .2;
+    -webkit-transition: all .2s linear;
+    -moz-transition: all .2s linear;
+    -ms-transition: all .2s linear;
+    -o-transition: all .2s linear;
+    transition: all .2s linear;
+}
+
+#fp-nav ul li:hover a span {
+    width: 4px;
+    height: 64px;
+}

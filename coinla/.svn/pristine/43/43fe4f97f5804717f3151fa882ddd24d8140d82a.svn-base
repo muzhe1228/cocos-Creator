@@ -1,0 +1,372 @@
+<template>
+  <div class="top_range">
+    <div class="my_rank">
+      <div class="bacImg">
+        <div class="img"></div>
+      </div>
+      <div class="content_wrap">
+        <div class="content">
+          <p class="my_top">
+            <img :src="imgRank" alt="">
+          </p>
+          <ul v-show="flag" class="rank_list rank_list_bottom">
+            <li class="rank">{{titleNow.rank}}</li>
+            <li class="userName"><div class="user_img"><img :src="titleNow.userHead" alt="" class="userHead" :onerror="errorImg"></div><span>{{titleNow.userName | filterStr}}</span></li>
+            <li class="totalNumber">{{titleNow.totalNumber}}</li>
+          </ul>
+          <ul v-show="!flag"  class="rank_list rank_list_prev">
+            <li class="rank">{{titlePrev.rank}}</li>
+            <li class="userName"><div class="user_img"><img :src="titleNow.userHead" alt="" class="userHead" :onerror="errorImg"></div><span>{{titleNow.userName | filterStr}}</span></li>
+            <li class="awardNumber">{{titlePrev.awardNumber}}</li>
+            <li class="third">{{titlePrev.totalNumber}}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="top_week_wrap">
+      <div class="bacImg">
+        <div class="img"></div>
+      </div>
+      <div class="content_wrap">
+        <div class="content">
+          <div class="rank_title_wrap">
+            <ul class="rank_title">
+              <li @click="toggleTab('left')">
+                <span v-show="!flag">本周TOP10</span>
+                <img  v-show="flag" src="/static/images/billboard/title_week_now.png" alt="">
+              </li>
+              <li @click="toggleTab('right')">
+                <span v-show="flag">上周TOP10</span>
+                <img  v-show="!flag" src="/static/images/billboard/title_week_last.png" alt="">
+              </li>
+            </ul>
+          </div>
+          <div>
+            <div class="rank_detail" v-show="flag">
+              <ul v-for="(item, index) in nowList"  class="rank_list_other">
+                <li class="rank_left"><p :class="index<3?'rank'+index:'rank'">{{index<3?'':index + 1 }}</p></li>
+                <li class="userName"><div class="user_img"><img :src="item.userHead" :onerror="errorImg" class="userHead"></div><span>{{item.userName | filterStr}}</span>
+                </li>
+                <li class="totalNumber">{{item.totalNumber}}</li>
+              </ul>
+              <p class="notice">注：数据实时更新，奖励以每周日23:59:59最终排名为准。</p>
+            </div>
+            <div class="rank_detail" v-show="!flag">
+              <ul class="rank_other_prev" v-for="(item, index) in prevList">
+                <li class="rank_left_prev"><p :class="index<3?'rank'+index:'rank'">{{index<3?'':index + 1 }}</p></li>
+                <li class="userName">
+                  <div class="user_img">
+                    <img :src="item.userHead" :onerror="errorImg" class="userHead">
+                  </div>
+                  <span>{{item.userName | filterStr }}</span>
+                </li>
+                <li class="awardNumber">{{item.awardNumber==0?'待发送':item.awardNumber}}</li>
+                <li class="third">{{item.totalNumber}}</li>
+              </ul>
+              <div class="zzc">
+              </div>
+              <img class="zzc_pic" src="/static/images/billboard/active_over.png" alt="" >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  import {getCoinlaToken} from 'assets/js/httpAll'
+  import {shareWeixin, isIos} from 'assets/js/case'
+
+  export default {
+    name: "topRange",
+    data() {
+      return {
+        flag:true,
+        imgRank:'/static/images/billboard/title_mine.png',
+        andData: '',
+        titlePrev: [],
+        titleNow: [],
+        errorImg: "this.onerror=null;this.src='/static/images/billboard/coinla.png'",
+        nowList: [],
+        prevList: []
+      }
+    },
+    mounted() {
+      this.getIos()
+      this.getNowContent(this.andData)
+      this.getPrevContent(this.andData)
+    },
+    filters: {
+      filterStr: function (value) {
+        if(value&& value.length > 16) {
+          value= value.substring(0, 16)+ '...';
+        }
+        return value;
+      }
+    },
+    methods: {
+      toggleTab (tab) {
+        if (tab == 'right') {
+          this.flag = false
+          this.getPrevContent(this.andData)
+        }else{
+          this.flag = true
+          this.getNowContent(this.andData)
+        }
+      },
+      getIos() {
+        let _this = this
+        if (isIos()) {
+          //ios
+          window.sendCLBRank = function (getJson) {
+            _this.getNowContent(getJson)
+          }
+          //ios
+          window.webkit.messageHandlers.NativeMethod.postMessage("getCLBRank");
+        } else {
+          window.setData = function (getJson) {
+            _this.getNowContent(getJson)
+          }
+          //安卓
+          window.coinla.sendCLBRank('coinlaApp')
+        }
+      },
+      getPrevContent (getHead) {
+        this.andData = getHead
+        getCoinlaToken('/MyCurrency/selectUpWeekRank', {}, getHead).then((res) => {
+          let res1 = res.data.data
+          let len = res1.length
+          this.prevList = res1.slice(0, 10)
+          this.titlePrev = res1[len - 1]
+        }).catch((error) => {
+        })
+      },
+      getNowContent (getHead) {
+        this.andData = getHead
+        getCoinlaToken('/MyCurrency/selectThisWeekRank', {}, getHead).then((res) => {
+          let res1 = res.data.data
+          let len = res1.length
+          this.nowList = res1.slice(0, 10)
+          this.titleNow = res1[len - 1]
+        }).catch((error) => {})
+      }
+    },
+
+  }
+</script>
+
+<style lang="stylus">
+  @import "~assets/stylus/variable"
+  .top_range {
+    .bacImg{
+      width: 6.72rem;
+      max-width: 672px;
+      margin: 0 auto;
+      position: relative
+      z-index:99
+      .img{
+        background: url(/static/images/billboard/img_out.png) no-repeat
+        -webkit-background-size: 100% 100%
+        background-size: 100% 100%;
+        height:0.4rem
+      }
+    }
+    .userName{
+      line-height: 0.48rem
+      float: left
+      overflow: hidden;
+      text-overflow:ellipsis;
+      white-space: nowrap;
+      width:2.4rem
+    }
+    .content_wrap{
+      margin-bottom:0.4rem
+      .content{
+        position: relative
+        width: 6.34rem
+        max-width:634px
+        margin: 0 auto
+        overflow: hidden
+        background-color: #fffdf8
+        border-radius: 0 0 8px 8px
+        -webkit-box-shadow: 0 0 32px rgba(206,131,0,.35)
+        -moz-box-shadow: 0 0 32px rgba(206,131,0,.35)
+        box-shadow: 0 0px 32px rgba(206,131,0,.35)
+        box-shdow: -5px -5px 5px #f00
+        .my_top{
+          width:1.27rem
+          margin:0 0 0.34rem 0.27rem
+          padding-top:0.22rem
+          img{
+            width:100%
+          }
+        }
+      }
+      .rank_list{
+        padding: 0 0.37rem
+        font-size: 0.28rem
+        color: #666
+        overflow: hidden
+      }
+      .rank_list_bottom{
+        padding-bottom:0.34rem
+      }
+      .rank_list_other{
+        padding: 0 0.37rem
+        font-size: 0.28rem
+        color: #666
+        overflow: hidden
+        margin:0 0 0.26rem
+        .rank_left{
+          width:1.06rem
+          float: left
+          .rank{
+            width:0.4rem
+            text-align: center
+          }
+        }
+      }
+      .rank0, .rank1, .rank2{
+        width: 0.4rem
+        height: 0.5rem
+      }
+      .rank0{
+        background:url(/static/images/billboard/1.png) no-repeat
+        background-size:cover
+      }
+      .rank1{
+        background:url(/static/images/billboard/3.png) no-repeat
+        background-size:cover
+      }
+      .rank2{
+        background:url(/static/images/billboard/2.png) no-repeat
+        background-size:cover
+      }
+      .user_img{
+        width:0.48rem
+        height:0.48rem
+        overflow: hidden
+        display: inline-block
+        -webkit-border-radius: 50%
+        -moz-border-radius: 50%
+        border-radius: 50%
+        vertical-align:middle
+        margin-right:0.2rem
+      }
+      .userHead{
+        width:100%
+        height:100%
+      }
+      .rank{
+        width: 1.26rem
+        color: #D98936
+        float: left
+        line-height: 0.48rem
+      }
+      .totalNumber{
+        color: #F3474F
+        float: right
+        line-height: 0.48rem
+      }
+      .rank_list_prev{
+        padding-bottom:0.34rem
+        .rank{
+          width:0.9rem
+        }
+        .user_img{
+          margin-right:0.1rem
+        }
+        .rank_list{
+          padding-left:0
+        }
+      }
+      .rank_other_prev{
+        padding: 0 0.37rem
+        color: #666
+        overflow: hidden
+        margin:0 0 0.26rem
+        font-size:0.26rem
+        .rank_left_prev{
+          width:0.76rem
+          color: #d98936
+          float: left
+          line-height:0.48rem
+          .rank{
+            width:0.4rem
+            text-align: center
+          }
+        }
+        .user_img{
+          margin-right:0
+        }
+      }
+    }
+    .rank_detail{
+      position: relative
+      min-height:6.5rem
+      padding-top:0.26rem
+      padding-bottom: 0.1rem
+      overflow: hidden
+    }
+    .top_week_wrap{
+      .rank_title_wrap{
+        padding:0 0.37rem
+      }
+      .rank_title{
+        display: flex
+        padding: 0.28rem 0 0.18rem
+        font-size:0.32rem
+        border-bottom:1px solid #fee9c8
+        li{
+          width:50%
+          display: flex
+          align-items:center
+          justify-content:center
+          span{
+            color: #f7c064
+          }
+          img{
+            width:2.02rem
+          }
+        }
+      }
+    }
+    .zzc {
+      width: 100%
+      height: 100%
+      position: absolute
+      left: 0
+      top: 0
+      background-color: #fff
+      opacity: 0.4
+      z-index: 100
+    }
+    .zzc_pic{
+      position: absolute
+      right:0.62rem
+      width: 1.86rem
+      height: 1.86rem
+      bottom:0.92rem
+      z-index:101
+    }
+    .notice{
+      color: #f7c064
+      font-size:0.24rem
+      text-align: center
+      padding:0.03rem 0 0.3rem
+    }
+    .awardNumber{
+      float: right
+      width:1.23rem
+      line-height: 0.48rem
+      text-align: right
+      color: #f3474f
+    }
+    .third{
+      text-align: right
+      line-height: 0.48rem
+      float: right
+    }
+  }
+</style>

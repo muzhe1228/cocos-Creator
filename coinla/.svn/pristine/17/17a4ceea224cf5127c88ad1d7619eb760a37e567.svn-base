@@ -1,0 +1,2 @@
+webpackJsonp([18],{px8R:function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var a={render:function(){var e=this.$createElement;return(this._self._c||e)("div",{staticClass:"group_award"})},staticRenderFns:[]};var r=n("VU/8")({name:"groupAward",metaInfo:{title:"我的奖励记录"}},a,!1,function(e){n("sW8u")},"data-v-44c779c8",null);t.default=r.exports},sW8u:function(e,t){}});
+//# sourceMappingURL=18.7762ee85d1cfb918d5fb.js.map

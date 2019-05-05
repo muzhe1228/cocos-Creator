@@ -1,0 +1,92 @@
+@import './assets/variable';
+@import './assets/mixin';
+@import "./assets/base";
+@import "./assets/header-footer";
+@import "./assets/reset";
+@import "assets/pageCmn";
+@import "assets/cptCmn";
+
+.searchInp {
+  position: relative;
+  width: 260px;
+  height: 32px;
+  margin: 50px auto;
+  .searchWrap {
+    position: absolute;
+    width: 260px;
+    height: 32px;
+    left: 0;
+    top: 0;
+    .searchThis {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 260px;
+      height: 32px;
+      background-color: #f0f0f0;
+      border: 1px solid @border-color;
+      .radius(4px);
+      padding: 0 32px 0 8px;
+      &:focus {
+        background-color: #fff;
+      }
+    }
+    .searchIcon {
+      position: absolute;
+      right: 0;
+      top: 0;
+      font-size: 18px;
+      color: black;
+      padding: 7px;
+      cursor: pointer;
+    }
+  }
+  .searchList {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 100%;
+    z-index: 10;
+    background-color: #fff;
+    width: 260px;
+    border: 1px solid @border-color;
+    box-shadow: 0 0 9px rgba(0, 0, 0, .1);
+    border-top: none;
+    height: 300px;
+    overflow: hidden;
+    &.showRes {
+      height: auto;
+      opacity: 1;
+    }
+
+    ul {
+      li {
+        cursor: pointer;
+        font-size: @font-s;
+        padding: 0 14px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        &:hover {
+          background-color: @main-color;
+          color: #fff;
+        }
+        &.title {
+          height: 32px;
+          background-color: #f8f8f8;
+          &:hover {
+            background-color: #f8f8f8;
+            color: @size-main;
+          }
+        }
+        img {
+          margin-right: 8px;
+          width: 16px;
+          height: 16px;
+          border-radius: 8px;
+        }
+      }
+    }
+  }
+}
+

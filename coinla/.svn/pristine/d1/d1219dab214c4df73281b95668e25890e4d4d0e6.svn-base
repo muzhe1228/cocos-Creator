@@ -1,0 +1,206 @@
+<template>
+    <div class="top_range">
+      <van-tabs v-model="active">
+        <van-tab v-for="(content, index1) in title" :title="content" >
+          <p class="my_top">我的排名</p>
+          <template v-if="index1==0">
+            <ul class="top-list_title">
+              <li class="title_now first1">{{titleNow.rank}}</li>
+              <li class="title_now"><img :src="titleNow.userHead" alt="" class="userHead">{{titleNow.userName}}</li>
+              <li class="title_now last1">{{titleNow.totalNumber}}</li>
+            </ul>
+            <div class="top-list_wrap">
+              <ul class="top-list top-list1" v-for="(item, index) in nowList">
+                <li class="top-list_left" :class="'item'+index">{{index + 1 }}</li>
+                <li class="top-list-center"><img :src="item.userHead"  :onerror="errorImg" class="userHead"><span>{{item.userName }}</span></li>
+                <li class="top-list_right">{{item.totalNumber}}</li>
+              </ul>
+              <p>数据实时更新, 奖励以每周日23:59:59最终排名为准</p>
+            </div>
+          </template>
+          <template v-if="index1==1">
+            <ul class="top-list_title">
+              <li class=" first">{{titlePrev.rank}}</li>
+              <li><img :src="titlePrev.userHead" alt="" class="userHead">{{titlePrev.userName}}</li>
+              <li class="center">{{titlePrev.totalNumber}}</li>
+              <li class="last" v-text="titlePrev.awardNumber!=null?titlePrev.awardNumber:'无奖励'"></li>
+            </ul>
+            <div class="top-list_wrap" style="position: relative;">
+              <ul class="top-list" v-for="(item, index) in prevList">
+                <li class="left">{{index + 1}}</li>
+                <li class="second"><img :src="item.userHead"  :onerror="errorImg" class="userHead"><span>{{item.userName }}</span></li>
+                <li class="center">{{item.totalNumber}}</li>
+                <li class="right" v-text="item.awardNumber!=null?item.awardNumber:'无奖励'"></li>
+              </ul>
+              <div class="zzc" style="display: block;"></div>
+            </div>
+          </template>
+        </van-tab>
+      </van-tabs>
+    </div>
+</template>
+
+<script>
+  import {getCoinlaToken} from 'assets/js/httpAll'
+  import {getCoinlaSingle} from 'assets/js/httpAll'
+  import {Tab, Tabs} from 'vant'
+  export default {
+    name: "billboard",
+    components: {
+      [Tab.name]: Tab,
+      [Tabs.name]: Tabs
+    },
+    data () {
+      return {
+        active: 0,
+        title: ['本周', '上周'],
+        titlePrev: [],
+        titleNow: [],
+        errorImg: "this.onerror=null;this.src='../static/img/logo.png'",
+        nowList: [],
+        prevList: []
+      }
+    },
+    methods: {
+      getPrevContent () {
+        let token = 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI5NzEiLCJpYXQiOjE1MzQ0MTkxMTcsInN1YiI6IiIsImlzcyI6IkNvaW5sYUdyb3VwIiwiYXVkIjoiMTc2NzE2MzI0ODYiLCJleHAiOjE1MzU1MzEyMTR9.ibFJVbYUzknf2P3BVJbiEEmLsjjycJrD9kCDkx6tEUs\n'
+        getCoinlaToken('/MyCurrency/selectUpWeekRank', {}, {token: token, loginType: 'all', deviceType: 'ios',
+          deviceID: 'e23be4471474629b3cf33e82d0f0a819b2aa7145998fbe3b8bc4a95577106826',
+          idfa: '35BD24B6-D998-4CC8-90EF-C7863901BAFC', apiVersion: '1.5.7'}).then((res) => {
+          if(res.data.code == 0){
+            console.log(res)
+            let res1 = res.data.data
+            let len = res1.length
+            this.prevList = res1.slice(0, 10)
+            this.titlePrev = res1[len-1]
+          }
+        }, (error) => {})
+      },
+      getNowContent () {
+        let token = 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI5NzEiLCJpYXQiOjE1MzQ0MTkxMTcsInN1YiI6IiIsImlzcyI6IkNvaW5sYUdyb3VwIiwiYXVkIjoiMTc2NzE2MzI0ODYiLCJleHAiOjE1MzU1MzEyMTR9.ibFJVbYUzknf2P3BVJbiEEmLsjjycJrD9kCDkx6tEUs\n'
+        getCoinlaToken('/MyCurrency/selectThisWeekRank', {},
+          {token: token, loginType: 'all', deviceType: 'ios',
+            deviceID: 'e23be4471474629b3cf33e82d0f0a819b2aa7145998fbe3b8bc4a95577106826',
+            idfa: '35BD24B6-D998-4CC8-90EF-C7863901BAFC', apiVersion: '1.5.7'}).then((res) => {
+          if(res.data.code == 0){
+            let res1 = res.data.data
+            let len = res1.length
+            this.nowList = res1.slice(0, 10)
+            this.titleNow = res1[len-1]
+          }
+        }, (error) => {})
+      }
+    },
+    mounted () {
+      this.getPrevContent()
+      this.getNowContent()
+    }
+  }
+</script>
+
+<style lang="stylus">
+  @import "~assets/stylus/variable"
+  .top_range{
+    padding-bottom:0.5rem
+    border-bottom:1px dashed #ddd
+    position: relative
+    .top-list_wrap{
+      overflow: hidden
+      padding:0 0.2rem
+    }
+    .top-list{
+      overflow: hidden
+      li{
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
+        float: left
+        width:20%
+        height:0.7rem
+        line-height:0.7rem
+      }
+
+      .second{
+        width:40%
+        float: left
+      }
+      .center{
+        text-align: center
+      }
+      .right, .top-list_right{
+        text-align: right
+      }
+    }
+    .top-list1{
+      li{
+        width:35%
+      }
+      .top-list_left{
+        width:30%
+      }
+    }
+      .my_top{
+        padding: 0 0.4rem
+        background-color: #EDEFF9
+        border-bottom:1px solid #999
+      }
+      .top-list_title{
+        background-color: #EDEFF9
+        color: #333
+        line-height:2
+        overflow:hidden
+        padding: 0 0.2rem 0 0.4rem
+        li{
+          float: left
+          width:40%
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        .title_now{
+          width:35%
+          overflow: hidden
+          text-overflow: ellipsis
+          white-space: nowrap
+        }
+        .last, .center, .first{
+          width:20%
+        }
+        .first1{
+          width:30%
+        }
+        .center{
+          text-align: center
+        }
+        .last,.last1{
+          text-align: right
+        }
+      }
+
+    .zzc{
+      width: 100%
+      height:100%
+      position: absolute
+      left:0
+      top:0
+      background-color: rgb(238, 238, 238)
+      opacity:0.5
+      z-index: 100
+    }
+    .userHead{
+      width:0.3rem
+      margin-right: 0.1rem
+      vertical-align: middle
+    }
+  }
+  .van-tab{
+    font-size:$font-s
+    font-weight:600
+  }
+  .van-tab--active{
+    color: #F4AE44
+  }
+  .van-tabs__line{
+    background-color: transparent
+  }
+</style>

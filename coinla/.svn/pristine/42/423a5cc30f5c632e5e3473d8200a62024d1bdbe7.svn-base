@@ -1,0 +1,15 @@
+// 颜色定义规范
+$color-main = #000
+$color-cont = #f6f6f6
+
+//字体颜色规范
+$size-a = #fff
+$size-b = #333
+//字体定义规范
+$font-s = 12px
+$font-m = 14px
+$font-m-x = 16px
+$font-l = 18px
+$font-l-x = 22px
+$font-l-l = 24px
+

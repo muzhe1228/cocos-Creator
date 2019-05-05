@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+	<link rel="stylesheet" href="./css/icon/style.css">
+	<link rel="stylesheet/less" href="./css/index.less">
+	<link rel="stylesheet/less" href="./css/bookOne.less">
+	<link rel="icon" type="image/x-icon" href="./favicon.ico">
+	<script src="./js/jquery.min.js"></script>
+	<script src="./js/laydate/laydate.js"></script>
+	<script src="./js/less.min.js"></script>
+	<script src="./js/common.js"></script>
+	<script src="./js/indexTop.js"></script>
+	<script src="./js/footer.js"></script>
+	<script src="./js/index.js"></script>
+	<script src="./js/api.ajax.js"></script>
+</head>
+<body>
+
+<div class="bookOneMode">
+	<div class="bookOneWarp clear-f">
+		<div class="bookOneWarp-cont bookOneWarp-l f-l">
+			<div class="bookOneWarp-cont-title clear-f">
+				<p class="size f-l">记一笔</p>
+				<i class="icon-ken_close f-r bookOneWarpClose"></i>
+			</div>
+			<div class="bookOneWarp-l-form">
+				<div class="form-gulp clear-f">
+					<p class="f-l label-name">时间</p>
+					<p class="f-l form-inp"><input type="text" placeholder="请选择日期" id="test1"></p>
+				</div>
+				<div class="form-gulp clear-f">
+					<p class="f-l label-name">方式</p>
+					<div class="f-l form-radio">
+						<p class="ken-radio"><input type="radio" checked id="radio1" name="radio"/><label
+								for="radio1"></label><span>买入</span></p>
+						<p class="ken-radio"><input type="radio" id="radio2" name="radio"/><label
+								for="radio2"></label><span>卖出</span></p>
+					</div>
+				</div>
+				<div class="form-gulp clear-f">
+					<p class="f-l label-name">币总价</p>
+					<p class="f-l form-inp"><input type="text"></p>
+				</div>
+				<div class="form-gulp clear-f">
+					<p class="f-l label-name">币数量</p>
+					<p class="f-l form-inp"><input type="text"></p>
+				</div>
+				<div class="form-gulp clear-f">
+					<p class="f-l label-name">币单价</p>
+					<p class="f-l form-inp"><input class="disabled-inp" disabled type="text" value="123"></p>
+				</div>
+				<div class="form-gulp clear-f">
+					<p class="f-l label-name">存放场所</p>
+					<div class="f-l form-radio">
+						<p class="ken-radio"><input type="radio" id="radio3" name="storage" checked value="0"/><label
+								for="radio3"></label><span>交易所</span></p>
+						<p class="ken-radio"><input type="radio" id="radio4" name="storage" value="1"/><label
+								for="radio4"></label><span>钱包</span></p>
+					</div>
+				</div>
+				<div class="form-gulp clear-f">
+					<p class="f-l label-name"></p>
+					<p class="f-l form-inp"><input type="text" id="location"></p>
+				</div>
+			</div>
+			<div class="bookOneWarp-cont-btn clear-f">
+				<button class="f-l">确定</button>
+				<button class="f-r">取消</button>
+			</div>
+		</div>
+		<div class="bookOneWarp-cont bookOneWarp-r f-l">
+			<div class="bookOneWarp-cont-title clear-f">
+				<p class="size f-l">选择交易所</p>
+				<i class="icon-ken_close f-r bookOneWarpClose"></i>
+			</div>
+			<div class="bookOneWarp-r-info">
+				<div class="searchExchange">
+					<input type="text" id="searchExchange" placeholder="请输入交易所名称">
+					<button>添加钱包</button>
+				</div>
+				<p class="info-intro">交易所搜索</p>
+				<div class="bookOneWarp-r-scroll">
+					<div class="bookOneWarp-r-scroll-list">
+					
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+<script>
+    $(document).ready(function () {
+        laydate.render({
+            elem: '#test1' //指定元素
+            , max: 0
+        });
+        $('input[name = storage]').change(function () {
+			console.log($(this).val(),'change')
+        })
+        $('#location').focus(function () {
+            var storage = $('input[name = storage]:checked').val(), _this = $(this)
+            if (storage == 0) {
+                console.log(storage)
+                getCoinlaSingle({url: '/exchange/findExchangeList', data: {pageSize: 50}}, function (res) {
+                    console.log(res)
+                    if (res.code == 0) {
+                        // $('.bookOneWarp-r-scroll-list')
+                        var exchangeStr = ''
+                        res.data.items.forEach(function (item) {
+                            exchangeStr += '<p>' + item.exchangeName + '</p>'
+                        })
+                        $('.bookOneWarp-r-scroll-list').html(exchangeStr)
+                        $('.bookOneWarp-r-scroll-list p').click(function () {
+                            _this.val($(this).text())
+                            $('.bookOneWarp-r').fadeOut()
+                        })
+                    }
+                })
+            } else {
+                getCoinlaSingle({url: '/exchange/findExchangeList', data: {pageSize: 50}}, function (res) {
+                    console.log(res)
+                    if (res.code == 0) {
+                        // $('.bookOneWarp-r-scroll-list')
+                        var exchangeStr = ''
+                        res.data.items.forEach(function (item) {
+                            exchangeStr += '<p>' + item.exchangeName + '</p>'
+                        })
+                        $('.bookOneWarp-r-scroll-list').html(exchangeStr)
+                        $('.bookOneWarp-r-scroll-list p').click(function () {
+                            debugger
+                            _this.val($(this).text())
+                        })
+                    }
+                })
+            }
+            $('.bookOneWarp-r').fadeIn()
+        })
+        $('#searchExchange').on('input propertychange', function () {
+            if ($(this).val().trim()) {
+                getCoinlaSingle({
+                    url: '/search/exchangeSearch', data: {
+                        searchName: $(this).val(),
+                        rows: 100
+                    }
+                }, function (res) {
+                    console.log(res)
+                    if (res.code == 0) {
+                        // $('.bookOneWarp-r-scroll-list')
+                        var exchangeStr = ''
+                        res.data.items.forEach(function (item) {
+                            exchangeStr += '<p>' + item.exchangeName + '</p>'
+                        })
+                        $('.bookOneWarp-r-scroll-list').html(exchangeStr)
+                        $('.bookOneWarp-r-scroll-list p').click(function () {
+                            $('#location').val($(this).text())
+                            $('.bookOneWarp-r').fadeOut()
+                        })
+                    }
+                })
+            }
+        })
+    })
+</script>
+</html>

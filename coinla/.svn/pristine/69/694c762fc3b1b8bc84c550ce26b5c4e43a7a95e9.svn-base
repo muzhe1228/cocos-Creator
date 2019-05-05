@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style type="text/css">
+    #d1{
+      height:200px;
+      border: 1px solid #000;
+      width: 200px;
+      overflow-y: hidden;
+      position: relative;
+      margin: auto;
+      padding: 10px;
+    }
+    #d3{
+      position: relative;
+      top:0px;
+      padding-right:8px;
+    }
+    .out{
+      width: 8px;
+      height:100%;
+      position: absolute;
+      top:0px;
+      right:0px;
+      background-color: #ddd;
+      border-radius: 8px;
+
+    }
+    .in{
+      width: 4px;
+      border-radius: 8px;
+      background: blue;
+      position: absolute;
+      top:6px;
+      right:2px;
+    }
+    #d4{
+      height: 0px;
+    }
+  </style>
+</head>
+<body>
+<div>以下是滚动条测试</div>
+<div id ="d1">
+  <div id = 'd3'>
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.55
+  </div>
+  <div class="out">
+    <div class="in"></div>
+  </div>
+</div>
+<img src="https://bleimages.oss-cn-hangzhou.aliyuncs.com/images/1521709470217.jpg" onerror="this.src='./static/images/errCcy.png'" alt="">
+<script type="text/javascript">
+  var a = 0;
+  var b = 0;
+  var out = document.querySelector('.out')//滚动条外面的容器
+  var parent = out.parentNode;//滚动条外面的容器的父元素
+  var child = parent.children[0];//包裹超出内容长度的容器
+  height2 = getComputedStyle(child).height.slice(0,-2);
+  var height1 = parseFloat(getComputedStyle(parent).height.slice(0,-2)); //外面的容器高度
+  //var height2 = getComputedStyle(child).height.slice(0,-2);//里面的过长的被隐藏的容器的高度
+  var height =  height2-height1;//里面的容器和外面的容器的高度差，也就是里面容器的top值的改变
+  var scroll = document.querySelector('.in');//滚动条
+  scroll.style.height = height1*0.2 + 'px';//设置滚动条的高度
+  var sheight = getComputedStyle(scroll).height.slice(0,-2);//获得滚动条的高度
+  var speed = sheight/8;
+  var x = (height*speed)/(height1-sheight);//获得里面被隐藏的容器的top改变速度，外面的改变速度是6px
+  var c = true;
+  //判断滚动条存在不存在
+  // if(height1 > height2){
+  //  scope.scrollShow = false;
+  // }else{
+  //  scope.scrollShow = true;
+  // }
+  // 取消默认滚动事件
+  // 恢复默认滚动事件
+  parent.onmouseleave = function(){
+    c = true;
+  }
+  parent.onmousemove = function(){
+    c = false;
+  }
+  var cancelChorme = function(){
+    parent.addEventListener('mousewheel',function(e){
+      document.addEventListener('mousewheel', function(event){
+        if(c == false){
+          event.preventDefault();
+        }
+      }, false);
+    })
+  }
+  cancelChorme();
+
+  var cancelFox = function(){
+    parent.addEventListener('DOMMouseScroll',function(e){
+      document.addEventListener('DOMMouseScroll', function(event){
+        if(c == false){
+          event.preventDefault();
+        }
+      }, false);
+    })
+  }
+  cancelFox();
+  //chorme、IE的滚动条
+  parent.addEventListener('mousewheel',function(event){
+    if(event.wheelDelta > 0){//向上滚动
+      if(a > 6 && b <= height){
+        a -= speed;
+        b -= x;
+      }else{
+        a = 6;
+        b = -4;
+        c = true;
+      }
+    }else{
+      if(a <= height1-sheight && b < height){//向下滚动
+        a += speed;
+        b += x;
+      }else{
+        a = height1-sheight
+        b = height
+        c = true;
+      }
+    }
+    scroll.style.top = a+'px';
+    child.style.top = -b+'px';
+  })
+  //利用mousedown mousemove mouseup使滚动条能够拖拽
+  scroll.addEventListener("mousedown",function(){
+    console.log("mousedown事件")
+  })
+  parent.addEventListener('DOMMouseScroll',function(event){//火狐
+    console.log(event.detail);
+    if(event.detail > 0){//向下滚动
+      if(a <= height1-sheight && b < height){
+        a += 6;
+        b += x;
+      }else{
+        a = height1-sheight
+        b = height
+      }
+    }else{//向下滚动
+      if(a > 6 && b <= height){
+        a -= 6;
+        b -= x;
+      }else{
+        a = 6;
+        b = -4;
+      }
+    }
+    scroll.style.top = a+'px';
+    child.style.top = -b+'px';
+  })
+</script>
+</body>
+</html>

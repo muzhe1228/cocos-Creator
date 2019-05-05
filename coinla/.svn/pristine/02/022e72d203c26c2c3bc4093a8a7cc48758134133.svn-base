@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<meta name="apple-mobile-web-app-capable" content="yes"/><!-- 删除苹果默认的工具栏和菜单栏 -->
+	<meta name="apple-mobile-web-app-status-bar-style" content="black"/><!-- 设置苹果工具栏颜色 -->
+	<meta name="format-detection" content="telephone=no, email=no"/><!--忽略页面中的数字识别为电话，忽略email识别 -->
+	<!-- 针对手持设备优化，主要是针对一些老的不识别viewport的浏览器，比如黑莓 -->
+	<meta name="HandheldFriendly" content="true">
+	<meta name="viewport"
+		  content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+	<!-- 分享显示的标题-->
+	<meta itemprop="name" content="CLB九月首发前10交易所之一"/>
+	<!-- 分享显示的缩略图-->
+	<meta itemprop="image" content="https://image.coinla.com/share_logo.png"/>
+	<!-- 分享显示的简介-->
+	<meta name="description" itemprop="description" content="感谢30万用户的支持 考拉行情专业行情数据分析,挖掘倾情回馈用户.注册邀请即得200CLB"/>
+	<title>CLB九月首发前10交易所之一</title>
+	<script src="./resize.js"></script>
+	<link rel="icon" type="image/x-icon" href="/favicon.ico">
+	<link rel="stylesheet" href="reset.css">
+</head>
+<body>
+<div class="indexWrap">
+	<div class="fixed">
+		<div class="fixed-l">
+			<p class="fixed-logo"><img src="./app.png" alt=""></p>
+			<p class="size">
+				<b>CoinLa&nbsp;&nbsp;考拉行情</b>
+				<span>聚合全球行情&nbsp;&nbsp;挖掘数据价值</span>
+			</p>
+		</div>
+		<a href="" class="fixed-r">
+			下载APP
+		</a>
+	</div>
+	<div class="banner downloadApp">
+		<img src="./banner01.jpg" alt="">
+	</div>
+	<p class="logo">
+		<img src="./logo.png" alt="">
+	</p>
+	<div class="indexForm">
+		<p><input type="text" id="mobile" placeholder="输入手机号"></p>
+		<p class="form-gulp1"><input type="text" id="code" placeholder="输入验证码">
+			<button class="captcha"><label
+					for="codeImg">获取验证码</label></button>
+		</p>
+	</div>
+	<button class="submitBtn">立即注册考拉行情</button>
+	
+	
+	<ul class="botSize">
+		<li>活动说明：</li>
+		<li>1.&nbsp;在考拉行情APP的推荐有币页面，点击立即邀请好友，即可分享您的邀请链接给好友。</li>
+		<li>2.&nbsp;若新用户通过您的邀请码或邀请链接注册成功并下载登录（此新用户称为P1），每邀请一个P1，您可获得100 CLB，无邀请上限。</li>
+		<li>3.&nbsp;若新用户通过P1的邀请码或邀请链接注册成功并下载登录（此新用户称为P2），每邀请一个P2，您可获得50 CLB，无邀请上限。</li>
+		<li>4.&nbsp;推荐有币的活动，仅限手机号注册用户参与。一个设备号仅限注册两个考拉行情账号。被邀请好友注册安装后即可获得奖励。</li>
+		<li>5.&nbsp;其他未尽事宜请联系客服微信：KAOLAhq123</li>
+		<li>6.&nbsp;考拉行情保留对此活动的解释权,并有权随时对上述细则进行调整。</li>
+	</ul>
+</div>
+<!--<div class="indexWrapMode">-->
+<!--<div class="banner">-->
+<!--<img src="./banner02.jpg" alt="">-->
+<!--</div>-->
+<!--<p class="qrCode"><img src="" alt=""></p>-->
+<!--<a class="download" href="">下载考拉行情APP</a>-->
+<!--<p class="hint">点击右上角，用浏览器打开下载考拉行情客户端</p>-->
+<!--</div>-->
+<div class="fixedMode">
+	<div class="fixedWrap">
+		<div class="fixedTop">
+			<img class="fixedImg" src="./img_right.png" alt="">
+			<p class="fixedIcon">
+				<img class="iconWrap" src="./icon_circle_xhdpi.png" alt="">
+				<img class="iconInfo" src="./icon_right.png" alt="">
+			</p>
+			<p class="fixedSize">注册成功</p>
+		</div>
+		<div class="fixedBot">
+			<p class="fixedBotSize">恭喜获得200CLB<br><br>下载App获得更多CLB</p>
+			<a href="" class="fixedBotBtn">立即下载</a>
+		</div>
+	</div>
+</div>
+<div class="modeShade">
+	<div class="mode">
+		<!--<p class="modeSize">请输入验证</p>-->
+		<p class="code-gulp"><input type="text" id="codeImg" placeholder="请输入计算结果">
+			<label for="codeImg" class="codeImg"><img src="" alt=""></label>
+		
+		</p>
+		<button class="verify" disabled>发送验证码</button>
+	</div>
+</div>
+<p class="yd"><img src="./yd.png" alt=""></p>
+<p class="tishi"></p>
+</body>
+<script typet="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script src="./jquery.min.js"></script>
+<script src="./api.ajax.js"></script>
+<script>
+    function getUrlKey(name) {
+        return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.href) || [, ""])[1].replace(/\+/g, '%20')) || null;
+    }
+
+    window.onload = function () {
+        $('.mode').click(function () {
+            return false
+        })
+        $('.yd,.modeShade').click(function () {
+            $(this).fadeOut(300)
+        })
+        shareWeixin()
+        isIos()
+        var setTimer = null, phoneReg = /^[1][3,4,5-9][0-9]\d{8}$/;
+        $('.captcha').click(function () {
+            var _this = $(this);
+            if (phoneReg.test($('#mobile').val())) {
+                $('#codeImg').val('').focus()
+                $('.codeImg').find("img").attr('src', GET_URL + '/captcha/verify/code?account=' + $('#mobile').val() + '&t=' + Math.random())
+                $('.codeImg').click(function () {
+                    $(this).find("img").attr('src', GET_URL + '/captcha/verify/code?account=' + $('#mobile').val() + '&t=' + Math.random())
+                })
+                $('.modeShade').fadeIn(300)
+                $('#codeImg').on('input propertychange', function () {
+                    if ($(this).val().trim()) {
+                        $('.verify').attr('disabled', false)
+                    } else {
+                        $('.verify').attr('disabled', true)
+                    }
+                })
+                $('.verify').click(function () {
+                    sendCode(_this, $('#codeImg').val())
+                })
+            } else {
+                tishiMode('手机号码格式错误')
+            }
+
+        })
+        $('.submitBtn').click(function () {
+            if (!$('#mobile').val().trim()) {
+                tishiMode('请输入手机号!')
+            } else if (!phoneReg.test($('#mobile').val())) {
+                tishiMode('请输入正确的手机号')
+            } else if (!$('#mobile').val().trim()) {
+                tishiMode('请输入验证码')
+            } else {
+                getCoinlaSingle({
+                    url: '/user/login/registerOrLogin',
+                    data: {
+                        account: $('#mobile').val(),
+                        captcha: $('#code').val(),
+                        client: 0,
+                        recommendCode: getUrlKey('inviteCode')
+                    }
+                }, function (res) {
+                    if (res.code == 0) {
+                        tishiMode('注册成功...')
+                        $('.fixedSize').html('注册成功')
+                        $('.fixedBotSize').html('恭喜获得200CLB<br><br>下载App获得更多CLB')
+                        $('.fixedMode').fadeIn(500)
+
+                    } else if (res.code == 520) {
+                        $('.fixedSize').html('登陆成功')
+                        $('.fixedBotSize').html('下载App查看CLB数量')
+                        $('.fixedMode').fadeIn(500)
+                    } else {
+                        tishiMode(res.message)
+                    }
+                })
+            }
+        })
+
+        function sendCode(_this, code) {
+            var num = 60, timer = null;
+            getCoinlaSingle({
+                url: "/captcha/verify/sms",
+                data: {account: $('#mobile').val(), verifyCode: code, type: 1}
+            }, function (res) {
+                if (res.code == 0) {
+                    $('#code').focus()
+                    $('.modeShade').fadeOut(300)
+                    tishiMode('验证码已发送')
+                    _this.attr('disabled', true)
+                    _this.find('label').text(num + 's')
+                    timer = setInterval(function () {
+                        --num
+                        _this.find('label').text(num + 's')
+                        if (num < 0) {
+                            _this.attr('disabled', false)
+                            _this.find('label').text('获取验证码')
+                            clearInterval(timer)
+                        }
+                    }, 1000)
+                } else {
+                    tishiMode(res.message)
+                }
+            })
+        }
+
+        function isIos() {
+            var u = navigator.userAgent, app = navigator.appVersion;
+            var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //g
+            var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+            if (isAndroid) {
+                //这个是安卓操作系统
+                is_weixn_qq()
+            } else if (isIOS) {
+                //这个是ios操作系统
+                $('.fixed-r,.fixedBotBtn').attr('href', 'https://itunes.apple.com/cn/app/coinla/id1359706851?mt=8')
+            }
+        }
+
+        function tishiMode(text) {
+            clearTimeout(setTimer)
+            $('.tishi').text(text).show(300)
+            setTimer = setTimeout(function () {
+                $('.tishi').text('').hide(200)
+            }, 1500)
+        }
+
+        function is_weixn_qq() {
+            var ua = navigator.userAgent.toLowerCase();
+            if (ua.match(/MicroMessenger/i) == "micromessenger" || ua.match(/QQ/i) == "qq") {
+                $('.fixed-r,.fixedBotBtn').attr('href', 'javascript:0;').click(function () {
+                    $('.fixedMode').fadeOut()
+                    $('.yd').fadeIn()
+                })
+            } else {
+                $('.fixed-r,.fixedBotBtn').attr('href', 'https://api.coinla.com/download/android')
+            }
+            return false;
+        }
+
+        function shareWeixin() {
+            // console.log('share', shareData)
+            //alert(window.location.href);/***用于获得当前连接url用**/
+            /***用户点击分享到微信圈后加载接口接口*******/
+            $.post('https://api.coinla.com/wechatParam', {url: window.location.href}, function (data) {
+                data = JSON.parse(data)
+                // console.log(data)
+                wx.config({
+                    // debug: true,
+                    appId: data.appid,
+                    timestamp: data.timestamp,
+                    nonceStr: data.nonceStr,
+                    signature: data.signature,
+                    jsApiList: [
+                        'checkJsApi',
+                        "onMenuShareTimeline",
+                        "onMenuShareAppMessage",
+                        "onMenuShareQQ",
+                        "onMenuShareWeibo",
+                        "onMenuShareQZone"
+                    ]
+                });
+                var linkUrl = data.url;
+                var shareTitle = 'CLB九月首发前10交易所之一';
+                var shareImg = 'https://image.coinla.com/share_logo.png';
+                var shareContent = '感谢30万用户鼎力支持.考拉行情倾情回馈用户.注册及邀请即挖矿.';
+                wx.ready(function () {
+                    wx.onMenuShareTimeline({
+                        title: shareTitle, // 分享标题
+                        desc: shareContent, // 分享描述
+                        link: linkUrl, // 分享链接
+                        imgUrl: shareImg, // 分享图标
+                        success: function (e) {
+                            // 用户确认分享后执行的回调函数
+                            tishiMode('分享成功')
+                        },
+                        cancel: function () {
+                            // 用户取消分享后执行的回调函数
+                        }
+                    });
+                    wx.onMenuShareAppMessage({
+                        title: shareTitle, // 分享标题
+                        desc: shareContent, // 分享描述
+                        link: linkUrl, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                        imgUrl: shareImg, // 分享图标
+                        success: function () {
+                            // 用户确认分享后执行的回调函数
+                            tishiMode('分享成功')
+                        },
+                        cancel: function () {
+                            // 用户取消分享后执行的回调函数
+                        }
+                    });
+                    //获取“分享到QQ”按钮点击状态及自定义分享内容接口
+                    wx.onMenuShareQQ({
+                        title: shareTitle, // 分享标题
+                        desc: shareContent, // 分享描述
+                        link: linkUrl, // 分享链接
+                        imgUrl: shareImg, // 分享图标
+                        success: function () {
+                            // 用户确认分享后执行的回调函数
+                            tishiMode('分享成功')
+                        },
+                        cancel: function () {
+                            // 用户取消分享后执行的回调函数
+                        }
+                    });
+                    //获取“分享到腾讯微博”按钮点击状态及自定义分享内容接口
+                    wx.onMenuShareWeibo({
+                        title: shareTitle, // 分享标题
+                        desc: shareContent, // 分享描述
+                        link: linkUrl, // 分享链接
+                        imgUrl: shareImg, // 分享图标
+                        success: function () {
+                            // 用户确认分享后执行的回调函数
+                            tishiMode('分享成功')
+                        },
+                        cancel: function () {
+                            // 用户取消分享后执行的回调函数
+                        }
+                    });
+                    //获取“分享到QQ空间”按钮点击状态及自定义分享内容接口
+                    wx.onMenuShareQZone({
+                        title: shareTitle, // 分享标题
+                        desc: shareContent, // 分享描述
+                        link: linkUrl, // 分享链接
+                        imgUrl: shareImg, // 分享图标
+                        success: function () {
+                            // 用户确认分享后执行的回调函数
+                            tishiMode('分享成功')
+                        },
+                        cancel: function () {
+                            // 用户取消分享后执行的回调函数
+                        }
+                    });
+                })
+            })
+        }
+    }
+</script>
+</html>

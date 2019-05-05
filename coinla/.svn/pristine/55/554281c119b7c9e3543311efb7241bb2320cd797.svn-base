@@ -1,0 +1,41 @@
+<template>
+  <div class="test">
+    <van-button @click="clickHandle" type="primary">获取数据</van-button>
+    <h1>{{testData}}</h1>
+    <h2>{{callData}}</h2>
+  </div>
+</template>
+
+<script>
+  export default {
+    data() {
+      return {
+        testData: '',
+        callData: ''
+      }
+    },
+    mounted() {
+      this.callHandle()
+    },
+    methods: {
+      clickHandle() {
+        this.testData = '点击成功'
+        window.webkit.messageHandlers.NativeMethod.postMessage("getWeChatUserData");
+      },
+      callHandle() {
+        let _this = this
+        window.sendWeChatUserData = function (json) {
+          _this.callData = json
+        }
+      }
+    },
+
+  }
+</script>
+
+<style scoped>
+  .test {
+    padding: 50px;
+    text-align: center;
+  }
+</style>

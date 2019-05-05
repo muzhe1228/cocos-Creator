@@ -1,0 +1,32 @@
+<template>
+  <div class="group">
+
+  </div>
+</template>
+
+<script>
+  import {shareWeixin, isIos} from 'assets/js/case'
+  export default {
+    name: 'group',
+    data () {
+      return {
+
+      }
+    },
+    methods: {
+      appTurnLogin () {
+
+        window.iosLoginSuccess = function (apiParams) {
+          //登录成功之后
+        }
+        window.webkit.messageHandlers.NativeMethod.postMessage("ios_showLogin");//需要显示登录页面调用此
+      }
+    }
+  }
+</script>
+
+<style scoped lang="stylus">
+  .group{
+
+  }
+</style>

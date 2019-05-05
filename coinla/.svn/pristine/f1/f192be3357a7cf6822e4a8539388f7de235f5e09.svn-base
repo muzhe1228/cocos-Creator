@@ -1,0 +1,20 @@
+<template>
+  <div class="group_award">
+
+  </div>
+</template>
+
+<script>
+  export default {
+    name: 'groupAward',
+    metaInfo:{
+      title: '我的奖励记录'
+    },
+  }
+</script>
+
+<style scoped lang="stylus">
+  .group_award{
+
+  }
+</style>

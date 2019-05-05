@@ -1,0 +1,144 @@
+<template>
+  <div class="shareApp container">
+    <p class="banner">
+      <img src="/static/images/share/banner.jpg" alt="">
+    </p>
+    <div class="code">
+      <div class="code-top">
+        <p class="code-top-title"><img src="/static/images/share/title_01.png" alt=""></p>
+        <p class="code-top-size">每邀请一位即可获得&nbsp;<b>100CLB</b>&nbsp;奖励</p>
+      </div>
+      <border-img></border-img>
+      <div class="code-cont">
+        <div v-clipboard="code"
+             @success="onCopy"
+             @error="onError"
+             class="code-cont-info">
+          <img class="code-cont-info-bg" src="/static/images/share/img_bg_num.png" alt="">
+          <div class="code-cont-info-text">
+            <div class="text-wrap">
+              <p>你的专属邀请码</p>
+              <p>{{code}}</p>
+            </div>
+          </div>
+        </div>
+        <p class="code_text">点击复制成功</p>
+      </div>
+      <border-img></border-img>
+      <div class="code_share_text">
+          立即邀请好友
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  import borderImg from 'base/borderImg'
+
+  export default {
+    data() {
+      return {
+        code: 'TxVe'
+      }
+    },
+    methods: {
+      onCopy: function (e) {
+        this.$toast({message: '复制成功', duration: 1500})
+      },
+      onError: function (e) {
+        this.$toast({message: '该浏览器不支持复制！', duration: 1500})
+      }
+    },
+    components: {
+      borderImg
+    }
+  }
+</script>
+
+<style scoped lang="stylus">
+  @import "~assets/stylus/variable"
+  .shareApp {
+    background: linear-gradient(#f7585d, #f8605d)
+    min-height: 100vh
+    padding: 0
+    .banner {
+      img {
+        width: 100%;
+      }
+    }
+    .code {
+      width: 100%
+      height: 400px
+      &-top {
+        margin: auto
+        height: 1.66rem
+        width: 90%
+        background-color: #fff
+        border-radius: .16rem .16rem 0 0
+        &-title {
+          padding: .4rem 0 0 .5rem
+          img {
+            width: 4.54rem
+          }
+        }
+        &-size {
+          padding: .1rem 0 0 .53rem
+          font-size: .3rem
+          color: $size-sColor
+          b {
+            color: #e56262
+          }
+        }
+      }
+      &-cont {
+        margin: auto
+        width: 90%
+        background-color: #fff
+        padding-top: .36rem
+        &-info {
+          width: 5.72rem
+          margin: auto
+          position: relative
+          &-bg {
+            width: 100%
+          }
+          &-text {
+            width: 100%
+            height: 100%
+            position: absolute
+            left: 0
+            top: 0
+            display: flex
+            align-items: center
+            .text-wrap {
+              width: 100%
+              p {
+                width: 100%
+                text-align: center
+                color: #de8523
+                line-height: 1.5
+                font-size: .3rem
+                &:nth-child(2) {
+                  font-size: .6rem
+                }
+              }
+            }
+          }
+        }
+        .code_text{
+          padding: 0.26rem 0
+          text-align: center
+          font-size:0.28rem
+          color: #666
+        }
+        .code_share_text{
+          width: 90%
+          margin: 0 auto
+          color: #fff
+          text-align: center
+          font-size: 0.3rem
+        }
+      }
+    }
+  }
+</style>

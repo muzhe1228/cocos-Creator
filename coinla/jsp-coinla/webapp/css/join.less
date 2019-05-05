@@ -1,0 +1,85 @@
+@import './assets/variable';
+@import './assets/mixin';
+@import "./assets/base";
+@import "./assets/header-footer";
+@import "./assets/reset";
+//通用部;分
+
+.join {
+  background-color: @size-a;
+  min-width: 1040px;
+  .banner-join {
+    width: 100%;
+    min-width: 1040px;
+  }
+  .join-cont {
+    padding: 48px 0;
+    .join-slider {
+      margin-top: 40px;
+    }
+    .lin-size {
+      margin-bottom: 48px;
+    }
+    .join-title {
+      .flex;
+      .align-items(center);
+      .join-num {
+        width: 48px;
+        height: 44px;
+        background-color: #debd63;
+        font-weight: bold;
+        color: #fff;
+        font-size: 28px;
+        text-align: center;
+        line-height: 44px;
+      }
+    }
+
+    &.join-slider {
+      margin-left: 2px;
+      .flex;
+      .flex-column;
+      .justify-content(space-between);
+      p {
+        &:nth-child(1) {
+          font-size: 20px;
+          color: #debd63;
+          font-weight: bold;
+        }
+
+        &:nth-child(2) {
+          font-size: @font-m;
+          color: #666;
+          padding: 0 10px;
+        }
+      }
+    }
+  }
+
+  .join-size {
+    margin-top: 26px;
+    section {
+      .flex;
+      font-size: @font-m;
+      line-height: 36px;
+      color: #666;
+      &:nth-child(2) {
+        margin-top: 34px;
+      }
+      p {
+        color: @color-main;
+        font-weight: bold;
+        width: 100px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1400px) {
+  .join {
+    min-width: 1040px;
+    .join-cont {
+      padding: 48px 15px;
+    }
+  }
+}

@@ -1,0 +1,192 @@
+<template>
+  <div class="ruleToast">
+    <div class="active_rule" @click="rule"><p>活动规则</p></div>
+    <div class="shadow_wrap"  v-show="ruleData" @click="hide">
+      <div class="wrap">
+        <div class="rule_wrap">
+          <div class="rule">
+            <div class="rule_text_wrap">1、<p><span style="font-weight:600">活动时间：</span>2018年8月16日-8月31日；</p></div>
+            <div class="rule_text_wrap">2、
+              <div class="rule_text">
+                <p style="font-weight: 600;">活动内容：</p>
+                <p>活动期间，用户可通过以下方式参与抽奖，每人每天最多10次抽奖机会，抽奖机会仅限当天使用，100%中奖。</p>
+                <p>1）免费抽奖：每人每天有1次免费抽奖机会；</p>
+                <p>2）好友助力：每邀请1个好友助力，可增加1次抽奖机会，1个好友只能为同一个用户助力1次。每天最多9次抽奖机会。</p>
+              </div>
+            </div>
+            <div class="rule_text_wrap">3、
+              <div class="rule_text">
+                <p style="font-weight: 600;">活动说明：</p>
+                <p>1）<span>当天获得的抽奖机会请在当天使用，每天24点系统将会自动清零；</span></p>
+                <p>2）<span>抽奖所得CLB系统自动发放，可在【我的】-【我的CLB】查看；ETH、EOS、CZR将于活动结束后5个工作日内由工作人员联系并发放，请保持手机畅通（若因用户手机停机、多次联系不上等情况，则视为自动放弃奖品）</span></p>
+                <p>3）<span class="text_color">获得ETH、EOS、CZR的用户，请务必在活动结束前，前往活动页面登记钱包地址，否则视为自动放弃奖品；</span></p>
+                <p>4）<span>因违规操作或通过不正当手段参与活动者，考拉行情有权在不事先通知的情况下取消其得奖资格；</span></p>
+                <p>5）<span>如需帮助，请联系考拉行情客服。<em class="text_color">微信号：KAOLAhq123</em></span></p>
+              </div>
+            </div>
+          </div>
+          <p class="last_text">本活动最终解释权在法律允许的范围内归考拉行情所有</p>
+        </div>
+        <div class="icon_delete_btn" @click="rule">
+          <img src="/static/images/turntable/icon_del.png" alt="">
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  export default {
+    name: "rule-toast",
+    data () {
+      return {
+        ruleData: false
+      }
+    },
+    methods: {
+      rule () {
+        this.ruleData = !this.ruleData
+      },
+      hide () {
+        let el1 = event.currentTarget;
+        let el2 = event.target;
+        if(el1 == el2){
+          this.ruleData = false
+        }
+      }
+    }
+  }
+</script>
+
+<style lang="stylus">
+  .ruleToast{
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    ::-webkit-scrollbar-button {
+      background-color: #FF7677;
+      display: none;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(180,121,19,.25);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #b47513;
+    //滚动条颜色
+     border-radius: 4px;
+    }
+    ::-webkit-scrollbar-corner {
+      background: #82AFFF;
+      display: none;
+    }
+    ::-webkit-scrollbar-resizer {
+      background: #FF0BEE;
+    }
+    ::scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::scrollbar-button {
+      background-color: #FF7677;
+      display: none;
+    }
+    ::scrollbar-track {
+      background: rgba(255, 255, 255, 0.7);
+    }
+    ::scrollbar-thumb {
+      background: #aaa;
+      border-radius: 4px;
+    }
+    ::scrollbar-corner {
+       background: #82AFFF;
+       display: none;
+     }
+    ::scrollbar-resizer {
+      background: #FF0BEE;
+    }
+    em{
+      font-style: normal
+    }
+    .active_rule{
+      width: 0.6rem
+      border-radius:0.1rem
+      position: absolute
+      right: 0
+      background: rgba(255,255,255,0.3)
+      color: #fff
+      font-size:0.3rem
+      top:3.46rem
+      p{
+        width: 0.3rem
+        padding: 0.18rem 0
+        margin: 0 auto
+      }
+    }
+    .wrap{
+      width: 6.82rem
+      position: absolute
+      z-index:1000
+      top: 50%
+      left: 50%
+      transform: translate(-50%,-50%)
+      z-index；10000
+      .rule_wrap {
+        border-radius: 12px
+        background-color: #f8f4db
+        color: #b47913
+        font-size: 12px
+        overflow: hidden
+        padding: 0.4rem 0.32rem 0.32rem 0.4rem
+        .rule {
+          width: 100%
+          height: 8.68rem
+          padding-right: 0.32rem
+          overflow-x:hidden
+          overflow-y:scroll
+          line-height: 0.44rem
+          text-align: justify
+          .rule_text_wrap{
+            display: flex
+          }
+          .rule_text{
+            p{
+              display: flex
+              span {
+                display: block
+                -webkit-box-flex: 1;
+                -webkit-flex: 1;
+                flex: 1;
+              }
+            }
+            .text_color {
+              color: #ff4400
+            }
+          }
+        }
+      }
+    }
+    .last_text{
+      text-align: center
+      color: rgba(180,121,19,.7)
+      margin-top:14px
+    }
+  }
+  .shadow_wrap {
+    position: fixed
+    width: 100%
+    height: 100%
+    z-index: 999
+    left: 0
+    top: 0
+    background: rgba(0, 0, 0, .6)
+  }
+  .icon_delete_btn {
+    text-align: center
+    margin-top: 12px
+    img {
+      width: 50px
+    }
+  }
+</style>

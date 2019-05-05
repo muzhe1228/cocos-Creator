@@ -1,0 +1,499 @@
+<template>
+  <div class="indexWrap" id="canvasImg">
+    <div class="fixed">
+      <div class="fixed-l">
+        <p class="fixed-logo"><img src="~assets/images/download/app.png" alt=""></p>
+        <p class="size">
+          <b>CoinLa&nbsp;&nbsp;考拉行情</b>
+          <span>聚合全球行情&nbsp;&nbsp;挖掘数据价值</span>
+        </p>
+      </div>
+      <a href="" class="fixed-r">
+        下载APP
+      </a>
+    </div>
+    <div class="banner downloadApp">
+      <img src="~assets/images/download/banner01.jpg" alt="">
+    </div>
+    <p class="logo">
+      <img src="~assets/images/download/logo.png" alt="">
+    </p>
+    <div class="indexForm">
+      <p><input type="text" v-model="register.account"
+                @change="changeInp('account')"
+                @input="checkEmpty(register.account,'account')" placeholder="输入手机号"></p>
+      <p class="form-gulp1"><input type="text" v-model="register.captcha"
+                                   @change="changeInp('captcha')"
+                                   @input="checkEmpty(register.account,'captcha')" placeholder="输入验证码">
+        <button class="captcha"><label
+          for="codeImg">获取验证码</label></button>
+      </p>
+    </div>
+    <button @click="registerHandle" :disabled="!registerStatus" class="submitBtn">立即注册考拉行情</button>
+    <ul class="botSize">
+      <li>活动说明：</li>
+      <li>1.&nbsp;在考拉行情APP的推荐有币页面，点击立即邀请好友，即可分享您的邀请链接给好友。</li>
+      <li>2.&nbsp;若新用户通过您的邀请码或邀请链接注册成功并下载登录（此新用户称为P1），每邀请一个P1，您可获得100 CLB，无邀请上限。</li>
+      <li>3.&nbsp;若新用户通过P1的邀请码或邀请链接注册成功并下载登录（此新用户称为P2），每邀请一个P2，您可获得50 CLB，无邀请上限。</li>
+      <li>4.&nbsp;推荐有币的活动，仅限手机号注册用户参与。一个设备号仅限注册两个考拉行情账号。被邀请好友注册安装后即可获得奖励。</li>
+      <li>5.&nbsp;其他未尽事宜请联系客服微信：KAOLAhq123</li>
+      <li>6.&nbsp;考拉行情保留对此活动的解释权,并有权随时对上述细则进行调整。</li>
+    </ul>
+    <div class="fixedMode">
+      <div class="fixedWrap">
+        <div class="fixedTop">
+          <img class="fixedImg" src="~assets/images/download/img_right.png" alt="">
+          <p class="fixedIcon">
+            <img class="iconWrap" src="~assets/images/download/icon_circle_xhdpi.png" alt="">
+            <img class="iconInfo" src="~assets/images/download/icon_right.png" alt="">
+          </p>
+          <p class="fixedSize">注册成功</p>
+        </div>
+        <div class="fixedBot">
+          <p class="fixedBotSize">恭喜获得200CLB<br><br>下载App获得更多CLB</p>
+          <a href="" class="fixedBotBtn">立即下载</a>
+        </div>
+      </div>
+    </div>
+    <div class="modeShade">
+      <div class="mode">
+        <!--<p class="modeSize">请输入验证</p>-->
+        <p class="code-gulp"><input type="text" id="codeImg" placeholder="请输入计算结果">
+          <label for="codeImg" class="codeImg"><img src="" alt=""></label>
+
+        </p>
+        <button class="verify" disabled>发送验证码</button>
+      </div>
+    </div>
+    <img @click="rou" :src="codeUrl" alt="">
+    <p class="yd"><img src="~assets/images/download/yd.png" alt=""></p>
+    <p class="tishi"></p>
+    <div class="yesMode" v-show="">
+      <img id="yesImg" src="" alt="">
+      <p>长按发送给好友</p>
+    </div>
+    <div v-show="" ref="downloadApp" class="jietu">
+      <h1>我是截图</h1>
+    </div>
+  </div>
+</template>
+
+<script>
+  import {validates, validateHandles} from 'assets/js/reg'
+  import {getCoinlaSingle} from 'assets/js/httpAll'
+  import html2canvas from 'html2canvas';
+
+  export default {
+    data() {
+      return {
+        registerStatus: false,
+        register: {
+          account: '',
+          captcha: '',
+          client: 0,
+          recommendCode: this.$route.query.inviteCode
+        },
+        codeUrl: ''
+      }
+    },
+    created() {
+      this.$nextTick(() => {
+        console.log($(".hello"))
+        html2canvas(this.$refs.downloadApp).then(function (canvas) {
+          var image = document.getElementById("yesImg");
+          image.src = canvas.toDataURL("image/png");
+        });
+      })
+    },
+    mounted() {
+      console.log(this.register)
+      // this.$nextTick(function () {
+      //   this.canvasHandle()
+      // })
+    },
+    methods: {
+      canvasHandle() {
+        html2canvas(document.body).then(function (canvas) {
+          document.body.appendChild(canvas);
+        });
+      },
+      registerHandle() {
+        getCoinlaSingle('/user/login/registerOrLogin', this.register).then((res) => {
+          if (res.data.code === 0) {
+          } else {
+            this.$toast({message: res.data.message, duration: 1500})
+          }
+          this.codeUrl = `https://api.coinla.com/captcha/verify/code?account=${this.register.account}`
+        }).catch((err) => {
+          this.$toast({message: err.message, duration: 1500})
+        })
+      },
+      changeInp(type) {
+        if (type == 'account') {
+          if (validateHandles.account(this.register.account)) {
+            this.$toast({message: validateHandles.account(this.register.account), duration: 1500})
+          }
+        } else if (type == 'captcha') {
+          if (validateHandles.captcha(this.register.captcha)) {
+            this.$toast({message: validateHandles.captcha(this.register.captcha), duration: 1500})
+          }
+        }
+      },
+      rou() {
+        this.codeUrl = `https://api.coinla.com/captcha/verify/code?account=${this.register.account}&t=${Math.random()}`
+      },
+      checkEmpty() {
+        this.registerStatus = validates.account(this.register.account.trim()) && validates.captcha(this.register.captcha.trim())
+      }
+    }
+  }
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped lang="stylus">
+  .indexWrap {
+    margin-top: 58px;
+    min-height: 100vh;
+    width: 100%;
+    /*overflow: hidden;*/
+    text-align: center;
+    -webkit-touch-callout: default;
+    .yesMode {
+      width: 100%
+      height: 100%
+      background-color: rgba(0, 0, 0, .6)
+      z-index: 9999
+      position: fixed
+      /*display: none*/
+      left: 0
+      top: 0
+      #yesImg {
+        position: absolute
+        top: 50%
+        left: 50%
+        transform: translate(-50%, -50%)
+        width: 40%
+        z-index: 99999
+      }
+    }
+    .jietu {
+      position: fixed
+      width: 200px
+      height: 200px
+      left: -100%
+      top: -100%
+      line-height: 200px
+    }
+    .fixed {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      background-color: rgba(153, 153, 153, .9);
+      height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      z-index: 999;
+      font-size: .24rem;
+      &-l {
+        display: flex;
+        .fixed-logo {
+          margin-right: 8px;
+          width: .68rem;
+          height: .68rem;
+          max-height: 50px;
+          max-width: 50px;
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+        .size {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          b {
+            font-size: .26rem;
+            text-align: left;
+          }
+          span {
+            font-size: .22rem;
+          }
+        }
+      }
+      &-r {
+        font-size: .24rem;
+        padding: 7px 15px 5px 15px;
+        border: 1px solid #debd63;
+        background-color: #debd63;
+        color: #000;
+        border-radius: calc((0.24rem + 14px) / 2);
+      }
+    }
+
+    .banner {
+      img {
+        width: 100%;
+        vertical-align: middle;
+      }
+    }
+    .logo {
+      padding: .76rem 0;
+      text-align: center;
+      img {
+        width: 60%;
+      }
+    }
+    .indexForm {
+      p {
+        width: 80%;
+        margin: auto;
+      }
+      input {
+        width: 100%;
+        height: 40px;
+        border-radius: 20px;
+        background-color: #f5f5f5;
+        border: 1px solid #f5f5f5;
+        padding: 0 16px;
+        margin-bottom: 16px;
+        &:focus, &.active {
+          border-color: #debd63;
+          background-color: #fff;
+        }
+      }
+      .form-gulp1 {
+        position: relative;
+        .captcha {
+          position: absolute;
+          right: 3px;
+          top: 3px;
+          display: inline-block;
+          width: 100px;
+          height: 34px;
+          border-radius: 17px;
+          background-color: #debd63;
+          line-height: 34px;
+          color: #fff;
+          border: 1px solid #debd63;
+        }
+      }
+    }
+    .submitBtn {
+      width: 80%;
+      height: 40px;
+      border-radius: 20px;
+      background-color: #debd63;
+      border: 1px solid #debd63;
+      margin-top: .52rem;
+      color: #fff;
+      &:disabled {
+        background-color: #ccc;
+        border-color: #ccc;
+      }
+    }
+    .tishi {
+      display: none;
+      font-size: 12px;
+      text-align: center;
+      line-height: 46px;
+      color: #fff;
+      /*display: none;*/
+      min-width: 112px;
+      height: 46px;
+      padding: 0 15px;
+      background-color: rgba(0, 0, 0, .6);
+      position: fixed;
+      z-index: 999999;
+      left: 50%;
+      top: 50%;
+      -webkit-transform: translate(-50%, -50%);
+      -moz-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+      -o-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+      border-radius: 4px;
+    }
+    .botSize {
+      text-align: left;
+      line-height: 2;
+      color: #debd63;
+      width: 100%;
+      margin: .64rem auto 1rem auto;
+      padding: .16rem 10%;
+      background-color: rgba(222, 189, 99, .06);
+      li {
+        font-size: 12px;
+        margin: 10px 0;
+        &:first-child {
+          font-size: 14px;
+          text-align: center;
+        }
+      }
+    }
+    .yd {
+      display: none;
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      background-color: rgba(0, 0, 0, .5);
+      left: 0;
+      top: 0;
+      z-index: 9999;
+      img {
+        position: absolute;
+        right: 10px;
+        width: 6.1rem;
+        top: 0;
+      }
+    }
+    .fixedMode {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, .5);
+      .fixedWrap {
+        position: relative;
+        left: 50%;
+        top: 20%;
+        width: 6.3rem;
+        max-width: 346px;
+        background-color: #fff;
+        border-radius: 6px;
+        transform: translateX(-50%);
+        .fixedTop {
+          position: relative;
+          left: 0;
+          top: 0;
+          .fixedImg {
+            width: 100%;
+            border-radius: 6px 6px 0 0;
+          }
+          .fixedIcon {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            width: 1.76rem;
+            max-width: 96px;
+            transform: translate(-50%, -48%);
+            .iconWrap {
+              width: 100%;
+            }
+            .iconInfo {
+              position: absolute;
+              width: 1.12rem;
+              max-width: 60px;
+              left: 50%;
+              top: 48%;
+              transform: translate(-50%, -50%);
+            }
+          }
+          .fixedSize {
+            color: #debd63;
+            width: 100%;
+            font-size: .5rem;
+            text-align: center;
+            position: absolute;
+            bottom: .2rem;
+          }
+        }
+        .fixedBot {
+          position: relative;
+          text-align: center;
+          .fixedBotSize {
+            margin-top: .62rem;
+            font-size: .32rem;
+            color: #333;
+          }
+          .fixedBotBtn {
+            margin: .6rem 0;
+            display: inline-block;
+            width: 75%;
+            height: 40px;
+            background-color: #debd63;
+            border-radius: 20px;
+            color: #fff;
+            font-size: 16px;
+            text-align: center;
+            line-height: 40px;
+          }
+        }
+      }
+    }
+    .modeShade {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100vh;
+      z-index: 999;
+      background-color: rgba(0, 0, 0, .3);
+      text-align: center;
+      display: none;
+      .mode {
+        padding: .5rem;
+        width: 6rem;
+        height: 2.8rem;
+        max-height: 160px;
+        max-width: 330px;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        background-color: #fff;
+        border-radius: 4px;
+        transform: translate(-50%, -50%);
+        .verify {
+          width: 90%;
+          height: 32px;
+          background-color: #debd63;
+          border: 1px solid #debd63;
+          border-radius: 16px;
+          color: #fff;
+          margin-top: 22px;
+          position: relative;
+          &:disabled {
+            background-color: #ccc;
+            border-color: #ccc;
+          }
+        }
+        .code-gulp {
+          width: 90%;
+          height: 32px;
+          position: relative;
+          left: 5%;
+          input {
+            width: 100%;
+            height: 100%;
+            padding: 0 80px 0 8px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            border-radius: 16px;
+            border: 1px solid #dedede;
+            overflow: hidden;
+            &:focus {
+              border-color: #debd63;
+              background-color: #fff;
+            }
+          }
+          label {
+            position: absolute;
+            right: 0;
+            top: 0;
+            z-index: 1;
+            width: 80px;
+            height: 32px;
+            img {
+              border-radius: 0 16px 16px 0;
+            }
+          }
+        }
+      }
+    }
+  }
+</style>

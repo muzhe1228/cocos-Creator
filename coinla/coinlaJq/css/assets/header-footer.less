@@ -1,0 +1,526 @@
+header {
+  background-color: @color-main;
+  .v-head, .hover-hand {
+    &__menu {
+      flex: 1;
+      .flex;
+      border-bottom: 0;
+      .align-items(center);
+      .justify-content(space-between);
+      .kenMenu {
+        font-size: 14px;
+        .flex;
+        color: #fff;
+        font-weight: 500;
+        .item {
+          color: #fff;
+          padding: 0 13px;
+          cursor: pointer;
+          &:hover {
+            color: @main-color;
+          }
+        }
+        a {
+          &.nuxt-link-exact-active, &.active {
+            color: @main-color;
+          }
+        }
+        .kenSubMenu {
+          position: relative;
+          p {
+            padding-right: 8px;
+            position: relative;
+            .transition(all .2s linear .2s);
+            span {
+              .transition(all .2s linear);
+              position: absolute;
+              display: inline-block;
+              width: 0;
+              height: 0;
+              border: 2.3px solid transparent;
+              border-right-color: #fff;
+              border-bottom-color: #fff;
+              right: 0;
+            }
+          }
+          &:hover, &.active {
+            p {
+              color: @main-color;
+              span {
+                border-right-color: @main-color;
+                border-bottom-color: @main-color;
+              }
+            }
+          }
+          .subMenuInfo {
+            color: #fff;
+            height: 0;
+            overflow: hidden;
+            position: absolute;
+            width: 110px;
+            left: 0;
+            background-color: #000;
+            z-index: 9999;
+            .transition(all .2s linear .2s);
+            a {
+              color: #fff;
+              display: block;
+              padding-left: 13px;
+              &.nuxt-link-exact-active {
+                color: @main-color;
+              }
+              &:hover {
+                color: #000;
+                background-color: @main-color;
+              }
+            }
+          }
+        }
+      }
+
+      .login {
+        color: #fff;
+        font-size: @font-s;
+        span {
+          display: inline-block;
+          padding: 0 10px;
+          cursor: pointer;
+        }
+      }
+      .onLine {
+        .flex;
+        .justify-content(space-between);
+        .align-items(center);
+        max-width: 200px;
+        .userMsg {
+          display: flex;
+          align-items: center;
+          color: #fff;
+          font-size: @font-x;
+          span {
+            outline: none;
+          }
+          img {
+            margin-right: 10px;
+            width: 24px;
+            height: 24px;
+            border-radius: 12px;
+            background-color: @main-color;
+            font-size: 12px;
+          }
+        }
+        .userKen {
+          .flex;
+          .align-items(center);
+          &-Img {
+            position: relative;
+            height: 24px;
+            img {
+              width: 24px;
+              height: 24px;
+              border-radius: 12px;
+            }
+            span {
+              position: absolute;
+              min-width: 16px;
+              height: 12px;
+              background-color: #e50011;
+              border-radius: 7px;
+              color: #fff;
+              right: 0;
+              text-align: center;
+              font-size: 12px;
+              padding: 0 2px;
+            }
+          }
+          p {
+            margin-left: 8px;
+            color: #fff;
+            font-size: @font-s;
+          }
+        }
+      }
+    }
+  }
+
+  .v-head {
+    font-weight: 500;
+    height: 72px;
+    .flex;
+    .align-items(center);
+    .logo {
+      img {
+        width: 433px;
+      }
+      margin-right: 150px;
+    }
+    &__menu {
+      .kenMenu {
+        .item {
+          height: 72px;
+          line-height: 72px;
+        }
+        .kenSubMenu {
+          p {
+            span {
+              top: 38px;
+            }
+          }
+          .subMenuInfo {
+            top: 73px;
+            line-height: 36px;
+          }
+          &:hover {
+            .subMenuInfo {
+              height: 144px;
+            }
+          }
+        }
+      }
+      .login {
+        span {
+          height: 40px;
+          line-height: 40px;
+        }
+      }
+      .onLine {
+        .userKen-Img {
+          span {
+            top: -7px;
+          }
+        }
+      }
+    }
+  }
+
+  .hover-hand {
+    font-weight: 500;
+    background-color: #000;
+    height: 37px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    width: 100%;
+    border-bottom: 1px solid #000;
+    .transform(translateY(-41px));
+    .transition(all .2s linear);
+    &.hover-hand-fixed {
+      .transform(translateY(0));
+    }
+    &-wrap {
+      width: 1190px;
+      .flex;
+      .align-items(center);
+      margin: 0 auto;
+    }
+    &-logo {
+      width: 583px;
+    }
+    &__menu {
+      .kenMenu {
+        .item {
+          height: 36px;
+          line-height: 36px;
+        }
+        .kenSubMenu {
+          p {
+            span {
+              top: 21px;
+            }
+          }
+          .subMenuInfo {
+            top: 38px;
+            line-height: 36px;
+          }
+          &:hover {
+            .subMenuInfo {
+              height: 144px;
+            }
+          }
+        }
+      }
+      .login {
+        span {
+          height: 36px;
+          line-height: 36px;
+        }
+      }
+      .onLine {
+        .userKen-Img {
+          span {
+            top: -2px;
+          }
+        }
+      }
+    }
+  }
+}
+
+footer {
+  padding: 40px 20px 0;
+  background-color: @color-main;
+  .cont {
+    .flex;
+    .justify-content(space-between);
+    ul {
+      .flex;
+      li {
+        .flex;
+        .flex-column;
+        &:nth-child(1) {
+          margin-right: 80px;
+        }
+
+        p {
+          font-size: @font-m;
+          color: @size-a;
+          margin-bottom: 19px;
+        }
+
+        a {
+          line-height: 28px;
+          font-size: @font-s;
+          color: #b5b5b5;
+          transition: .4s;
+          &:hover {
+            color: @size-a;
+          }
+        }
+      }
+
+    }
+
+    .guanZhu {
+      text-align: center;
+      cursor: pointer;
+      img {
+        width: 130px;
+        height: 130px;
+      }
+
+      p {
+        font-size: @font-s;
+        color: @size-a;
+        padding: 14px 0 32px 0;
+      }
+    }
+  }
+  .Copyright {
+    font-size: @font-s;
+    color: #999;
+    text-align: center;
+    padding: 40px 0;
+    a {
+      cursor: pointer;
+      color: #999;
+      margin-left: 10px;
+      &:hover {
+        color: @size-a;
+      }
+    }
+  }
+  .links {
+    padding: 40px 0;
+    &-info {
+      .flex;
+      flex-wrap: wrap;
+      .justify-content(space-between);
+      .align-items(flex-start);
+      &-title {
+        min-width: 100px;
+        line-height: 34px;
+        padding: 20px 0;
+        font-size: @font-m;
+        color: #fff;
+      }
+      &-all {
+        flex: 1;
+        padding: 20px 0;
+        a {
+          display: inline-block;
+          font-size: @font-s;
+          margin: 10px;
+          .transition(all .2s linear);
+          color: #b5b5b5;
+          &:hover {
+            color: #fff;
+          }
+        }
+      }
+    }
+  }
+}
+
+.loginShade,.registerShade {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, .3);
+  left: 0;
+  top: 0;
+  .loginWrap {
+    width: 376px;
+    padding-bottom: 40px;
+    background-color: #fff;
+    position: absolute;
+    left: 50%;
+    top: 120px;
+    margin-left: -188px;
+    .radius(4px);
+    .loginWrap-title {
+      height: 60px;
+      text-align: right;
+      i {
+        display: inline-block;
+        padding: 22px;
+        cursor: pointer;
+        .transition(all .2s linear);
+        &:hover {
+          color: @main-color;
+          -webkit-transform: rotate(90deg) scale(1.2, 1.2);
+          -moz-transform: rotate(90deg) scale(1.2, 1.2);
+          -ms-transform: rotate(90deg) scale(1.2, 1.2);
+          -o-transform: rotate(90deg) scale(1.2, 1.2);
+          transform: rotate(90deg) scale(1.2, 1.2);
+        }
+      }
+    }
+    .loginWrap-top {
+      text-align: center;
+      .login-logo {
+        display: block;
+        img {
+          width: 275px;
+          height: 58px;
+        }
+      }
+      p {
+        padding: 10px 0 30px 0;
+        font-size: @font-l;
+        color: @size-main;
+        font-weight: 700;
+      }
+    }
+    .loginWrap-form {
+      padding: 0 40px;
+      .form-row {
+        width: 100%;
+        height: 42px;
+        margin-bottom: 22px;
+        position: relative;
+        input {
+          width: 100%;
+          height: 42px;
+          border: 1px solid @border-color;
+          background-color: #f0f0f0;
+          .radius(4px);
+          padding-left: 42px;
+        }
+        &.captchaInp{
+          input{
+            padding-right: 120px;
+          }
+        }
+        span {
+          position: absolute;
+          width: 42px;
+          height: 42px;
+          left: 0;
+          top: 0;
+          i {
+            display: inline-block;
+            font-size: 22px;
+            padding: 10px;
+          }
+        }
+        .forgetPwd {
+          position: absolute;
+          top: 100%;
+          right: 0;
+          padding: 10px 0;
+          font-size: @font-s;
+          cursor: pointer;
+          color: #debd63;
+          opacity: 0.6;
+          .transition(all .2s linear);
+          &:hover {
+            opacity: 1;
+            text-decoration: underline;
+          }
+        }
+        .captcha {
+          position: absolute;
+          right: 0;
+          top: 0;
+          width: 120px;
+          height: 42px;
+          background-color: @main-color;
+          color: #fff;
+          border: 1px solid @main-color;
+          cursor: pointer;
+          .radius(0 4px 4px 0);
+          &:disabled{
+            background-color: #ccc;
+            border-color: #ccc;
+            cursor: not-allowed;
+          }
+        }
+      }
+      .form-btn {
+        width: 100%;
+        margin: 36px 0 22px 0;
+        button {
+          width: 100%;
+          height: 42px;
+          background-color: @main-color;
+          border: 1px solid @main-color;
+          font-size: 16px;
+          color: #fff;
+          cursor: pointer;
+          .radius(4px);
+          &:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+          }
+        }
+      }
+    }
+    .loginWrap-bot {
+      padding: 0 40px;
+      text-align: center;
+      p {
+        margin-bottom: 22px;
+        &:nth-child(1) {
+          font-size: 14px;
+          a {
+            color: #debd63;
+            opacity: 0.6;
+            .transition(all .2s linear);
+            &:hover {
+              opacity: 1;
+              text-decoration: underline;
+            }
+          }
+        }
+        &:nth-child(2) {
+          width: 100%;
+          a {
+            font-size: 16px;
+            padding: 12px;
+            display: block;
+            width: 100%;
+            height: 42px;
+            border: 1px solid #debd63;
+            color: #debd63;
+            .transition(all .2s linear);
+            .radius(4px);
+            &:hover {
+              background-color: rgba(222, 189, 99, .2);
+            }
+          }
+        }
+      }
+    }
+  }
+}

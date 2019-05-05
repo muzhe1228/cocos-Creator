@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>考拉行情-账本资产分布-币种统计</title>
+	<link rel="stylesheet" href="../css/icon/style.css">
+	<link rel="stylesheet/less" href="../css/book.less">
+	<link rel="icon" type="image/x-icon" href="../favicon.ico">
+	<script src="../js/jquery.min.js"></script>
+	<script src="../js/highstock5.0.js"></script>
+	<script src="../js/variable-pie.js"></script>
+	<script src="../js/less.min.js"></script>
+	<script src="../js/common.js"></script>
+	<script src="../js/footer.js"></script>
+	<script src="../js/hightchart.js"></script>
+	<script src="../js/bookPie.js"></script>
+</head>
+<body>
+<header>
+	<div class="container v-head">
+		<a href="/" class="logo"><img src="../static/images/icon/logo.png"></a>
+		<div class="v-head__menu">
+			<div class="kenMenu">
+				<a href="./" class="item">首页</a>
+				<a href="./optional.html" class="item">自选</a>
+				<div class="kenSubMenu item">
+					<p>排行<span></span></p>
+					<div class="subMenuInfo">
+						<a href="./rank/">涨跌幅榜</a>
+						<a href="./rank/currency.html">币种成交榜</a>
+						<a href="./rank/bourse.html">交易所成交榜</a>
+						<a href="./rank/trend.html">市值趋势</a>
+					</div>
+				</div>
+				<a href="exchange/index.html" class="item">交易所</a>
+				<a href="./template.html" class="item">模块概念</a>
+				<a class="item">账本</a>
+				<a class="item" href="/App" target="_blank">App</a>
+			</div>
+			<div>
+				<p class="login">
+					<span>注册</span> / <span>登录</span>
+				</p>
+			</div>
+		</div>
+	</div>
+	<div class="hover-hand">
+		<div class="hover-hand-wrap">
+			<div class="hover-hand-logo"></div>
+			<div class="hover-hand__menu">
+				<div class="kenMenu">
+					<a href="/" class="item">首页</a>
+					<a href="/Optional" class="item">自选</a>
+					<div class="kenSubMenu item">
+						<p>排行<span></span></p>
+						<div class="subMenuInfo">
+							<a href="/Rank">涨跌幅榜</a>
+							<a href="/Rank/currency">币种成交榜</a>
+							<a href="/Rank/bourse">交易所成交榜</a>
+							<a href="/Rank/trend">市值趋势</a>
+						</div>
+					</div>
+					<a href="/exchange" class="item">交易所</a>
+					<a href="/template" class="item">模块概念</a>
+					<a class="item" @click="Ishref()">账本</a>
+					<a class="item" href="/App" target="_blank">App</a>
+				</div>
+				<div>
+					<p class="login" v-show="!isLine">
+						<span>注册</span> / <span>登录</span>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</header>
+
+<div class="bookIndex">
+	<ul class="bookIndex_nav">
+		<li class="nuxt-link-active">考拉行情首页&nbsp;&nbsp;&gt;&nbsp;&nbsp;</li>
+		<li class="nuxt-link-active">账本首页&nbsp;&nbsp;<span>&gt;</span>&nbsp;&nbsp;
+		</li>
+		<li class="active">BTS详情</li>
+	</ul>
+	<div class="bookIndex_cont">
+		<div class="container">
+			<div class="cont_right">
+				<div class="bookInfo">
+					<ul class="bookInfo-top">
+						<li class="avatar">
+							<img alt="" src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1527243507745.jpg">
+						</li>
+						<li class="user-name">Ken-Coinla</li>
+						<li class="user-intro">测试修改个人资料</li>
+						<li class="filterImg"
+							style="background-image:url(http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1527243507745.jpg);"
+						></li>
+					</ul>
+					<ul class="bookInfo-cont">
+						<li class="top"><p class="title"><a class="isHover"
+						><span
+								class="left">总资产<i class="icon-ken_quest"
+						></i></span><span
+								class="title-hover"><span>账面总资产</span>&nbsp;：&nbsp;现有购入未卖出的所有币种的总资产。
+          </span></a><a href="/Book/anAlyze" class="goToUrl">资产分布</a></p>
+							<p class="price"><a><span>≈￥</span>1,167
+							</a><a class="goToUrl showIshid">隐藏</a></p></li>
+						<li class="single"><p><a class="title"><span
+						>账面盈利<i class="icon-kenquestion"></i></span><span
+								class="title-hover"><span>账面盈利</span>&nbsp;：&nbsp;现有购入未卖出的所有币种的未套现账面盈利。
+          </span></a><a class="pic color-red"><span>￥</span>&nbsp;-364.28</a></p>
+							<p><a class="title"><span>套现盈利<i
+									class="icon-kenquestion"></i></span><span class="title-hover"
+							><span
+							>套现盈利</span>&nbsp;：&nbsp;所有买入且已卖出套现成功的币种盈利总和。
+          </span></a><a class="pic color-gray"><span>￥&nbsp;</span>0</a></p></li>
+						<li class="single"><p><a class="title"><span
+						>账面盈利率<i class="icon-kenquestion"></i></span><span
+								class="title-hover"><span>账面盈利率</span>&nbsp;：&nbsp;现有购入未卖出的所有币种盈利占总盈利的百分比。
+          </span></a><a class="pic color-red">
+							-23.79%</a></p>
+							<p><a class="title"><span>今日盈利率<i
+									class="icon-kenquestion"></i></span><span class="title-hover"
+							><span
+							>今日盈利率</span>&nbsp;：&nbsp;现有购入未卖出的所有币种当前盈利占当日零点盈利的百分比。
+          </span></a><a class="pic color-red">
+								-5.42%</a></p></li>
+					</ul>
+					<ul class="bookInfo-con" style="display:none;">
+						<li class=""><p class="left"><img
+								src="/_nuxt/img/icon_link.79e12d5.png" alt=""><span
+						>币种统计</span></p>
+							<p><i class="icon-ken_right"></i></p></li>
+						<li class=""><p class="left"><img
+								src="/_nuxt/img/icon_link.79e12d5.png" alt=""><span
+						>存放场所</span></p>
+							<p><i class="icon-ken_right"></i></p></li>
+					</ul>
+				</div>
+			</div>
+			<div class="cont_left">
+				<div class="stat location">
+					<div class="stat_nav">
+						<a href="./anAlyze.html">币种统计</a>
+						<a class="active">存放场所</a>
+					</div>
+					<div>
+						<div class="child-stat">
+							<div class="child-stat-top">
+								<div class="child-stat-top-l">
+									<div id="statPie"></div>
+								</div>
+								<ul class="child-stat-top-r">
+									<li><p class="legend"
+										   style="background-color: rgb(211, 117, 143);"></p>
+										<p class="name">BTS</p>
+										<p class="ratio">73.85%</p></li>
+									<li><p class="legend"
+										   style="background-color: rgb(243, 217, 153);"></p>
+										<p class="name">WICC</p>
+										<p class="ratio">26.15%</p></li>
+								</ul>
+							</div>
+							<div class="info">
+								<ul class="info-title">
+									<li>序号</li>
+									<li>存放场所</li>
+									<li>资产价值</li>
+									<li>占比</li>
+								</ul>
+								<div class="info-single" style="height: 116px;">
+									<ul class="show-ul">
+										<li>01</li>
+										<li data="火币Pro" class="pic_name">
+											火币Pro
+										</li>
+										<li class="btn"><p>￥1,199.5 <span
+										></span></p></li>
+										<li>100%</li>
+									</ul>
+									<ul class="none-ul">
+										<li><p class="name"><img
+												alt=""
+												src="http://image.coinla.com/currency/logo/WaykiChain.jpg"
+												lazy="loaded">WICC : </p>
+											<p>86 个</p></li>
+										<li>
+											<p class="name"><img alt=""
+																 src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1521712689181.jpg">BTS
+												: </p>
+											<p>1005 个</p>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<footer>
+	<div class="container">
+		<div class="links">
+			<div class="links-info">
+				<div class="links-info-title">
+					友情链接：
+				</div>
+				<div class="links-info-all">
+				</div>
+			</div>
+			<Vline></Vline>
+		</div>
+		<div class="cont">
+			<ul>
+				<li>
+					<p>关于我们</p>
+					<a href="/About" target="_blank">关于考拉</a>
+					<a href="/Join" target="_blank">加入我们</a>
+				</li>
+				<li>
+					<p>关注我们</p>
+					<a href="https://t.me/joinchat/FwW6lwrZ8CIDqxGIp1L1oA" target="_blank">Telegram</a>
+					<a href="https://www.facebook.com/coin.la.98" target="_blank">Facebook</a>
+					<a href="https://twitter.com/mpOSxKrPDcVzXr2" target="_blank">Twitter</a>
+				</li>
+			</ul>
+			<div class="guanZhu">
+				<img src="./static/images/icon/weiXin.jpg" alt="">
+				<p>关注考拉公众号</p>
+			</div>
+		</div>
+		<p class="Copyright">Copyright © 2018 - CoinLa.com All Rights Reserved <a target="_blank"
+																				  href="http://www.coinla.com/">备案号：</a><a
+				target="_blank" href="https://www.miibeian.gov.cn/">浙ICP备18008896号-1</a></p>
+	</div>
+
+</footer>
+</body>
+</html>

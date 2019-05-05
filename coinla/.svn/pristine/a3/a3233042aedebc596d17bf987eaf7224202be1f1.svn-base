@@ -1,0 +1,139 @@
+<template>
+  <div class="group_award">
+    <div class="group_award_main">
+      <div class="group_award_switch_content">
+        <div class="title_wrap">
+          <p>奖励时间</p>
+          <p>团队奖励</p>
+          <p>我的奖励</p>
+        </div>
+        <div class="group_detail_wrap">
+          <div class="detail_content_wrap" v-for="(item, index) in awardsList">
+            <div class="detail_content">
+              <p class="time">
+                {{item.updateDate | filterDate}}
+              </p>
+              <p class="group_number"><span>{{item.awardsName?item.awardsName:'0'}}</span></p>
+              <p class="my_number">{{item.myReceiveState == 0? '未领取': item.myAwardsName}}</p>
+            </div>
+            <!--<div class="detail_content">-->
+              <!--<p class="time">-->
+                <!--8月21日 09:05-->
+              <!--</p>-->
+              <!--<p class="group_number">5888<span>CLB</span></p>-->
+              <!--<p class="my_number">78<span>CLB</span><em></em></p>-->
+            <!--</div>-->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  import {shareWeixin, isIos, openInApp} from 'assets/js/case'
+  import {getCoinlaSingle, getCoinlaToken} from 'assets/js/httpAll'
+  import {filterDate} from 'assets/js/filters'
+  export default {
+    name: 'groupAward',
+    metaInfo:{
+      title: '我的奖励记录'
+    },
+    data () {
+      return {
+        awardsList: []
+      }
+    },
+    mounted () {
+      this.getMyPrize()
+    },
+    methods: {
+      //我的奖励记录列表接口
+      getMyPrize () {
+        getCoinlaSingle('/groupActivity/selectMyPrize', {
+          activityId: 2,
+          uuid: this.$route.params.uuid
+        }).then((res) => {
+          let resData = res.data.data
+          if(res.data.code == 0){
+            this.awardsList = resData
+          }else{
+            this.$toast({message: res.data.message, duration: 1500})
+          }
+        }).catch((err) => {
+          this.$toast({message: '失败', duration: 1500})
+        })
+      }
+    }
+  }
+</script>
+
+<style scoped lang="stylus">
+  .group_award{
+    min-height: 100vh
+    padding: 0.88rem 0.32rem 0.46rem
+    background: url(/static/images/group/group_award_bac.png) no-repeat
+    background-size: 100% 100%
+    overflow: hidden
+   .group_award_switch_content{
+      width: 100%
+      height: 10.4rem
+      background-color: #e4faff
+      border-radius: 0.2rem
+      overflow: hidden
+      .title_wrap{
+        display: flex
+        height: 0.82rem
+        line-height: 0.82rem
+        background-color: #afedfb
+        p{
+          width: 33.33%
+          text-align: center
+          color: #0b73b9
+          font-size: 0.28rem
+        }
+      }
+      .group_detail_wrap{
+        overflow: hidden
+        .detail_content_wrap{
+          height: 9.78rem
+          overflow-x: hidden
+          overflow-y: scroll
+          background-color: #e4faff
+          .detail_content{
+            position: relative
+            display: flex
+            height: 0.88rem
+            line-height: 0.88rem
+            overflow: hidden
+            background-color: #effbfd
+            p{
+              width: 33.33%
+              text-align: center
+              color: #f78353
+              font-size: 0.28rem
+            }
+            .time{
+              color: #49abc2
+              font-size: 0.24rem
+            }
+            em{
+              width: 0.16rem
+              height: 0.16rem
+              position: absolute
+              right: 0.3rem
+              top: 0.42rem
+              border-left: 1px solid #49abc2
+              border-bottom: 1px solid #49abc2
+              -webkit-transform: translate(0,-50%) rotate(-135deg)
+              transform: translate(0,-50%) rotate(-135deg)
+            }
+          }
+          .detail_content:nth-child(even){
+            background-color: #e4faff
+          }
+        }
+      }
+    }
+  }
+</style>

@@ -1,0 +1,54 @@
+@import './assets/variable';
+@import './assets/mixin';
+@import "./assets/base";
+@import "./assets/header-footer";
+@import "./assets/reset";
+//通用部分
+
+.about {
+  background-color: @size-a;
+  min-width: 1040px;
+  .banner-about {
+    width: 100%;
+    min-width: 1040px;
+  }
+  .about-cont {
+    height: 356px;
+    padding: 48px 0;
+    .cont-size {
+      font-size: @font-m;
+      line-height: 36px;
+      text-indent: 36px;
+      padding-top: 32px;
+      color: @size-main;
+      b {
+        font-size: @font-l;
+        color: @color-main;
+      }
+    }
+    .contact {
+      font-size: 20px;
+      color: @size-main;
+      padding: 32px 0 28px 0;
+      font-weight: bold;
+    }
+    ul {
+      .flex;
+      .justify-content(space-between);
+      li {
+        font-size: @font-m;
+        color: @size-main;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1400px) {
+  .about {
+    min-width: 1040px;
+    .about-cont {
+      padding: 48px 15px;
+    }
+  }
+
+}

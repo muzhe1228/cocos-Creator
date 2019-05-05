@@ -1,0 +1,384 @@
+<template>
+  <div class="group_record">
+    <div class="group_record_switch_title">
+      <p class="my_group_title" @click="tabToggle('left')" :class="{active: tab}">我发起的团</p>
+      <p class="other_group_title"  @click="tabToggle('right')" :class="{active: !tab}">好友发起的团</p>
+    </div>
+    <div class="group_record_switch_content">
+      <div class="title_wrap">
+        <p class="member_title">组团团员</p>
+        <p class="group_status">团队状态</p>
+      </div>
+      <div class="group_detail_wrap">
+        <div class="detail_content_wrap" v-show="tab">
+          <div class="detail_content">
+            <div class="member">
+              <p>团长</p>
+              <img class="captain" src="/static/images/billboard/coinla.png" alt="">
+              <img src="/static/images/billboard/coinla.png" alt="">
+              <img src="/static/images/billboard/coinla.png" alt="">
+              <img src="/static/images/billboard/coinla.png" alt="">
+            </div>
+            <div class="status">
+              <p class="status_text">组团中</p>
+              <p class="count_down">
+                <span>11 : 11 : 11</span>
+              </p>
+            </div>
+          </div>
+          <div class="detail_content">
+            <div class="member">
+              <p>团长</p>
+              <img class="captain" src="/static/images/billboard/coinla.png" alt="">
+              <img src="/static/images/billboard/coinla.png" alt="">
+              <img src="/static/images/billboard/coinla.png" alt="">
+              <img src="/static/images/billboard/coinla.png" alt="">
+            </div>
+            <div class="status">
+              <p class="status_text">组团成功</p>
+              <div class="award_status">
+                <img src="/static/images/group/openAward.png" alt="" class="award_status_img">
+              </div>
+            </div>
+          </div>
+          <div class="detail_content">
+            <div class="member">
+              <p>团长</p>
+              <img class="captain" src="/static/images/billboard/coinla.png" alt="">
+              <img src="/static/images/billboard/coinla.png" alt="">
+              <img src="/static/images/billboard/coinla.png" alt="">
+              <img src="/static/images/billboard/coinla.png" alt="">
+            </div>
+            <div class="status">
+              <p class="status_text">组团成功</p>
+              <div class="award_status">
+                <p class="circle"></p>
+                <img src="/static/images/group/unopenAward.png" alt="" class="award_status_img">
+              </div>
+            </div>
+          </div>
+          <div class="detail_content">
+            <div class="member">
+              <p>团长</p>
+              <img class="captain" src="/static/images/billboard/coinla.png" alt="">
+              <img src="/static/images/billboard/coinla.png" alt="">
+              <img src="/static/images/billboard/coinla.png" alt="">
+              <img src="/static/images/billboard/coinla.png" alt="">
+            </div>
+            <div class="status">
+              <p class="status_text">已失效</p>
+            </div>
+          </div>
+          <div class="detail_content">
+            <div class="member">
+              <p>团长</p>
+              <img class="captain" src="/static/images/billboard/coinla.png" alt="">
+              <img src="/static/images/billboard/coinla.png" alt="">
+              <img src="/static/images/billboard/coinla.png" alt="">
+              <img src="/static/images/billboard/coinla.png" alt="">
+            </div>
+            <div class="status">
+              <p class="status_text">组团中</p>
+              <p class="count_down">
+                <span>11 : 11 : 11</span>
+              </p>
+            </div>
+          </div>
+          <div class="detail_content">
+            <div class="member">
+              <p>团长</p>
+              <img class="captain" src="/static/images/billboard/coinla.png" alt="">
+              <img src="/static/images/billboard/coinla.png" alt="">
+              <img src="/static/images/billboard/coinla.png" alt="">
+              <img src="/static/images/billboard/coinla.png" alt="">
+            </div>
+            <div class="status">
+              <p class="status_text">组团成功</p>
+              <div class="award_status">
+                <img src="/static/images/group/openAward.png" alt="" class="award_status_img">
+              </div>
+            </div>
+          </div>
+          <div class="detail_content">
+            <div class="member">
+              <p>团长</p>
+              <img class="captain" src="/static/images/billboard/coinla.png" alt="">
+              <img src="/static/images/billboard/coinla.png" alt="">
+              <img src="/static/images/billboard/coinla.png" alt="">
+              <img src="/static/images/billboard/coinla.png" alt="">
+            </div>
+            <div class="status">
+              <p class="status_text">组团成功</p>
+              <div class="award_status">
+                <p class="circle"></p>
+                <img src="/static/images/group/unopenAward.png" alt="" class="award_status_img">
+              </div>
+            </div>
+          </div>
+          <div class="detail_content">
+            <div class="member">
+              <p>团长</p>
+              <img class="captain" src="/static/images/billboard/coinla.png" alt="">
+              <img src="/static/images/billboard/coinla.png" alt="">
+              <img src="/static/images/billboard/coinla.png" alt="">
+              <img src="/static/images/billboard/coinla.png" alt="">
+            </div>
+            <div class="status">
+              <p class="status_text">已失效</p>
+            </div>
+          </div>
+        </div>
+        <div class="detail_content_wrap" v-show="!tab">
+          <div class="detail_content">
+            <div class="member">
+              <p>团长</p>
+              <img class="captain" src="/static/images/billboard/coinla.png" alt="">
+              <img src="/static/images/billboard/coinla.png" alt="">
+              <img src="/static/images/billboard/coinla.png" alt="">
+              <img src="/static/images/billboard/coinla.png" alt="">
+            </div>
+            <div class="status">
+              <p class="status_text">组团中</p>
+              <p class="count_down">
+                <span>11 : 11 : 11</span>
+              </p>
+            </div>
+          </div>
+          <div class="detail_content">
+            <div class="member">
+              <p>团长</p>
+              <img class="captain" src="/static/images/billboard/coinla.png" alt="">
+              <img src="/static/images/billboard/coinla.png" alt="">
+              <img src="/static/images/billboard/coinla.png" alt="">
+              <img src="/static/images/billboard/coinla.png" alt="">
+            </div>
+            <div class="status">
+              <p class="status_text">组团成功</p>
+              <div class="award_status">
+                <img src="/static/images/group/openAward.png" alt="" class="award_status_img">
+              </div>
+            </div>
+          </div>
+          <div class="detail_content">
+            <div class="member">
+              <p>团长</p>
+              <img class="captain" src="/static/images/billboard/coinla.png" alt="">
+              <img src="/static/images/billboard/coinla.png" alt="">
+              <img src="/static/images/billboard/coinla.png" alt="">
+              <img src="/static/images/billboard/coinla.png" alt="">
+            </div>
+            <div class="status">
+              <p class="status_text">组团成功</p>
+              <div class="award_status">
+                <p class="circle"></p>
+                <img src="/static/images/group/unopenAward.png" alt="" class="award_status_img">
+              </div>
+            </div>
+          </div>
+          <div class="detail_content">
+            <div class="member">
+              <p>团长</p>
+              <img class="captain" src="/static/images/billboard/coinla.png" alt="">
+              <img src="/static/images/billboard/coinla.png" alt="">
+              <img src="/static/images/billboard/coinla.png" alt="">
+              <img src="/static/images/billboard/coinla.png" alt="">
+            </div>
+            <div class="status">
+              <p class="status_text">已失效</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  export default {
+    name: 'groupRecord',
+    metaInfo: {
+      title: '我参与的团'
+    },
+    data () {
+      return {
+        tab: true
+      }
+    },
+    methods: {
+      tabToggle (index) {
+        if(index == 'left'){
+          this.tab = true
+        }else{
+          this.tab = false
+        }
+      }
+    }
+  }
+</script>
+
+<style scoped lang="stylus">
+  .group_record{
+    min-height: 100vh
+    padding: 0.48rem 0.32rem 0.46rem
+    background: url(/static/images/group/group_record_bac.png) no-repeat
+    background-size: 100% 100%
+    overflow: hidden
+    &_switch_title{
+      display: flex
+      width: 5.52rem
+      font-size: 0.28rem
+      margin: 0 auto 0.26rem
+      border-radius: 0.2rem
+      overflow: hidden
+      p{
+        width: 2.76rem
+        height: 0.46rem
+        line-height: 0.46rem
+        text-align: center
+        background-color: #2d6af2
+        color: #fff
+      }
+      .active{
+        background-color: #fff
+        color: #168def
+      }
+    }
+    &_switch_content{
+      width: 100%
+      height: 10.4rem
+      border-radius: 0.2rem
+      overflow: hidden
+      .title_wrap{
+        display: flex
+        height: 0.82rem
+        line-height: 0.82rem
+        background-color: #afedfb
+        p{
+          width: 50%
+          text-align: center
+          color: #0b73b9
+          font-size: 0.28rem
+        }
+      }
+      .group_detail_wrap{
+        overflow: hidden
+        .detail_content_wrap{
+          height: 9.78rem
+          overflow-x: hidden
+          overflow-y: scroll
+          background-color: #e4faff
+          .detail_content{
+            display: flex
+            height: 1.44rem
+            overflow: hidden
+            background-color: #effbfd
+            .member{
+              position: relative
+              width: 50%
+              padding-top: 0.28rem
+              overflow: hidden
+              p{
+                position: absolute
+                left: 0.46rem
+                top: 0.18rem
+                width: 0.62rem
+                height: 0.24rem
+                line-height: 0.24rem
+                text-align: center
+                color: #fff
+                background-color: #f56d6d
+                font-size: 0.18rem
+                border-radius: 3px
+              }
+              img{
+                float: left
+                width: 0.88rem
+                height: 0.88rem
+                margin-left: -0.18rem
+                border: 1px solid #9fdcea
+                border-radius: 50%
+                overflow: hidden
+              }
+              .captain{
+                margin-left: 0.32rem
+              }
+            }
+            .status{
+              position: relative
+              width: 50%
+              padding-left: 8px
+              text-align: center
+              display: flex
+              flex-direction: column
+              justify-content: center
+              align-items: center
+              .status_text{
+                font-size: 0.24rem
+                color: #66777b
+              }
+              .count_down{
+                margin-top: 0.18rem
+                color: #89b3bd
+                font-size: 0.2rem
+              }
+              .award_status{
+                position: absolute
+                right: 0.32rem
+                top: 0.38rem
+                p{
+                  position: absolute
+                  right: 0.08rem
+                  top: -0.04rem
+                  width: 0.16rem
+                  height: 0.16rem
+                  background-color: #f56d6d
+                  border-radius: 50%
+                }
+                img{
+                  width: 0.66rem
+                  height: 0.66rem
+                }
+              }
+            }
+          }
+          .detail_content:nth-child(even){
+            background-color: #e4faff
+          }
+        }
+      }
+    }
+  }
+  .detail_content_wrap::-webkit-scrollbar {
+    width: 8px
+    height: 91px
+  }
+  .detail_content_wrap::-webkit-scrollbar-track {
+  //底层滚动条颜色
+    background: transparent
+    border-radius: 4px
+  }
+  .detail_content_wrap::-webkit-scrollbar-thumb {
+  //滚动条颜色
+    background: #90E6FA
+    border-radius: 4px
+  }
+  .detail_content_wrap::-webkit-scrollbar-resizer {
+    background: #FF0BEE
+  }
+  .detail_content_wrap::scrollbar {
+    width: 8px
+    height: 91px
+  }
+  .detail_content_wrap::scrollbar-track {
+  //底层滚动条颜色
+    background: transparent
+    border-radius: 4px
+  }
+  .detail_content_wrap::scrollbar-thumb {
+    background: #90E6FA
+    border-radius: 4px
+  }
+  .detail_content_wrap::scrollbar-resizer {
+    background: #FF0BEE
+  }
+</style>

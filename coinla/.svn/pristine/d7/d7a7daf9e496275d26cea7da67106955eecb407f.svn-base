@@ -1,0 +1,21 @@
+@import "./mixin.styl"
+// 颜色定义规范
+$main-color = #debd63
+
+//字体颜色规范
+$size-color = #333
+$size-sColor = #666
+$size-lColor = #999
+
+//border 颜色
+$border-color = #EAEAEA
+$border-lColor = #dedede
+
+//字体定义规范
+$font-x = .24rem
+$font-s = .28rem
+$font-m = .32rem
+$font-l = .36rem
+$font-xl = .4rem
+
+

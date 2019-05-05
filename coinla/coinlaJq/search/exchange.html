@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>考拉行情交易所搜索</title>
+	<link rel="stylesheet" href="../css/icon/style.css">
+	<link rel="stylesheet/less" href="../css/search.less">
+	<link rel="icon" type="image/x-icon" href="../favicon.ico">
+	<script src="../js/jquery.min.js"></script>
+	<script src="../js/less.min.js"></script>
+	<script src="../js/common.js"></script>
+	<script src="../js/footer.js"></script>
+</head>
+<body>
+<header>
+	<div class="container v-head">
+		<a href="/" class="logo"><img src="../static/images/icon/logo.png"></a>
+		<div class="v-head__menu">
+			<div class="kenMenu">
+				<a href="./" class="item">首页</a>
+				<a href="./optional.html" class="item">自选</a>
+				<div class="kenSubMenu item">
+					<p>排行<span></span></p>
+					<div class="subMenuInfo">
+						<a href="./rank/">涨跌幅榜</a>
+						<a href="./rank/currency.html">币种成交榜</a>
+						<a href="./rank/bourse.html">交易所成交榜</a>
+						<a href="./rank/trend.html">市值趋势</a>
+					</div>
+				</div>
+				<a href="exchange/index.html" class="item">交易所</a>
+				<a href="./template.html" class="item">模块概念</a>
+				<a class="item">账本</a>
+				<a class="item" href="/App" target="_blank">App</a>
+			</div>
+			<div>
+				<p class="login">
+					<span>注册</span> / <span>登录</span>
+				</p>
+			</div>
+		</div>
+	</div>
+	<div class="hover-hand">
+		<div class="hover-hand-wrap">
+			<div class="hover-hand-logo"></div>
+			<div class="hover-hand__menu">
+				<div class="kenMenu">
+					<a href="/" class="item">首页</a>
+					<a href="/Optional" class="item">自选</a>
+					<div class="kenSubMenu item">
+						<p>排行<span></span></p>
+						<div class="subMenuInfo">
+							<a href="/Rank">涨跌幅榜</a>
+							<a href="/Rank/currency">币种成交榜</a>
+							<a href="/Rank/bourse">交易所成交榜</a>
+							<a href="/Rank/trend">市值趋势</a>
+						</div>
+					</div>
+					<a href="/exchange" class="item">交易所</a>
+					<a href="/template" class="item">模块概念</a>
+					<a class="item" @click="Ishref()">账本</a>
+					<a class="item" href="/App" target="_blank">App</a>
+				</div>
+				<div>
+					<p class="login" v-show="!isLine">
+						<span>注册</span> / <span>登录</span>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</header>
+<div class="search">
+	<div class="container">
+		<ul class="search_nav">
+			<li class="nuxt-link-active">考拉行情首页&nbsp;&nbsp;&gt;&nbsp;&nbsp;</li>
+			<li class="active">搜索 - b&nbsp;</li>
+		</ul>
+		<div class="search-Wrap">
+			<div class="search_left">
+				<div class="search-top">
+					<div class="searchWrap">
+						<div class="search-inp">
+							<input type="text" placeholder="请输入内容">
+							<p class="size"><i class="icon-kensearch"
+							></i>
+								搜索
+							</p>
+						</div>
+						
+						
+						<ul class="res">
+							<li><p class="resCont">FT</p>
+								<p class="clearHis"><i class="el-icon-error"></i>
+								</p></li>
+							<li><p class="resCont">WICC</p>
+								<p class="clearHis"><i class="el-icon-error"></i>
+								</p></li>
+							<li><p class="resCont">EOS</p>
+								<p class="clearHis"><i class="el-icon-error"></i>
+								</p></li>
+							<li><p class="resCont">SOC</p>
+								<p class="clearHis"><i class="el-icon-error"></i>
+								</p></li>
+							<li><p class="resCont">BTC</p>
+								<p class="clearHis"><i class="el-icon-error"></i>
+								</p></li>
+						</ul>
+					</div>
+					<ul class="Bot">
+						<li class="">FT
+						</li>
+						<li class="">WICC
+						</li>
+						<li class="">EOS
+						</li>
+						<li class="">SOC
+						</li>
+						<li class="">BTC
+						</li>
+					</ul>
+				</div>
+				<div class="con_cont">
+					<div class="top-fall_nav con_nav">
+						<div class="top-fall_nav_l">
+							<a href="./">币种</a>
+							<a href="./exchange.html" class="active">交易所</a>
+						</div>
+						<div class="top-fall_nav_r con_nav_r"></div>
+					</div>
+					<div class="con_cont">
+						<div class="con_cont_table exchange resetLoading">
+							<ul class="table_title">
+								<li>#</li>
+								<li>名称</li>
+								<li>成交额(24H)</li>
+								<li>交易对</li>
+								<li>国家</li>
+								<li>交易类型</li>
+								<li>星级</li>
+							</ul>
+							<div>
+								<ul class="table_cont">
+									<li>1</li>
+									<li><a href="/exchange/okex"
+										   class="aClick"><img alt="OKEX-OKEX"
+															   data-src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1522238835909.jpg"
+															   src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1522238835909.jpg"
+															   lazy="loaded">OKEX
+									</a></li>
+									<li>￥86.07亿</li>
+									<li>449</li>
+									<li>美国</li>
+									<li>
+										<div class="adver"><p><img
+												
+												src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAAEhyb7BAAAAAXNSR0IArs4c6QAAAktJREFUOBG9U01oE0EUnt1tXDRgI7WHoAcjelGokSSE9KBBveRgPGgQz41CEKWXgieDVSiK9NBeCx7Ug0QvXjyIa/wBidmIF6/ZlIIiaRANxLLJ7vi9SWabhBoRwYHdN++9b755870ZxoZHJBLhw7FNX4nH44ccx3m0GeqfxWKx4+SP0a/2+lLQbTufab7/ZFkhOzii0ehRGRFL5eZIpCkheFbf5HY5bXuF8SOTEv1nC6ob9Hk0mUxmm2VZbxVFmaOg67pFVVWTZOHmKcaoADqiLCSRSOzhnCuWMeNSXhQEhvcPbx1+p6p0prCQyzKybPFBjTD/MPqLHkkDgdYlQAiLwGNN02bRm4+o72zvVPMAXa9UKopKaJzkRKfTOQjgsR7gJsLLlBsYdHzZS3H8l9m8lERIQGiirRrZ54xPFWtGtgEdJiSL2I5qqr6Y4dj3FCUI4LpCLon7j3aL+/f73VF6vpcNQIBZuijlcvkVxTwBALoMfyoUCl0pFAo2JUm1nrSMFiFUBMET6gnmGr5pfIJooKJUKqXX6/WrAN8BuAHQBRA4mH8qlUpf4dPtnIfv+ny+Jdu2G9QBinsVUY9AcgaxawCeg22AsAB7HnaH7CH8SdM016vGxXRm7gPc7vCIyAXgKcwE3sB27OY3754OrrK1BTwHv75T9esdfexHq3Wf83CacfE8uiz49xO18fK027nxnwrnJlNY0HLX9nWRnG18d3IbrOUtHL4fnkbJZDLQbDa/ecgRE1VlfHdA/3Jg73h4+d6z+gjo36d+AbY77uOaYyWrAAAAAElFTkSuQmCC"
+												alt=""><span>期货</span></p>
+											<p><img
+													src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAAEhyb7BAAAAAXNSR0IArs4c6QAAAc5JREFUOBFjYEACjCC2iYlJAzMTQxGSODLzwqb4/8bGxu/gYswgFlBkmrS0tOmzZ88OgPhMIIKdnb0BROMGQLumw2SBRvxnVlZWPvXo0aNvIMFjS7wEmX78+MELUxFWcekHjA2nwW4G6r0FFFGFiyIxzp49C1YDFgIqnApigDwJFoASQPEasJuBjAwvG1F3NMkH9/Ylf2JkZHRGFgez0U3CUIBLAObw/zgU3AY6XA3sJpACkC9AGAgaofQMoPAekBxYEUgQ5AuQAAycOXMmE8gG28AElHx3f2/yBBZmxjKYAhBta2srOrdeJwvEBpn06T8jQ9LffwxnQQIw8O3bt+C1e1/ehfEZTE1NO2AcWBAAxZSsrKzEYOIoNEwRiiBdOeCECrKxoaGB6fPnz99kZGQ2ABPsa5grQE6UkpJygCViXGrB4Q30rMSWLVsWMDExqf3///+0hYWFAswgdBqXWrBB//796wEaMmljl+H3ulTl63///l6DbgCMj0st2CBg0vD8+/fv0x///p2VFmM3AiYwZZhGdBqXWhaQQqCkNtBLTxtm3r5z9e4XBmZmZiN0A2B8UtTC9IBpUGATkyYQeRdFO7jIwZbnwdkGTSl1uQDOJ8Ot8kPNJwAAAABJRU5ErkJggg=="
+													alt=""><span>现货</span></p>
+											<p><img
+													src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAAEhyb7BAAAAAXNSR0IArs4c6QAAA1tJREFUOBGlVFtIVEEYnnP2nONmm66umrewNl3SkgrXVtcyuwgF+RSK6UOaWNGLYUj3ixAR1EOQYvVSWYZhRNCDKWgbgaKuBKVYXnbFbdW8S6nraS99M+W2RfXSwM781+//5p//LCE+S0HlYwd3eogUMsfsSUlJJ3wCfoiWpiLPr9ZkrB3pKfdePsz76TEYDNHWpqIBgPw0+uZx8Igcx71fHanUWu0LRIBy1Ww2r62uL/S86pwivMfjkfV6/SGlxJO3vZ+/sHSkRcDBUYVtS6BwTAOiBvpKBPR3dnae9gbBOQXnXVEUz9VcTpivbRghoUESMSSqSeHFd5E8i+S4ZmRmtLa2Ltx6YiOxq/zJri0aMjK+SBQKRby3HNC6XS5XGoy5+3eHc21d0ztn56Rik8k0s0Tnn6cXCa0rcbvde8GtG6ULtVpteF1dnUyzGSfcvxrycwQsM25UF8REKIMMugULKIg0SEhLS4t0OBylkJM3rwtYPJ4XEyx/dZOyGx+iRIGjfJbzsiznoR8TaG99aX7MpuvVViKJPIlfoyKZhhAKxNr9Ec+WQpX2rtlPKn+BisRinyc9g3OMEyMOTvUgu8dcneVnHbUtNrVPsl6dutl3va2to4wFGY3GMJStQo+uCbxLf7Y4LvR8ZW8+aMQyWN8NiLlUT01NDfa1e/vka1wKdDqdW9A7Hc/zEujY8TMBfeT3WKr/EQhVjwCkARTXAyRWVLjd+7aHO3cbNIHnKvr2Ts3KoZKfX0ZLS8vYEqgXCA9wBY+ipfcDiBnygY77+54Ojtp6MPFamtDcMUmq6myk6kwCqXw8NI8uVrS3m09SH/ve6L2RuA3vkmO320ewyoeHh7ucvHJAqVSsmZj5Smh3s9LDSE5mOLl0u58UZEWL49OyTqEM+Uhj2SPh7lEAGgKroziTAVhEqyTqVOqG1gkqkq2b1OykmzbKn71riFpSQdVQG5s3nI8AVoDxrsVpxIAWU6dhQ2B5UnwAoT99QiA1sev12+bgU5PXb6ZcKPyE2n17RIeUTk6JIAgm9OkBZOcKf6EvMW5F5uiEI9ghu8mFw7Hk2cuxsRct42EajUbV2NjI/oK8QEhiKzs7W7JYLOVQjqBaM84hXLUUTDn0kn7idyDf+NsYfEf5j/0b/jJpGBWdnGEAAAAASUVORK5CYII="
+													alt=""><span>法币</span></p>
+										</div>
+									</li>
+									<li>
+										rate
+									</li>
+								</ul>
+								<ul class="table_cont">
+									<li>2</li>
+									<li><a href="/exchange/okcoin-intl."
+										   class="aClick"><img
+											alt="OkCoin国际-OkCoin Intl."
+											data-src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1522398441961.jpg"
+											src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1522398441961.jpg"
+											lazy="loaded">OkCoin国际
+									</a></li>
+									<li>￥181.26万</li>
+									<li>5</li>
+									<li>中国香港</li>
+									<li>
+										<div class="adver"><!----><p><img
+												
+												src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAAEhyb7BAAAAAXNSR0IArs4c6QAAAc5JREFUOBFjYEACjCC2iYlJAzMTQxGSODLzwqb4/8bGxu/gYswgFlBkmrS0tOmzZ88OgPhMIIKdnb0BROMGQLumw2SBRvxnVlZWPvXo0aNvIMFjS7wEmX78+MELUxFWcekHjA2nwW4G6r0FFFGFiyIxzp49C1YDFgIqnApigDwJFoASQPEasJuBjAwvG1F3NMkH9/Ylf2JkZHRGFgez0U3CUIBLAObw/zgU3AY6XA3sJpACkC9AGAgaofQMoPAekBxYEUgQ5AuQAAycOXMmE8gG28AElHx3f2/yBBZmxjKYAhBta2srOrdeJwvEBpn06T8jQ9LffwxnQQIw8O3bt+C1e1/ehfEZTE1NO2AcWBAAxZSsrKzEYOIoNEwRiiBdOeCECrKxoaGB6fPnz99kZGQ2ABPsa5grQE6UkpJygCViXGrB4Q30rMSWLVsWMDExqf3///+0hYWFAswgdBqXWrBB//796wEaMmljl+H3ulTl63///l6DbgCMj0st2CBg0vD8+/fv0x///p2VFmM3AiYwZZhGdBqXWhaQQqCkNtBLTxtm3r5z9e4XBmZmZiN0A2B8UtTC9IBpUGATkyYQeRdFO7jIwZbnwdkGTSl1uQDOJ8Ot8kPNJwAAAABJRU5ErkJggg=="
+												alt=""><span>现货</span></p>
+											<p><img
+													src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAAEhyb7BAAAAAXNSR0IArs4c6QAAA1tJREFUOBGlVFtIVEEYnnP2nONmm66umrewNl3SkgrXVtcyuwgF+RSK6UOaWNGLYUj3ixAR1EOQYvVSWYZhRNCDKWgbgaKuBKVYXnbFbdW8S6nraS99M+W2RfXSwM781+//5p//LCE+S0HlYwd3eogUMsfsSUlJJ3wCfoiWpiLPr9ZkrB3pKfdePsz76TEYDNHWpqIBgPw0+uZx8Igcx71fHanUWu0LRIBy1Ww2r62uL/S86pwivMfjkfV6/SGlxJO3vZ+/sHSkRcDBUYVtS6BwTAOiBvpKBPR3dnae9gbBOQXnXVEUz9VcTpivbRghoUESMSSqSeHFd5E8i+S4ZmRmtLa2Ltx6YiOxq/zJri0aMjK+SBQKRby3HNC6XS5XGoy5+3eHc21d0ztn56Rik8k0s0Tnn6cXCa0rcbvde8GtG6ULtVpteF1dnUyzGSfcvxrycwQsM25UF8REKIMMugULKIg0SEhLS4t0OBylkJM3rwtYPJ4XEyx/dZOyGx+iRIGjfJbzsiznoR8TaG99aX7MpuvVViKJPIlfoyKZhhAKxNr9Ec+WQpX2rtlPKn+BisRinyc9g3OMEyMOTvUgu8dcneVnHbUtNrVPsl6dutl3va2to4wFGY3GMJStQo+uCbxLf7Y4LvR8ZW8+aMQyWN8NiLlUT01NDfa1e/vka1wKdDqdW9A7Hc/zEujY8TMBfeT3WKr/EQhVjwCkARTXAyRWVLjd+7aHO3cbNIHnKvr2Ts3KoZKfX0ZLS8vYEqgXCA9wBY+ipfcDiBnygY77+54Ojtp6MPFamtDcMUmq6myk6kwCqXw8NI8uVrS3m09SH/ve6L2RuA3vkmO320ewyoeHh7ucvHJAqVSsmZj5Smh3s9LDSE5mOLl0u58UZEWL49OyTqEM+Uhj2SPh7lEAGgKroziTAVhEqyTqVOqG1gkqkq2b1OykmzbKn71riFpSQdVQG5s3nI8AVoDxrsVpxIAWU6dhQ2B5UnwAoT99QiA1sev12+bgU5PXb6ZcKPyE2n17RIeUTk6JIAgm9OkBZOcKf6EvMW5F5uiEI9ghu8mFw7Hk2cuxsRct42EajUbV2NjI/oK8QEhiKzs7W7JYLOVQjqBaM84hXLUUTDn0kn7idyDf+NsYfEf5j/0b/jJpGBWdnGEAAAAASUVORK5CYII="
+													alt=""><span>法币</span></p>
+										</div>
+									</li>
+									<li>
+										rate
+									</li>
+								</ul>
+								<ul class="table_cont">
+									<li>3</li>
+									<li><a href="/exchange/okcoinkr"
+										   class="aClick"><img
+											alt="OkCoin韩国站-OkCoinKR"
+											data-src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1526355501880.jpg"
+											src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1526355501880.jpg"
+											lazy="loaded">OkCoin韩国站
+									</a></li>
+									<li>￥54.28万</li>
+									<li>28</li>
+									<li>韩国</li>
+									<li>
+										<div class="adver"><p><img
+												
+												src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAAEhyb7BAAAAAXNSR0IArs4c6QAAAktJREFUOBG9U01oE0EUnt1tXDRgI7WHoAcjelGokSSE9KBBveRgPGgQz41CEKWXgieDVSiK9NBeCx7Ug0QvXjyIa/wBidmIF6/ZlIIiaRANxLLJ7vi9SWabhBoRwYHdN++9b755870ZxoZHJBLhw7FNX4nH44ccx3m0GeqfxWKx4+SP0a/2+lLQbTufab7/ZFkhOzii0ehRGRFL5eZIpCkheFbf5HY5bXuF8SOTEv1nC6ob9Hk0mUxmm2VZbxVFmaOg67pFVVWTZOHmKcaoADqiLCSRSOzhnCuWMeNSXhQEhvcPbx1+p6p0prCQyzKybPFBjTD/MPqLHkkDgdYlQAiLwGNN02bRm4+o72zvVPMAXa9UKopKaJzkRKfTOQjgsR7gJsLLlBsYdHzZS3H8l9m8lERIQGiirRrZ54xPFWtGtgEdJiSL2I5qqr6Y4dj3FCUI4LpCLon7j3aL+/f73VF6vpcNQIBZuijlcvkVxTwBALoMfyoUCl0pFAo2JUm1nrSMFiFUBMET6gnmGr5pfIJooKJUKqXX6/WrAN8BuAHQBRA4mH8qlUpf4dPtnIfv+ny+Jdu2G9QBinsVUY9AcgaxawCeg22AsAB7HnaH7CH8SdM016vGxXRm7gPc7vCIyAXgKcwE3sB27OY3754OrrK1BTwHv75T9esdfexHq3Wf83CacfE8uiz49xO18fK027nxnwrnJlNY0HLX9nWRnG18d3IbrOUtHL4fnkbJZDLQbDa/ecgRE1VlfHdA/3Jg73h4+d6z+gjo36d+AbY77uOaYyWrAAAAAElFTkSuQmCC"
+												alt=""><span>期货</span></p>
+											<p><img
+													src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAAEhyb7BAAAAAXNSR0IArs4c6QAAAc5JREFUOBFjYEACjCC2iYlJAzMTQxGSODLzwqb4/8bGxu/gYswgFlBkmrS0tOmzZ88OgPhMIIKdnb0BROMGQLumw2SBRvxnVlZWPvXo0aNvIMFjS7wEmX78+MELUxFWcekHjA2nwW4G6r0FFFGFiyIxzp49C1YDFgIqnApigDwJFoASQPEasJuBjAwvG1F3NMkH9/Ylf2JkZHRGFgez0U3CUIBLAObw/zgU3AY6XA3sJpACkC9AGAgaofQMoPAekBxYEUgQ5AuQAAycOXMmE8gG28AElHx3f2/yBBZmxjKYAhBta2srOrdeJwvEBpn06T8jQ9LffwxnQQIw8O3bt+C1e1/ehfEZTE1NO2AcWBAAxZSsrKzEYOIoNEwRiiBdOeCECrKxoaGB6fPnz99kZGQ2ABPsa5grQE6UkpJygCViXGrB4Q30rMSWLVsWMDExqf3///+0hYWFAswgdBqXWrBB//796wEaMmljl+H3ulTl63///l6DbgCMj0st2CBg0vD8+/fv0x///p2VFmM3AiYwZZhGdBqXWhaQQqCkNtBLTxtm3r5z9e4XBmZmZiN0A2B8UtTC9IBpUGATkyYQeRdFO7jIwZbnwdkGTSl1uQDOJ8Ot8kPNJwAAAABJRU5ErkJggg=="
+													alt=""><span>现货</span></p>
+											<p><img
+													src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAAEhyb7BAAAAAXNSR0IArs4c6QAAA1tJREFUOBGlVFtIVEEYnnP2nONmm66umrewNl3SkgrXVtcyuwgF+RSK6UOaWNGLYUj3ixAR1EOQYvVSWYZhRNCDKWgbgaKuBKVYXnbFbdW8S6nraS99M+W2RfXSwM781+//5p//LCE+S0HlYwd3eogUMsfsSUlJJ3wCfoiWpiLPr9ZkrB3pKfdePsz76TEYDNHWpqIBgPw0+uZx8Igcx71fHanUWu0LRIBy1Ww2r62uL/S86pwivMfjkfV6/SGlxJO3vZ+/sHSkRcDBUYVtS6BwTAOiBvpKBPR3dnae9gbBOQXnXVEUz9VcTpivbRghoUESMSSqSeHFd5E8i+S4ZmRmtLa2Ltx6YiOxq/zJri0aMjK+SBQKRby3HNC6XS5XGoy5+3eHc21d0ztn56Rik8k0s0Tnn6cXCa0rcbvde8GtG6ULtVpteF1dnUyzGSfcvxrycwQsM25UF8REKIMMugULKIg0SEhLS4t0OBylkJM3rwtYPJ4XEyx/dZOyGx+iRIGjfJbzsiznoR8TaG99aX7MpuvVViKJPIlfoyKZhhAKxNr9Ec+WQpX2rtlPKn+BisRinyc9g3OMEyMOTvUgu8dcneVnHbUtNrVPsl6dutl3va2to4wFGY3GMJStQo+uCbxLf7Y4LvR8ZW8+aMQyWN8NiLlUT01NDfa1e/vka1wKdDqdW9A7Hc/zEujY8TMBfeT3WKr/EQhVjwCkARTXAyRWVLjd+7aHO3cbNIHnKvr2Ts3KoZKfX0ZLS8vYEqgXCA9wBY+ipfcDiBnygY77+54Ojtp6MPFamtDcMUmq6myk6kwCqXw8NI8uVrS3m09SH/ve6L2RuA3vkmO320ewyoeHh7ucvHJAqVSsmZj5Smh3s9LDSE5mOLl0u58UZEWL49OyTqEM+Uhj2SPh7lEAGgKroziTAVhEqyTqVOqG1gkqkq2b1OykmzbKn71riFpSQdVQG5s3nI8AVoDxrsVpxIAWU6dhQ2B5UnwAoT99QiA1sev12+bgU5PXb6ZcKPyE2n17RIeUTk6JIAgm9OkBZOcKf6EvMW5F5uiEI9ghu8mFw7Hk2cuxsRct42EajUbV2NjI/oK8QEhiKzs7W7JYLOVQjqBaM84hXLUUTDn0kn7idyDf+NsYfEf5j/0b/jJpGBWdnGEAAAAASUVORK5CYII="
+													alt=""><span>法币</span></p>
+										</div>
+									</li>
+									<li>
+										rate
+									</li>
+								</ul>
+								<ul class="table_cont">
+									<li>4</li>
+									<li><a href="/exchange/btok"
+										   class="aClick"><img alt="BTOK-BTOK"
+															   data-src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1521790636235.jpg"
+															   src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1521790636235.jpg"
+															   lazy="loaded">BTOK
+									</a></li>
+									<li>--</li>
+									<li>2</li>
+									<li>越南</li>
+									<li>
+										<div class="adver"><!----><p><img
+												
+												src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAAEhyb7BAAAAAXNSR0IArs4c6QAAAc5JREFUOBFjYEACjCC2iYlJAzMTQxGSODLzwqb4/8bGxu/gYswgFlBkmrS0tOmzZ88OgPhMIIKdnb0BROMGQLumw2SBRvxnVlZWPvXo0aNvIMFjS7wEmX78+MELUxFWcekHjA2nwW4G6r0FFFGFiyIxzp49C1YDFgIqnApigDwJFoASQPEasJuBjAwvG1F3NMkH9/Ylf2JkZHRGFgez0U3CUIBLAObw/zgU3AY6XA3sJpACkC9AGAgaofQMoPAekBxYEUgQ5AuQAAycOXMmE8gG28AElHx3f2/yBBZmxjKYAhBta2srOrdeJwvEBpn06T8jQ9LffwxnQQIw8O3bt+C1e1/ehfEZTE1NO2AcWBAAxZSsrKzEYOIoNEwRiiBdOeCECrKxoaGB6fPnz99kZGQ2ABPsa5grQE6UkpJygCViXGrB4Q30rMSWLVsWMDExqf3///+0hYWFAswgdBqXWrBB//796wEaMmljl+H3ulTl63///l6DbgCMj0st2CBg0vD8+/fv0x///p2VFmM3AiYwZZhGdBqXWhaQQqCkNtBLTxtm3r5z9e4XBmZmZiN0A2B8UtTC9IBpUGATkyYQeRdFO7jIwZbnwdkGTSl1uQDOJ8Ot8kPNJwAAAABJRU5ErkJggg=="
+												alt=""><span>现货</span></p><!----></div>
+									</li>
+									<li>
+										rate
+									</li>
+								</ul>
+								<ul class="table_cont">
+									<li>5</li>
+									<li><a href="/exchange/ok-bit" class="aClick"><img
+											alt="OK-BIT-OK-BIT"
+											data-src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1522666195455.jpg"
+											src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1522666195455.jpg"
+											lazy="loaded">OK-BIT
+									</a></li>
+									<li>--</li>
+									<li>0</li>
+									<li>韩国</li>
+									<li>
+										<div class="adver"><!----><p><img
+												
+												src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAAEhyb7BAAAAAXNSR0IArs4c6QAAAc5JREFUOBFjYEACjCC2iYlJAzMTQxGSODLzwqb4/8bGxu/gYswgFlBkmrS0tOmzZ88OgPhMIIKdnb0BROMGQLumw2SBRvxnVlZWPvXo0aNvIMFjS7wEmX78+MELUxFWcekHjA2nwW4G6r0FFFGFiyIxzp49C1YDFgIqnApigDwJFoASQPEasJuBjAwvG1F3NMkH9/Ylf2JkZHRGFgez0U3CUIBLAObw/zgU3AY6XA3sJpACkC9AGAgaofQMoPAekBxYEUgQ5AuQAAycOXMmE8gG28AElHx3f2/yBBZmxjKYAhBta2srOrdeJwvEBpn06T8jQ9LffwxnQQIw8O3bt+C1e1/ehfEZTE1NO2AcWBAAxZSsrKzEYOIoNEwRiiBdOeCECrKxoaGB6fPnz99kZGQ2ABPsa5grQE6UkpJygCViXGrB4Q30rMSWLVsWMDExqf3///+0hYWFAswgdBqXWrBB//796wEaMmljl+H3ulTl63///l6DbgCMj0st2CBg0vD8+/fv0x///p2VFmM3AiYwZZhGdBqXWhaQQqCkNtBLTxtm3r5z9e4XBmZmZiN0A2B8UtTC9IBpUGATkyYQeRdFO7jIwZbnwdkGTSl1uQDOJ8Ot8kPNJwAAAABJRU5ErkJggg=="
+												alt=""><span>现货</span></p><!----></div>
+									</li>
+									<li>
+										rate
+									</li>
+								</ul>
+							</div>
+							<div class="newPage">
+								<a href="/" class="aDisabled nuxt-link-exact-active nuxt-link-active">上一页</a>
+								<a href="/" class="nuxt-link-exact-active nuxt-link-active active">1</a>
+								<a href="/page2" class="">2</a>
+								<a href="/page3" class="">3</a>
+								<a href="/page4" class="">4</a>
+								<a href="/page5" class="">5</a>
+								<a href="/page6" class="">6</a>
+								<a href="/page7" class="">···</a>
+								<a href="/page19" class="">19</a>
+								<a href="/page2" class="">下一页</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="search_right"><a href="/App" class="bot goToUrl AppDown"
+			><img src="../static/images/newIndex/bannerRight.png" alt=""></a>
+				<div class="deal-list active">
+					<div class="list_nav">
+						<div class="list_nav_l"><img
+								src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAUCAYAAABiS3YzAAABS2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS42LWMxMzggNzkuMTU5ODI0LCAyMDE2LzA5LzE0LTAxOjA5OjAxICAgICAgICAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIi8+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+IEmuOgAAAlRJREFUOI2N1E1olUcUBuBnvlylsVHQJCr1B6OxtVDQlQWRriwKYlZF3AkiVIIgWIoglEK7qAU3ggE3LkSQGu0mVmxAoVDqHwq60hC14g/+ZlENimlyp4uZK583N7ce+OCbM+d958ycc94w/OsXmlgrFmAuPsR0jOEVnuAhXteDKlOQLcVOfImPMAsv8AhX8Cfm4BPcxU1M1MChLtNW7EMvWjCMvzGKNnRhOao4jaN4g39wMd/inUw7MYhVOIOTeN7gFh34CpvwGb7P/tU4j2qRHdNxCp/iJxyaglD2H8pxC/AdpmF2xquR/pxP2p+v8T52Mccvx9bs68KMChZLRTmOyzVECMVKofhxElWMfTFODObVJfyOjRjAUywqsA0B/Y3SidXxntonxj4hbCW0lUL6M35dXncWeXFBqnBTyxm2CcqkI7ghFRjaCqknb0jFamohtKzHqBgf1209kIoG0ypoz6eN4YNJREVloC7fwfoYvMTM/P9vJRO2S6M3iTRWx3tKJ3SHUPwQQsu1GCf+KoXNzMQwWuAOVpi6L8sn3MJtzK/bWSjpADwrcA5rpNmNTUlD0Y1lxFslb7vU9Ncy/n4Fh7EXu9EnFa7EU/emMR6JsXq95Nmcyc5KOvGqgns4iF3S7I9gdozV62K1R3NbjQ34DUNSF70d0z3SNB3DPEl1/s8+x7eSkh3I+GqZdExSnSGcwBZJfBu9cQd2SE/2ENvxR+bAu9L3DGsl9enF17gqVXtcEuVl+DhndBTfaNA19SJdsyU5242ZqCODb0vi/Iuk+A3tP20Wr6AeL8J+AAAAAElFTkSuQmCC"
+								alt="">
+							<p class="active">币种成交量排行榜</p></div>
+						<a href="/Rank/currency" class="list_nav_r"><p></p>
+							<p></p>
+							<p></p></a></div>
+					<div class="list_con">
+						<ul class="con-title">
+							<li>排名</li>
+							<li>名称</li>
+							<li>成交额</li>
+						</ul>
+						<a href="/coin/bitcoin" class="con-cont goToUrl">
+							<li class="color-red"><p>1</p></li>
+							<li title="比特币"><img alt=""
+												 data-src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1524738854323.jpg"
+												 src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1524738854323.jpg"
+												 lazy="loaded">BTC
+							</li>
+							<li>￥297.05亿</li>
+						</a><a href="/coin/fcoin-token" class="con-cont goToUrl">
+						<li class="color-red"><p>2</p></li>
+						<li title="FCoin Token"><img alt=""
+													 data-src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1529046896907.jpg"
+													 src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1529046896907.jpg"
+													 lazy="loaded">FT
+						</li>
+						<li>￥191.44亿</li>
+					</a><a href="/coin/ethereum" class="con-cont goToUrl">
+						<li class="color-red"><p>3</p></li>
+						<li title="以太坊"><img alt=""
+											 data-src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1524797967956.jpg"
+											 src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1524797967956.jpg"
+											 lazy="loaded">ETH
+						</li>
+						<li>￥125.84亿</li>
+					</a><a href="/coin/eos" class="con-cont goToUrl">
+						<li class=""><p>4</p></li>
+						<li title="柚子"><img alt=""
+											data-src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1521709470217.jpg"
+											src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1521709470217.jpg"
+											lazy="loaded">EOS
+						</li>
+						<li>￥112.6亿</li>
+					</a><a href="/coin/bitcoin-cash" class="con-cont goToUrl">
+						<li class=""><p>5</p></li>
+						<li title="比特现金"><img alt=""
+											  data-src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1524737438547.jpg"
+											  src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1524737438547.jpg"
+											  lazy="loaded">BCH
+						</li>
+						<li>￥38.73亿</li>
+					</a><a href="/coin/ripple" class="con-cont goToUrl">
+						<li class=""><p>6</p></li>
+						<li title="瑞波币"><img alt=""
+											 data-src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1521708776468.jpg"
+											 src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1521708776468.jpg"
+											 lazy="loaded">XRP
+						</li>
+						<li>￥26.01亿</li>
+					</a><a href="/coin/litecoin" class="con-cont goToUrl">
+						<li class=""><p>7</p></li>
+						<li title="莱特币"><img alt=""
+											 data-src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1521708972425.jpg"
+											 src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1521708972425.jpg"
+											 lazy="loaded">LTC
+						</li>
+						<li>￥25.85亿</li>
+					</a><a href="/coin/ethereum-classic" class="con-cont goToUrl">
+						<li class=""><p>8</p></li>
+						<li title="以太经典"><img alt=""
+											  data-src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1521710563575.jpg"
+											  src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1521710563575.jpg"
+											  lazy="loaded">ETC
+						</li>
+						<li>￥18.25亿</li>
+					</a><a href="/coin/binance-coin" class="con-cont goToUrl">
+						<li class=""><p>9</p></li>
+						<li title="币安币"><img alt=""
+											 data-src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1521711028020.jpg"
+											 src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1521711028020.jpg"
+											 lazy="loaded">BNB
+						</li>
+						<li>￥15.91亿</li>
+					</a><a href="/coin/tron" class="con-cont goToUrl">
+						<li class=""><p>10</p></li>
+						<li title="波场"><img alt=""
+											data-src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1521710311443.jpg"
+											src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1521710311443.jpg"
+											lazy="loaded">TRX
+						</li>
+						<li>￥13.61亿</li>
+					</a></div>
+				</div>
+				<div class="new-list active">
+					<div class="list_nav">
+						<div class="list_nav_l"><img
+								src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAQCAYAAAAMJL+VAAABS2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS42LWMxMzggNzkuMTU5ODI0LCAyMDE2LzA5LzE0LTAxOjA5OjAxICAgICAgICAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIi8+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+IEmuOgAAAddJREFUOI3dUq1y20AQ/r7bkzRTK/UEWThWsUGhMqUOMTIryTuE5wFKyvoAfQCThLS0M4KdaXDdYAd1nMruxNLdFsiSldbImZAuut3Z2+9nl99nbwBggmcK81yD/yOAV9Mv9SOIzyXsXxnbGz9qsC8yCftXlCg9CKB5ECYFAFJOH7cwAQB1D/MnAYAcAroAOaIJkl3dJIAeNLwFICUGEKt3MwAFTZjtcDmE6t3TAEw4BADV6oeqz2mkswcmqv5gBbaeUfuv7mFOygAMxpQohfoCQAzoAgAkfPm+zutQX30k5dSVv94Z25vSSOY29xeUKDUmOnfl/WUD0Prsq3UuYb+gCTJsmau6u/qKmLjN8m2rTaKUJhjVIyQDmNAECU04VtR/LfCvz6ruMyljVS0aZfX5amFsb7qlP1f4FVCfcgtKOyBN5qv1RbuDv31WX+YAYho77VxQDMXeZZP2TL3LAV3Q2DOov1FfLgDA3l5PTro+N4wh0Rxg2igjTarqvvlqNdsNlhgCgBj4cjWT4CgFzUh9+aG75NeNz11W6l1OY9NWGTkkJJbgKN0u+JN3v2/qvz4HAAUKQgtfrfOWxD7J+2Kr9LjJTybXX5u62yxvm7qE/WO3Wf5s8j8RNs3EbU5g+AAAAABJRU5ErkJggg=="
+								alt="">
+							<p class="active">新币上市</p></div>
+					</div>
+					<div class="list_con">
+						<ul class="con-title">
+							<li>日期</li>
+							<li>名称</li>
+							<li>涨跌幅</li>
+							<li>价格</li>
+						</ul>
+						<a href="/coin/coinex-token" class="con-cont goToUrl">
+							<li>2018-06-22</li>
+							<li title="CoinEx Token">CET</li>
+							<li class="color-green">+27.2%</li>
+							<li>￥0.3434</li>
+						</a><a href="/coin/vsportcoin" class="con-cont goToUrl">
+						<li>2018-06-11</li>
+						<li title="体育币">VSC</li>
+						<li class="color-green">+3.19%</li>
+						<li>￥0.2735</li>
+					</a><a href="/coin/ocx" class="con-cont goToUrl">
+						<li>2018-05-31</li>
+						<li title="OCX">OCX</li>
+						<li class="color-red">-15.32%</li>
+						<li>￥0.6165</li>
+					</a><a href="/coin/globalvillage-ecosystem" class="con-cont goToUrl">
+						<li>2018-05-31</li>
+						<li title="世界村">GVE</li>
+						<li class="color-green">+15.54%</li>
+						<li>￥0.0399</li>
+					</a><a href="/coin/red-community token" class="con-cont goToUrl">
+						<li>2018-05-31</li>
+						<li title="红色令牌">RED</li>
+						<li class="color-red">-0.75%</li>
+						<li>￥0.3194</li>
+					</a><a href="/coin/etherzero" class="con-cont goToUrl">
+						<li>2018-05-31</li>
+						<li title="以太零">ETZ</li>
+						<li class="color-green">+74.46%</li>
+						<li>￥1.89</li>
+					</a><a href="/coin/niu-coin system" class="con-cont goToUrl">
+						<li>2018-05-31</li>
+						<li title="牛币">NCS</li>
+						<li class="color-green">+0.37%</li>
+						<li>￥0.2503</li>
+					</a><a href="/coin/seele" class="con-cont goToUrl">
+						<li>2018-05-29</li>
+						<li title="SEELE">SEELE</li>
+						<li class="color-green">+10.75%</li>
+						<li>￥1.36</li>
+					</a></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<footer>
+	<div class="container">
+		<div class="links">
+			<div class="links-info">
+				<div class="links-info-title">
+					友情链接：
+				</div>
+				<div class="links-info-all">
+				</div>
+			</div>
+			<Vline></Vline>
+		</div>
+		<div class="cont">
+			<ul>
+				<li>
+					<p>关于我们</p>
+					<a href="/About" target="_blank">关于考拉</a>
+					<a href="/Join" target="_blank">加入我们</a>
+				</li>
+				<li>
+					<p>关注我们</p>
+					<a href="https://t.me/joinchat/FwW6lwrZ8CIDqxGIp1L1oA" target="_blank">Telegram</a>
+					<a href="https://www.facebook.com/coin.la.98" target="_blank">Facebook</a>
+					<a href="https://twitter.com/mpOSxKrPDcVzXr2" target="_blank">Twitter</a>
+				</li>
+			</ul>
+			<div class="guanZhu">
+				<img src="./static/images/icon/weiXin.jpg" alt="">
+				<p>关注考拉公众号</p>
+			</div>
+		</div>
+		<p class="Copyright">Copyright © 2018 - CoinLa.com All Rights Reserved <a target="_blank"
+																				  href="http://www.coinla.com/">备案号：</a><a
+				target="_blank" href="https://www.miibeian.gov.cn/">浙ICP备18008896号-1</a></p>
+	</div>
+
+</footer>
+</body>
+</html>

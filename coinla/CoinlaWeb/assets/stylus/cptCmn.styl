@@ -1,0 +1,131 @@
+.list_nav {
+  border-bottom: 1px solid $border-color
+  padding: 0 18px
+  display: flex
+  align-items: center
+  justify-content: space-between
+  height: 55px
+  font-size: $font-s
+  color: $size-smain
+  &_l {
+    display: flex
+    align-items: center
+    img {
+      margin-right: 8px
+    }
+    p {
+      transition: all .1s linear
+      user-select: none
+      margin-right: 16px
+      height: 16px
+      display: flex
+      align-items: flex-end
+      &.active {
+        font-size: $font-m
+        color: $size-main
+      }
+    }
+  }
+
+  &_r {
+    display: flex
+    hover-hand()
+    extend-click()
+    p {
+      width: 4px
+      height: 4px
+      background: #aeaeae
+      border-radius: 2px
+      margin: 2px
+      transition: all .2s linear
+    }
+    &:hover {
+      p {
+        background: $main-color
+      }
+    }
+  }
+}
+
+.list_btn {
+  display: flex
+  justify-content: space-between
+  line-height: 37px
+  height: 40px
+  border-bottom: 1px solid $border-color
+  p {
+    width: calc((100% - 40px) / 3)
+    text-align: center
+    border-bottom: 2px solid transparent
+    transition: all .2s linear
+    hover-hand()
+    &.active {
+      border-color: #cc981a
+      color: #cc981a
+    }
+    &:hover {
+      color: #cc981a
+    }
+  }
+}
+
+.list_con {
+  padding: 0 18px
+  .con-title {
+    height: 50px
+    color: $size-smain
+    border-bottom: 1px solid $border-color
+    margin-bottom: 16px
+    font-size: $font-s
+  }
+  .con-cont {
+    padding-bottom: 20px
+    color: $size-main
+    font-size: 13px
+    &:hover {
+      li {
+        &:nth-child(2) {
+          color: #0d93ff
+        }
+      }
+    }
+  }
+  .con-title, .con-cont {
+    display: flex
+    align-items: center
+    li {
+      display: flex
+      align-items: center
+      transition: all .2s linear
+      img {
+        width: 14px
+        height: 14px
+        border-radius: 50%
+        margin-right: 6px
+      }
+      &:last-child {
+        justify-content: flex-end
+      }
+    }
+  }
+}
+
+.hot_con {
+  padding: 20px 10px 0
+  display: flex
+  flex-wrap: wrap
+  li {
+    transition: all .2s linear
+    cursor: pointer
+    padding: 10px 15px
+    margin: 0 10px
+    margin-bottom: 20px
+    background-color: #f6f6f6
+    min-width: 60px
+    border-radius: 2px
+    &:hover {
+      background-color: #f5ebd0
+      color: #e2be6d
+    }
+  }
+}

@@ -1,0 +1,109 @@
+import Vue from 'vue'
+import NuxtLoading from './components/nuxt-loading.vue'
+
+import '..\\assets\\rest-et\\index.css'
+
+import '..\\assets\\stylus\\index.styl'
+
+
+let layouts = {
+
+  "_default": () => import('..\\layouts\\default.vue'  /* webpackChunkName: "layouts_default" */).then(m => m.default || m)
+
+}
+
+let resolvedLayouts = {}
+
+export default {
+  head: {"htmlAttrs":{"lang":"zh-Hans"},"title":"考拉行情--聚合全球行情,挖掘数据价值-CoinLa","meta":[{"charset":"utf-8"},{"http-equiv":"x-ua-compatible","content":"ie=edge"},{"name":"viewport","content":"width=device-width,initial-scale=1.0"},{"hid":"keywords","name":"keywords","content":"数字货币行情, 虚拟币行情, 数字货币数据分析, 数字货币行业大数据, 虚拟币数据分析,区块链"},{"hid":"description","name":"description","content":"考拉行情(www.coinla.com) 是最专业的数字货币行业大数据平台之一,专注于为数字货币用户提供数据分析,数据挖掘服务。我们拥有全球1000多个数字货币,150多家交易平台,5千多个交易对的数据资源,提供最专业的数字货币趋势分析,行情分析等多维度,全方位的分析服务,数字货币账本服务"},{"hid":"x5-orientation","name":"x5-orientation","content":"portrait"},{"hid":"x5-fullscreen","name":"x5-orientation","content":"true"},{"hid":"x5-page-mode","name":"x5-orientation","content":"app"}],"link":[{"rel":"assets","href":"http:\u002F\u002Fwww.coinla.com"}],"style":[],"script":[]},
+  render(h, props) {
+    const loadingEl = h('nuxt-loading', { ref: 'loading' })
+    const layoutEl = h(this.layout || 'nuxt')
+    const templateEl = h('div', {
+      domProps: {
+        id: '__layout'
+      },
+      key: this.layoutName
+    }, [ layoutEl ])
+
+    const transitionEl = h('transition', {
+      props: {
+        name: 'layout',
+        mode: 'out-in'
+      }
+    }, [ templateEl ])
+
+    return h('div',{
+      domProps: {
+        id: '__nuxt'
+      }
+    }, [
+      loadingEl,
+      transitionEl
+    ])
+  },
+  data: () => ({
+    layout: null,
+    layoutName: ''
+  }),
+  beforeCreate () {
+    Vue.util.defineReactive(this, 'nuxt', this.$options.nuxt)
+  },
+  created () {
+    // Add this.$nuxt in child instances
+    Vue.prototype.$nuxt = this
+    // add to window so we can listen when ready
+    if (typeof window !== 'undefined') {
+      window.$nuxt = this
+    }
+    // Add $nuxt.error()
+    this.error = this.nuxt.error
+  },
+  
+  mounted () {
+    this.$loading = this.$refs.loading
+  },
+  watch: {
+    'nuxt.err': 'errorChanged'
+  },
+  
+  methods: {
+    
+    errorChanged () {
+      if (this.nuxt.err && this.$loading) {
+        if (this.$loading.fail) this.$loading.fail()
+        if (this.$loading.finish) this.$loading.finish()
+      }
+    },
+    
+    setLayout (layout) {
+      if (!layout || !resolvedLayouts['_' + layout]) layout = 'default'
+      this.layoutName = layout
+      let _layout = '_' + layout
+      this.layout = resolvedLayouts[_layout]
+      return this.layout
+    },
+    loadLayout (layout) {
+      if (!layout || !(layouts['_' + layout] || resolvedLayouts['_' + layout])) layout = 'default'
+      let _layout = '_' + layout
+      if (resolvedLayouts[_layout]) {
+        return Promise.resolve(resolvedLayouts[_layout])
+      }
+      return layouts[_layout]()
+      .then((Component) => {
+        resolvedLayouts[_layout] = Component
+        delete layouts[_layout]
+        return resolvedLayouts[_layout]
+      })
+      .catch((e) => {
+        if (this.$nuxt) {
+          return this.$nuxt.error({ statusCode: 500, message: e.message })
+        }
+      })
+    }
+  },
+  components: {
+    NuxtLoading
+  }
+}
+

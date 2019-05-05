@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    .g-rect-path{
+      fill: none;
+      stroke-width:10;
+      stroke:#d3dce6;
+      stroke-linejoin:round;
+      stroke-linecap:round;
+    }
+
+    .g-rect-fill{
+      fill: none;
+      stroke-width:10;
+      stroke:#ff7700;
+      stroke-linejoin:round;
+      stroke-linecap:round;
+      stroke-dasharray: 1370, 1370;
+      stroke-dashoffset: 0;
+      animation: lineMove 2s linear;
+    }
+
+    @keyframes lineMove {
+      0%{
+        stroke-dasharray: 0, 1350;
+      }
+      100%{
+        stroke-dasharray: 1350, 1350;
+      }
+    }
+  </style>
+</head>
+<body>
+<svg class="peity" height="20" width="80">
+  <polygon fill="#f4f4f4"
+           points="0 19.5 0 18.923640167364013 2.962962962962963 19.40062761506276 5.925925925925926 19.5 8.88888888888889 19.003138075313807 11.851851851851851 18.923640167364013 14.814814814814813 18.605648535564853 17.77777777777778 18.943514644351463 20.74074074074074 18.54602510460251 23.703703703703702 18.26778242677824 26.666666666666664 17.870292887029287 29.629629629629626 17.25418410041841 32.59259259259259 15.147489539748953 35.55555555555556 16.02196652719665 38.51851851851852 14.412133891213387 41.48148148148148 10.993723849372383 44.44444444444444 11.649581589958157 47.407407407407405 9.443514644351461 50.37037037037037 5.965481171548111 53.33333333333333 9.443514644351461 56.29629629629629 8.628661087866108 59.25925925925925 9.006276150627611 62.22222222222222 9.10564853556485 65.18518518518518 7.933054393305438 68.14814814814814 5.885983263598318 71.11111111111111 5.408995815899582 74.07407407407408 0.9372384937238465 77.03703703703704 0.5 80 1.1757322175732128 80 19.5"></polygon>
+  <polyline fill="none"
+            points="0 18.923640167364013 2.962962962962963 19.40062761506276 5.925925925925926 19.5 8.88888888888889 19.003138075313807 11.851851851851851 18.923640167364013 14.814814814814813 18.605648535564853 17.77777777777778 18.943514644351463 20.74074074074074 18.54602510460251 23.703703703703702 18.26778242677824 26.666666666666664 17.870292887029287 29.629629629629626 17.25418410041841 32.59259259259259 15.147489539748953 35.55555555555556 16.02196652719665 38.51851851851852 14.412133891213387 41.48148148148148 10.993723849372383 44.44444444444444 11.649581589958157 47.407407407407405 9.443514644351461 50.37037037037037 5.965481171548111 53.33333333333333 9.443514644351461 56.29629629629629 8.628661087866108 59.25925925925925 9.006276150627611 62.22222222222222 9.10564853556485 65.18518518518518 7.933054393305438 68.14814814814814 5.885983263598318 71.11111111111111 5.408995815899582 74.07407407407408 0.9372384937238465 77.03703703703704 0.5 80 1.1757322175732128"
+            stroke="#3499da" stroke-width="1" stroke-linecap="square"></polyline>
+</svg>
+
+<c:if test="${list.totalPage > 1}">
+<div class="newPage" data="${list.currentPage}">
+  <c:if test="${list.currentPage == 1}">
+    <a href="javascript:0;" class="aDisabled">上一页</a>
+  </c:if>
+  <c:if test="${list.currentPage != 1}">
+    <c:if test="${list.currentPage == 2}">
+      <a
+        href="http://localhost:8080/coinla.api.pc/rank/exchange.html">上一页</a>
+    </c:if>
+    <c:if test="${list.currentPage > 2}">
+      <a
+        href="http://localhost:8080/coinla.api.pc/rank/exchange/list_${list.currentPage-1}.html">上一页</a>
+    </c:if>
+  
+  </c:if>
+  <c:if test="${list.currentPage > 4}">
+    <c:if test="${list.totalPage >= 8}">
+      <c:if test="${list.currentPage+4 <= list.totalPage}">
+        <a
+          href="http://localhost:8080/coinla.api.pc/rank/exchange.html">1</a>
+        <a
+          href="http://localhost:8080/coinla.api.pc/rank/exchange/list_${list.currentPage-3}.html">···</a>
+        <a
+          href="http://localhost:8080/coinla.api.pc/rank/exchange/list_${list.currentPage-2}.html">${ list.currentPage-2 }</a>
+        <a
+          href="http://localhost:8080/coinla.api.pc/rank/exchange/list_${list.currentPage-1}.html">${ list.currentPage-1 }</a>
+        <a
+          href="http://localhost:8080/coinla.api.pc/rank/exchange/list_${list.currentPage}.html">${ list.currentPage }</a>
+        <a
+          href="http://localhost:8080/coinla.api.pc/rank/exchange/list_${list.currentPage+1}.html">${ list.currentPage+1 }</a>
+        <a
+          href="http://localhost:8080/coinla.api.pc/rank/exchange/list_${list.currentPage+2}.html">${ list.currentPage+2 }</a>
+        <a
+          href="http://localhost:8080/coinla.api.pc/rank/exchange/list_${list.currentPage+3}.html">···</a>
+        <a
+          href="http://localhost:8080/coinla.api.pc/rank/exchange/list_${list.totalPage}.html">${list.totalPage}</a>
+      </c:if>
+      <c:if test="${list.currentPage+4 > list.totalPage}">
+        <a
+          href="http://localhost:8080/coinla.api.pc/rank/exchange.html">1</a>
+        <a
+          href="http://localhost:8080/coinla.api.pc/rank/exchange/list_${list.totalPage-6}.html">···</a>
+        <a
+          href="http://localhost:8080/coinla.api.pc/rank/exchange/list_${list.totalPage-5}.html">${ list.totalPage-5 }</a>
+        <a
+          href="http://localhost:8080/coinla.api.pc/rank/exchange/list_${list.totalPage-4}.html">${ list.totalPage-4 }</a>
+        <a
+          href="http://localhost:8080/coinla.api.pc/rank/exchange/list_${list.totalPage-3}.html">${ list.totalPage-3 }</a>
+        <a
+          href="http://localhost:8080/coinla.api.pc/rank/exchange/list_${list.totalPage-2}.html">${ list.totalPage-2 }</a>
+        <a
+          href="http://localhost:8080/coinla.api.pc/rank/exchange/list_${list.totalPage-1}.html">${ list.totalPage-1 }</a>
+        <a
+          href="http://localhost:8080/coinla.api.pc/rank/exchange/list_${list.totalPage}.html">${list.totalPage}</a>
+      </c:if>
+    </c:if>
+    <c:if test="${list.totalPage < 8}">
+      <a
+        href="http://localhost:8080/coinla.api.pc/rank/exchange.html"
+        class="">1</a>
+      <c:forEach begin="2" end="${list.totalPage }" var="i">
+        <a
+          href="http://localhost:8080/coinla.api.pc/rank/exchange/list_${i}.html"
+          class="">${ i}</a>
+      </c:forEach>
+    </c:if>
+  </c:if>
+  <c:if test="${list.currentPage <= 4}">
+    <c:if test="${list.totalPage >= 8}">
+      <a
+        href="http://localhost:8080/coinla.api.pc/rank/exchange.html">1</a>
+      <a
+        href="http://localhost:8080/coinla.api.pc/rank/exchange/list_2.html">2</a>
+      <a
+        href="http://localhost:8080/coinla.api.pc/rank/exchange/list_3.html">3</a>
+      <a
+        href="http://localhost:8080/coinla.api.pc/rank/exchange/list_4.html">4</a>
+      <a
+        href="http://localhost:8080/coinla.api.pc/rank/exchange/list_5.html">5</a>
+      <a
+        href="http://localhost:8080/coinla.api.pc/rank/exchange/list_6.html">6</a>
+      <a
+        href="http://localhost:8080/coinla.api.pc/rank/exchange/list_7.html">···</a>
+      <a
+        href="http://localhost:8080/coinla.api.pc/rank/exchange/list_${list.totalPage}.html">${list.totalPage}</a>
+    </c:if>
+    <c:if test="${list.totalPage < 8}">
+      <a
+        href="http://localhost:8080/coinla.api.pc/rank/exchange.html"
+        class="">1</a>
+      <c:forEach begin="2" end="${list.totalPage }" var="i">
+        <a
+          href="http://localhost:8080/coinla.api.pc/rank/exchange/list_${i}.html">${ i }</a>
+      </c:forEach>
+    </c:if>
+  </c:if>
+  <c:if test="${list.totalPage == list.currentPage}">
+    <a href="javascript:0;" class="aDisabled">下一页</a>
+  </c:if>
+  <c:if test="${list.totalPage > list.currentPage}">
+    <a
+      href="http://localhost:8080/coinla.api.pc/rank/exchange/list_${list.currentPage+1}.html">下一页</a>
+  </c:if>
+</div>
+</c:if>
+
+<a href="/App">sdadadas</a>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" class="circle-load-rect-svg" width="300" height="200" viewbox="0 0 600 400">
+    <polyline points="5 5, 575 5, 575 200, 5 200" class="g-rect-path"/>
+    <polyline points="5 5, 575 5, 575 200, 5 200" class="g-rect-fill"/>
+</svg>
+http://quotn.coinla.com/
+http://115.233.210.34:33077/b2c_mall/swagger-ui.html#/
+</body>
+<script>
+  let str = 'Https://www.cnblogs.com/lxg0/articles/javascript_reg.html'
+  let str1 = 'http://www.cnblogs.com/lxg0/articles/javascript_reg.html'
+  let str2 = 'WWW.cnblogs.com/lxg0/articles/javascript_reg.html'
+  let pattern = /^https:\/\/www.|http:\/\/www.|www./i
+  // str.replace(pattern,"Long")
+  console.log(str.replace(pattern, ""))
+  console.log(str1.replace(pattern, ""))
+  console.log(str2.replace(pattern, ""))
+  let str4 = 'goo';
+  console.log(str4.padStart(5, 0))
+  var str5 = "12345678912312";
+
+  function fn(str) {
+    var reg = /(?=(?!b)(\d{3})+$)/g;
+    return str5.replace(reg, ',');
+  }
+
+  var res = fn(str5);
+  console.log(res);//12,345,678,912,312
+  // str.padStart(5, 'le') // 'legoo'
+  // str.padStart(4, 'le') // 'lgoo'
+  //
+  // str.padEnd(5, 'le') // 'goole'
+  // str.padEnd(4, 'le') // 'gool'
+</script>
+</html>

@@ -1,0 +1,38 @@
+<template>
+  <div>
+    <div class="yesMode" v-show="">
+      <img id="yesImg" src="" alt="">
+      <p>长按发送给好友</p>
+    </div>
+    <div v-show="" ref="downloadApp" class="jietu">
+      <h1>我是截图</h1>
+    </div>
+  </div>
+</template>
+
+<script>
+  import html2canvas from 'html2canvas';
+
+  export default {
+    created() {
+      this.$nextTick(() => {
+        console.log($(".hello"))
+        html2canvas(this.$refs.downloadApp).then(function (canvas) {
+          var image = document.getElementById("yesImg");
+          image.src = canvas.toDataURL("image/png");
+        });
+      })
+    },
+    methods: {
+      canvasHandle() {
+        html2canvas(document.body).then(function (canvas) {
+          document.body.appendChild(canvas);
+        });
+      }
+    }
+  }
+</script>
+
+<style scoped>
+
+</style>

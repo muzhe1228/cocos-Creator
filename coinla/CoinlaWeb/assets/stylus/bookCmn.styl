@@ -1,0 +1,129 @@
+.child-stat {
+  margin-top: 16px
+  &-top {
+    display: flex
+    justify-content: space-between
+    padding: 20px 0
+    border-bottom: 1px solid $border-color
+    &-l {
+      width: 206px
+    }
+    &-r {
+      width: calc(100% - 288px)
+      display: flex
+      align-items: flex-start
+      flex-wrap: wrap
+      li {
+        font-size: $font-m
+        width: 50%
+        display: flex
+        align-items: center
+        //margin-bottom: 26px
+        &:last-child, &:nth-last-child(2) {
+          margin-bottom: 0
+        }
+        .legend {
+          width: 12px
+          height: 12px
+          background-color: $main-color
+          margin-right: 10px
+        }
+        .name {
+          color: $size-main
+          margin-right: 10px
+        }
+        .ratio {
+          color: $size-ssmain
+        }
+      }
+    }
+  }
+}
+.info {
+  color: $size-main
+  font-size: $font-s
+  &-title {
+    height: 60px
+    background-color: #f8f8f8
+    color: $size-smain
+  }
+  &-single {
+    height: 60px
+    overflow: hidden
+    transition: all .3s
+    //&:nth-child(even) {
+    //  background-color: #f8f8f8
+    //}
+    &:hover {
+      background-color: #f8f8f8
+    }
+    .show-ul{
+      height: 60px
+    }
+    .none-ul {
+      background: #f5f5f5
+      display: flex
+      flex-wrap: wrap
+      padding: 10px 22px
+      align-items: center
+      li {
+        width: calc(100% / 3)
+        display: flex
+        align-items: center
+        line-height: 36px
+        .name {
+          min-width: 80px
+          color: $size-ssmain
+          margin-right: 20px
+          display: flex
+          justify-content: flex-end
+          align-items: center
+          img{
+            margin-right: 6px
+            width: 20px
+            height: 20px
+            border-radius: 10px
+          }
+        }
+        p {
+          &:nth-child(2) {
+            color: $size-main
+          }
+        }
+      }
+    }
+  }
+  &-title, .show-ul {
+     display: flex
+     align-items: center
+     .btn {
+       color: #52a1d5
+       p {
+         position: relative
+         text-decoration: underline
+         line-height: 24px
+         display: inline
+         padding-right: 10px
+         cursor: pointer
+         span {
+           position: absolute
+           border: 3px solid transparent
+           border-bottom-color: $main-color
+           border-right-color: $main-color
+           width: 0
+           height: 0
+           right: 0
+           bottom: 0
+         }
+       }
+     }
+     .pic_name{
+       img{
+         margin-right: 6px
+         width: 20px
+         height: 20px
+         border-radius: 10px
+       }
+     }
+   }
+}

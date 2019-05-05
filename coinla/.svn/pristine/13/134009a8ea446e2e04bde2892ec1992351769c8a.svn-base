@@ -1,0 +1,189 @@
+<template>
+  <div class="download">
+    <div class="download-title">
+      <img src="/static/images/newDownload/title.png" alt="">
+    </div>
+    <div class="download-mode">
+      <div class="modeLogo">
+        <img src="/static/images/newDownload/logo_text.png" alt="">
+      </div>
+      <div class="modeIntro">
+        考拉行情（CoinLa）的愿景是致力创建并维护成一个集数字资产行情工具+智能内容社区推送+讨论社区+智能理财于一体的全球区块链投融资数据综合生态平台。
+      </div>
+      <ul class="modeIcon">
+        <li>
+          <img src="/static/images/newDownload/free.png" alt="">
+          <p>免费</p>
+        </li>
+
+        <li>
+          <img src="/static/images/newDownload/clock.png" alt="">
+          <p>实时</p>
+        </li>
+        <li>
+          <img src="/static/images/newDownload/all.png" alt="">
+          <p>全面</p>
+        </li>
+      </ul>
+      <div class="modeBtn">
+        <button @click="download">立即下载</button>
+      </div>
+    </div>
+    <div class="download-bot">
+      <p class="botImg1">
+        <img src="/static/images/newDownload/bot1.png" alt="">
+      </p>
+      <p class="botImg2">
+        <img src="/static/images/newDownload/botLogo.png" alt="">
+      </p>
+    </div>
+    <transition name="fade">
+      <p class="yd" v-if="show" @click="show = false"><img src="/static/images/download/yd.png" alt=""></p>
+    </transition>
+  </div>
+</template>
+
+<script>
+  import {shareWeixin, shareSize, isIos} from 'assets/js/case'
+  import {getCoinlaSingle} from 'assets/js/httpAll'
+
+  export default {
+    data() {
+      return {
+        show: false,
+        shareData: {}
+      }
+    },
+    metaInfo: {
+      title: '下载考拉APP'
+    },
+    mounted() {
+      this.getShareSize(0)
+    },
+    methods: {
+      getShareSize(type) {
+        getCoinlaSingle('/share/multi', {type: type}).then((res) => {
+          if (res.data.code === 0) {
+            this.shareData = res.data.data
+            shareWeixin(window.location.href, res.data.data)
+          }
+        })
+      },
+      download() {
+        if (isIos()) {
+          window.location.href = 'https://itunes.apple.com/cn/app/coinla/id1359706851?mt=8'
+        } else {
+          this.is_weixn_qq()
+        }
+      },
+      is_weixn_qq() {
+        let ua = navigator.userAgent.toLowerCase();
+        if (ua.match(/MicroMessenger/i) == "micromessenger") {
+          this.show = true
+        } else {
+          window.location.href = 'https://api.coinla.com/download/android'
+        }
+      }
+    }
+  }
+</script>
+
+<style scoped lang="stylus">
+  @import "~assets/stylus/variable"
+  .download {
+    background: url(/static/images/newDownload/bg.jpg) no-repeat
+    background-size: 100% 100%
+    position: relative
+    img {
+      pointer-events: none;
+    }
+    &-title {
+      text-align: center
+      padding: .72rem 0
+      img {
+        width: 6.26rem
+      }
+    }
+    &-mode {
+      width: calc(100% - .96rem)
+      padding: 0 .44rem
+      background-color: #ffffff
+      border-radius: 6px
+      margin: auto
+      .modeLogo {
+        padding: .72rem 0 .6rem 0
+        text-align center
+        img {
+          width: 4rem
+        }
+      }
+      .modeIntro {
+        padding-bottom: .58rem
+        font-size: $font-s
+        line-height: .56rem
+        color: $size-color
+      }
+      .modeIcon {
+        display flex
+        justify-content: space-between
+        li {
+          width: 1.36rem
+          text-align center
+          img {
+            width: 100%
+          }
+          p {
+            margin-top: .24rem
+            color: $size-color
+            font-size: $font-s
+          }
+        }
+      }
+      .modeBtn {
+        width: 100%
+        padding: .64rem 0
+        text-align: center
+        button {
+          width: 3.28rem
+          height: .8rem
+          border-radius: .4rem
+          background: linear-gradient(#d9b34d, #d2b46d)
+          color: #fff
+          border: none
+          font-size: $font-m
+        }
+      }
+    }
+    &-bot {
+      padding-top: .64rem
+      text-align: center
+      .botImg1 {
+        img {
+          width: 1.6rem
+        }
+      }
+      .botImg2 {
+        padding: .32rem 0 .48rem 0
+        img {
+          width: 4rem
+        }
+      }
+    }
+    .yd {
+      /*display: none*/
+      width: 100%
+      height: 100%
+      position: fixed
+      background-color: rgba(0, 0, 0, .5)
+      left: 0
+      top: 0
+      z-index: 9999
+      img {
+        position: absolute
+        right: 10px
+        width: 6.1rem
+        top: 0
+      }
+    }
+  }
+</style>

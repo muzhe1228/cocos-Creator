@@ -1,0 +1,83 @@
+<template>
+  <div>
+    <h2>文字停顿滚动</h2>
+    <div class="text-container">
+      <transition class="inner-container2" name="slide" mode="out-in">
+        <p class="text2" :key="text.id">{{text.val}}</p>
+      </transition>
+    </div>
+  </div>
+</template>
+
+<script>
+  const totalDuration = 2000;
+  export default {
+    name: 'demo11',
+    props: [],
+    data() {
+      return {
+        arr: [],
+        number: 0,
+      }
+    },
+    computed: {
+      text() {
+        return {
+          id: this.number,
+          val: this.arr[this.number]
+        }
+      }
+    },
+    mounted() {
+      this.startMove()
+    },
+    methods: {
+      startMove() {
+        //从接口获取数据
+        let arrData1 = ['1 不是被郭德纲发现的，也不是一开始就收为徒弟。',
+          '2 现在雅阁这个状态像极了新A4L上市那段日子。',
+          '3 低配太寒碜，各种需要加装，中配定价过高，又没啥特色',
+          '4 然后各种机油门、经销商造反什么的幺蛾子。',
+          '5 看五月销量，建议参考A4，打8折吧。',
+          '1 不是被郭德纲发现的，也不是一开始就收为徒弟。']
+        this.arr = arrData1
+        let timer = setTimeout(() => {
+          /*轮播的个数*/
+          if (this.number === 5) {
+            this.number = 0;
+          } else {
+            this.number += 1;
+          }
+          this.startMove();
+        }, totalDuration)
+      },
+    }
+  }
+</script>
+
+<style scoped>
+  h2 {
+    margin: 20px 0
+  }
+  .text-container {
+    width: 500px;
+    height: 30px;
+    line-height: 30px;
+    margin: 10px auto;
+    border: 1px solid cornflowerblue;
+    overflow: hidden;
+  }
+   .text2 {
+    margin: 0;
+  }
+  /*文字无缝滚动*/
+  .slide-enter-active, .slide-leave-active {
+    transition: all 0.2s linear;
+  }
+  .slide-leave-to {
+    transform: translateY(-20px);
+  }
+  .slide-enter{
+    transform: translateY(20px);
+  }
+</style>

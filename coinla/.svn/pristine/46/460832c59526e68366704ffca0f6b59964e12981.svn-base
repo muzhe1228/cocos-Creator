@@ -1,0 +1,47 @@
+<template>
+  <div class="widgets">
+    <div class="ios" v-show="ios">
+      <img src="/static/images/widgets/iosWidgets.jpg" alt="">
+    </div>
+    <div class="android" v-show="android">
+      <img src="/static/images/widgets/androidWidgets.jpg" alt="">
+    </div>
+  </div>
+</template>
+
+<script>
+  import {isIos} from 'assets/js/case'
+  export default {
+    name: 'widgets',
+    metaInfo: {
+      title: '桌面小组件'
+    },
+    data () {
+      return {
+        ios: false,
+        android: false
+      }
+    },
+    mounted () {
+      this.judge()
+    },
+    methods: {
+      judge () {
+        if(isIos()){
+          this.ios = true
+        }else{
+          this.android = true
+        }
+      }
+    }
+  }
+</script>
+
+<style scoped lang="stylus">
+  .widgets{
+    width:100%
+    img{
+      width:100%
+    }
+  }
+</style>

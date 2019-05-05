@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>考拉行情交易所</title>
+	<link rel="stylesheet" href="../css/icon/style.css">
+	<link rel="stylesheet/less" href="../css/exchange.less">
+	<link rel="icon"  type="image/x-icon" href="../favicon.ico">
+	<script src="../js/jquery.min.js"></script>
+	<script src="../js/less.min.js"></script>
+	<script src="../js/common.js"></script>
+	<script src="../js/footer.js"></script>
+</head>
+<body>
+<header>
+	<div class="container v-head">
+		<a href="/" class="logo"><img src="../static/images/icon/logo.png"></a>
+		<div class="v-head__menu">
+			<div class="kenMenu">
+				<a href=".." class="item">首页</a>
+				<a href="/Optional" class="item">自选</a>
+				<div class="kenSubMenu item">
+					<p>排行<span></span></p>
+					<div class="subMenuInfo">
+						<a href="/Rank">涨跌幅榜</a>
+						<a href="/Rank/currency">币种成交榜</a>
+						<a href="/Rank/bourse">交易所成交榜</a>
+						<a href="/Rank/trend">市值趋势</a>
+					</div>
+				</div>
+				<a href="./index.html" class="item">交易所</a>
+				<a href="../template.html" class="item">模块概念</a>
+				<a class="item">账本</a>
+				<a class="item" href="/App" target="_blank">App</a>
+			</div>
+			<div>
+				<p class="login">
+					<span>注册</span> / <span>登录</span>
+				</p>
+			</div>
+		</div>
+	</div>
+	<div class="hover-hand">
+		<div class="hover-hand-wrap">
+			<div class="hover-hand-logo"></div>
+			<div class="hover-hand__menu">
+				<div class="kenMenu">
+					<a href="/" class="item">首页</a>
+					<a href="/Optional" class="item">自选</a>
+					<div class="kenSubMenu item">
+						<p>排行<span></span></p>
+						<div class="subMenuInfo">
+							<a href="/Rank">涨跌幅榜</a>
+							<a href="/Rank/currency">币种成交榜</a>
+							<a href="/Rank/bourse">交易所成交榜</a>
+							<a href="/Rank/trend">市值趋势</a>
+						</div>
+					</div>
+					<a href="/exchange" class="item">交易所</a>
+					<a href="/template" class="item">模块概念</a>
+					<a class="item" @click="Ishref()">账本</a>
+					<a class="item" href="/App" target="_blank">App</a>
+				</div>
+				<div>
+					<p class="login" v-show="!isLine">
+						<span>注册</span> / <span>登录</span>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</header>
+
+<div class="bourse">
+	<div class="container">
+		<div class="bourse_left">
+			<div class="con_nav">
+				<p class="con_nav_l">交易所<span>Exchange</span></p>
+				<div class="con_nav_r">
+				</div>
+			</div>
+			<div class="con_cont resetLoading">
+				<div class="con_cont_all">
+					<div class="con_cont_slider">
+						<div class="cont-l"><a href="/exchange/fcoin"
+											   class=""><img alt="FCoin-FCoin"
+															 src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1528685682500.jpg"
+						></a></div>
+						<div class="cont-r">
+							<ul>
+								<li><a href="/exchange/fcoin" title="FCoin-FCoin"
+									   class="">FCoin<span>未知</span></a></li>
+								<li>
+								
+								</li>
+							</ul>
+							<p title="FCoin致力于创建一个自治的、高效的、透明的数字资产交易平台，让交易员和投资者可以放心地进行任何规模的交易，而无需担忧平台的公正性和透明性、数据安全隐私保护的可靠性、或其订单管理系统的完整性和稳健性。"
+							   class="size">
+								FCoin致力于创建一个自治的、高效的、透明的数字资产交易平台，让交易员和投资者可以放心地进行任何规模的交易，而无需担忧平台的公正性和透明性、数据安全隐私保护的可靠性、或其订单管理系统的完整性和稳健性。</p>
+							<div class="size-msg">
+								<div class="kind"><p>交易对&nbsp;：&nbsp;8</p>
+									<p>成交额(24h)&nbsp;：&nbsp;<span class="color-red"
+									>￥185.29亿</span>
+									</p></div>
+								<div class="adver"><!----><!----><!----></div>
+							</div>
+						</div>
+					</div>
+					<div class="con_cont_slider">
+						<div class="cont-l"><a href="/exchange/bitmex"
+											   class=""><img alt="BitMEX-BitMEX"
+															 src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1522231865926.jpg"
+						></a></div>
+						<div class="cont-r">
+							<ul>
+								<li><a href="/exchange/bitmex" title="BitMEX-BitMEX"
+									   class="">BitMEX<span
+								>塞舌尔</span></a></li>
+								<li>
+								
+								</li>
+							</ul>
+							<p title="BitMEX建立于塞舌尔共和国，是最先进的比特币衍生品交易所,对于比特币类产品提供高达100倍的杠杆，同时也提供针对其它数字货币产品的高杠杆。"
+							   class="size">
+								BitMEX建立于塞舌尔共和国，是最先进的比特币衍生品交易所,对于比特币类产品提供高达100倍的杠杆，同时也提供针对其它数字货币产品的高杠杆。</p>
+							<div class="size-msg">
+								<div class="kind"><p>交易对&nbsp;：&nbsp;7</p>
+									<p>成交额(24h)&nbsp;：&nbsp;<span class="color-red"
+									>￥113.54亿</span>
+									</p></div>
+								<div class="adver"><p><img
+										src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAAEhyb7BAAAAAXNSR0IArs4c6QAAAktJREFUOBG9U01oE0EUnt1tXDRgI7WHoAcjelGokSSE9KBBveRgPGgQz41CEKWXgieDVSiK9NBeCx7Ug0QvXjyIa/wBidmIF6/ZlIIiaRANxLLJ7vi9SWabhBoRwYHdN++9b755870ZxoZHJBLhw7FNX4nH44ccx3m0GeqfxWKx4+SP0a/2+lLQbTufab7/ZFkhOzii0ehRGRFL5eZIpCkheFbf5HY5bXuF8SOTEv1nC6ob9Hk0mUxmm2VZbxVFmaOg67pFVVWTZOHmKcaoADqiLCSRSOzhnCuWMeNSXhQEhvcPbx1+p6p0prCQyzKybPFBjTD/MPqLHkkDgdYlQAiLwGNN02bRm4+o72zvVPMAXa9UKopKaJzkRKfTOQjgsR7gJsLLlBsYdHzZS3H8l9m8lERIQGiirRrZ54xPFWtGtgEdJiSL2I5qqr6Y4dj3FCUI4LpCLon7j3aL+/f73VF6vpcNQIBZuijlcvkVxTwBALoMfyoUCl0pFAo2JUm1nrSMFiFUBMET6gnmGr5pfIJooKJUKqXX6/WrAN8BuAHQBRA4mH8qlUpf4dPtnIfv+ny+Jdu2G9QBinsVUY9AcgaxawCeg22AsAB7HnaH7CH8SdM016vGxXRm7gPc7vCIyAXgKcwE3sB27OY3754OrrK1BTwHv75T9esdfexHq3Wf83CacfE8uiz49xO18fK027nxnwrnJlNY0HLX9nWRnG18d3IbrOUtHL4fnkbJZDLQbDa/ecgRE1VlfHdA/3Jg73h4+d6z+gjo36d+AbY77uOaYyWrAAAAAElFTkSuQmCC"
+										alt=""><span>期货</span></p><!----><!---->
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="con_cont_slider">
+						<div class="cont-l"><a href="/exchange/okex" class=""><img
+								alt="OKEX-OKEX"
+								src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1522238835909.jpg"
+						></a></div>
+						<div class="cont-r">
+							<ul>
+								<li><a href="/exchange/okex" title="OKEX-OKEX"
+									   class="">OKEX<span>美国</span></a></li>
+								<li>
+								
+								</li>
+							</ul>
+							<p title="OKEX（www.okex.com）是全球著名的数字资产交易平台之一，主要面向全球用户提供比特币、莱特币、以太币等数字资产的现货和衍生品交易服务，隶属于OKEX"
+							   class="size">
+								OKEX（www.okex.com）是全球著名的数字资产交易平台之一，主要面向全球用户提供比特币、莱特币、以太币等数字资产的现货和衍生品交易服务，隶属于OKEX</p>
+							<div class="size-msg">
+								<div class="kind"><p>交易对&nbsp;：&nbsp;535</p>
+									<p>成交额(24h)&nbsp;：&nbsp;<span class="color-red"
+									>￥77.63亿</span>
+									</p></div>
+								<div class="adver"><p><img
+										src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAAEhyb7BAAAAAXNSR0IArs4c6QAAAktJREFUOBG9U01oE0EUnt1tXDRgI7WHoAcjelGokSSE9KBBveRgPGgQz41CEKWXgieDVSiK9NBeCx7Ug0QvXjyIa/wBidmIF6/ZlIIiaRANxLLJ7vi9SWabhBoRwYHdN++9b755870ZxoZHJBLhw7FNX4nH44ccx3m0GeqfxWKx4+SP0a/2+lLQbTufab7/ZFkhOzii0ehRGRFL5eZIpCkheFbf5HY5bXuF8SOTEv1nC6ob9Hk0mUxmm2VZbxVFmaOg67pFVVWTZOHmKcaoADqiLCSRSOzhnCuWMeNSXhQEhvcPbx1+p6p0prCQyzKybPFBjTD/MPqLHkkDgdYlQAiLwGNN02bRm4+o72zvVPMAXa9UKopKaJzkRKfTOQjgsR7gJsLLlBsYdHzZS3H8l9m8lERIQGiirRrZ54xPFWtGtgEdJiSL2I5qqr6Y4dj3FCUI4LpCLon7j3aL+/f73VF6vpcNQIBZuijlcvkVxTwBALoMfyoUCl0pFAo2JUm1nrSMFiFUBMET6gnmGr5pfIJooKJUKqXX6/WrAN8BuAHQBRA4mH8qlUpf4dPtnIfv+ny+Jdu2G9QBinsVUY9AcgaxawCeg22AsAB7HnaH7CH8SdM016vGxXRm7gPc7vCIyAXgKcwE3sB27OY3754OrrK1BTwHv75T9esdfexHq3Wf83CacfE8uiz49xO18fK027nxnwrnJlNY0HLX9nWRnG18d3IbrOUtHL4fnkbJZDLQbDa/ecgRE1VlfHdA/3Jg73h4+d6z+gjo36d+AbY77uOaYyWrAAAAAElFTkSuQmCC"
+										alt=""><span>期货</span></p>
+									<p><img
+											src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAAEhyb7BAAAAAXNSR0IArs4c6QAAAc5JREFUOBFjYEACjCC2iYlJAzMTQxGSODLzwqb4/8bGxu/gYswgFlBkmrS0tOmzZ88OgPhMIIKdnb0BROMGQLumw2SBRvxnVlZWPvXo0aNvIMFjS7wEmX78+MELUxFWcekHjA2nwW4G6r0FFFGFiyIxzp49C1YDFgIqnApigDwJFoASQPEasJuBjAwvG1F3NMkH9/Ylf2JkZHRGFgez0U3CUIBLAObw/zgU3AY6XA3sJpACkC9AGAgaofQMoPAekBxYEUgQ5AuQAAycOXMmE8gG28AElHx3f2/yBBZmxjKYAhBta2srOrdeJwvEBpn06T8jQ9LffwxnQQIw8O3bt+C1e1/ehfEZTE1NO2AcWBAAxZSsrKzEYOIoNEwRiiBdOeCECrKxoaGB6fPnz99kZGQ2ABPsa5grQE6UkpJygCViXGrB4Q30rMSWLVsWMDExqf3///+0hYWFAswgdBqXWrBB//796wEaMmljl+H3ulTl63///l6DbgCMj0st2CBg0vD8+/fv0x///p2VFmM3AiYwZZhGdBqXWhaQQqCkNtBLTxtm3r5z9e4XBmZmZiN0A2B8UtTC9IBpUGATkyYQeRdFO7jIwZbnwdkGTSl1uQDOJ8Ot8kPNJwAAAABJRU5ErkJggg=="
+											alt=""><span>现货</span></p>
+									<p><img
+											src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAAEhyb7BAAAAAXNSR0IArs4c6QAAA1tJREFUOBGlVFtIVEEYnnP2nONmm66umrewNl3SkgrXVtcyuwgF+RSK6UOaWNGLYUj3ixAR1EOQYvVSWYZhRNCDKWgbgaKuBKVYXnbFbdW8S6nraS99M+W2RfXSwM781+//5p//LCE+S0HlYwd3eogUMsfsSUlJJ3wCfoiWpiLPr9ZkrB3pKfdePsz76TEYDNHWpqIBgPw0+uZx8Igcx71fHanUWu0LRIBy1Ww2r62uL/S86pwivMfjkfV6/SGlxJO3vZ+/sHSkRcDBUYVtS6BwTAOiBvpKBPR3dnae9gbBOQXnXVEUz9VcTpivbRghoUESMSSqSeHFd5E8i+S4ZmRmtLa2Ltx6YiOxq/zJri0aMjK+SBQKRby3HNC6XS5XGoy5+3eHc21d0ztn56Rik8k0s0Tnn6cXCa0rcbvde8GtG6ULtVpteF1dnUyzGSfcvxrycwQsM25UF8REKIMMugULKIg0SEhLS4t0OBylkJM3rwtYPJ4XEyx/dZOyGx+iRIGjfJbzsiznoR8TaG99aX7MpuvVViKJPIlfoyKZhhAKxNr9Ec+WQpX2rtlPKn+BisRinyc9g3OMEyMOTvUgu8dcneVnHbUtNrVPsl6dutl3va2to4wFGY3GMJStQo+uCbxLf7Y4LvR8ZW8+aMQyWN8NiLlUT01NDfa1e/vka1wKdDqdW9A7Hc/zEujY8TMBfeT3WKr/EQhVjwCkARTXAyRWVLjd+7aHO3cbNIHnKvr2Ts3KoZKfX0ZLS8vYEqgXCA9wBY+ipfcDiBnygY77+54Ojtp6MPFamtDcMUmq6myk6kwCqXw8NI8uVrS3m09SH/ve6L2RuA3vkmO320ewyoeHh7ucvHJAqVSsmZj5Smh3s9LDSE5mOLl0u58UZEWL49OyTqEM+Uhj2SPh7lEAGgKroziTAVhEqyTqVOqG1gkqkq2b1OykmzbKn71riFpSQdVQG5s3nI8AVoDxrsVpxIAWU6dhQ2B5UnwAoT99QiA1sev12+bgU5PXb6ZcKPyE2n17RIeUTk6JIAgm9OkBZOcKf6EvMW5F5uiEI9ghu8mFw7Hk2cuxsRct42EajUbV2NjI/oK8QEhiKzs7W7JYLOVQjqBaM84hXLUUTDn0kn7idyDf+NsYfEf5j/0b/jJpGBWdnGEAAAAASUVORK5CYII="
+											alt=""><span>法币</span></p></div>
+							</div>
+						</div>
+					</div>
+					<div class="con_cont_slider">
+						<div class="cont-l"><a href="/exchange/binance"
+											   class=""><img alt="币安网-Binance"
+															 src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1522237219133.jpg"
+						></a></div>
+						<div class="cont-r">
+							<ul>
+								<li><a href="/exchange/binance" title="币安网-Binance"
+									   class="">币安网<span
+								>未知</span></a></li>
+								<li>
+								
+								</li>
+							</ul>
+							<p title="Binance 是全球领先的区块链资产交易平台，为全球区块链爱好者提供多币种、多语言的币币兑换服务，目前包含 Binance 区块链资产交易平台、Binance Info，Binance Labs，Binance Launchpad 等业务"
+							   class="size">Binance 是全球领先的区块链资产交易平台，为全球区块链爱好者提供多币种、多语言的币币兑换服务，目前包含
+								Binance 区块链资产交易平台、Binance Info，Binance Labs，Binance Launchpad 等业务</p>
+							<div class="size-msg">
+								<div class="kind"><p>交易对&nbsp;：&nbsp;355</p>
+									<p>成交额(24h)&nbsp;：&nbsp;<span class="color-red"
+									>￥76.26亿</span>
+									</p></div>
+								<div class="adver"><!----><p><img
+										src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAAEhyb7BAAAAAXNSR0IArs4c6QAAAc5JREFUOBFjYEACjCC2iYlJAzMTQxGSODLzwqb4/8bGxu/gYswgFlBkmrS0tOmzZ88OgPhMIIKdnb0BROMGQLumw2SBRvxnVlZWPvXo0aNvIMFjS7wEmX78+MELUxFWcekHjA2nwW4G6r0FFFGFiyIxzp49C1YDFgIqnApigDwJFoASQPEasJuBjAwvG1F3NMkH9/Ylf2JkZHRGFgez0U3CUIBLAObw/zgU3AY6XA3sJpACkC9AGAgaofQMoPAekBxYEUgQ5AuQAAycOXMmE8gG28AElHx3f2/yBBZmxjKYAhBta2srOrdeJwvEBpn06T8jQ9LffwxnQQIw8O3bt+C1e1/ehfEZTE1NO2AcWBAAxZSsrKzEYOIoNEwRiiBdOeCECrKxoaGB6fPnz99kZGQ2ABPsa5grQE6UkpJygCViXGrB4Q30rMSWLVsWMDExqf3///+0hYWFAswgdBqXWrBB//796wEaMmljl+H3ulTl63///l6DbgCMj0st2CBg0vD8+/fv0x///p2VFmM3AiYwZZhGdBqXWhaQQqCkNtBLTxtm3r5z9e4XBmZmZiN0A2B8UtTC9IBpUGATkyYQeRdFO7jIwZbnwdkGTSl1uQDOJ8Ot8kPNJwAAAABJRU5ErkJggg=="
+										alt=""><span>现货</span></p><!----></div>
+							</div>
+						</div>
+					</div>
+					<div class="con_cont_slider">
+						<div class="cont-l"><a href="/exchange/ocx" class=""><img
+								alt="OCX-OCX"
+								src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1526968014440.png"
+						></a></div>
+						<div class="cont-r">
+							<ul>
+								<li><a href="/exchange/ocx" title="OCX-OCX"
+									   class="">OCX<span>新加坡</span></a></li>
+								<li>
+								
+								</li>
+							</ul>
+							<p title="OCX为用户提供一个可让全球所有优质数字资产都可以交易、兑换的平台。在优质资产实现价值回归的同时，投资用户可以享受资产增值的红利，最终形成一个全球化的数字资产交易平台。"
+							   class="size">
+								OCX为用户提供一个可让全球所有优质数字资产都可以交易、兑换的平台。在优质资产实现价值回归的同时，投资用户可以享受资产增值的红利，最终形成一个全球化的数字资产交易平台。</p>
+							<div class="size-msg">
+								<div class="kind"><p>交易对&nbsp;：&nbsp;31</p>
+									<p>成交额(24h)&nbsp;：&nbsp;<span class="color-red"
+									>￥58.12亿</span>
+									</p></div>
+								<div class="adver"><!----><p><img
+										src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAAEhyb7BAAAAAXNSR0IArs4c6QAAAc5JREFUOBFjYEACjCC2iYlJAzMTQxGSODLzwqb4/8bGxu/gYswgFlBkmrS0tOmzZ88OgPhMIIKdnb0BROMGQLumw2SBRvxnVlZWPvXo0aNvIMFjS7wEmX78+MELUxFWcekHjA2nwW4G6r0FFFGFiyIxzp49C1YDFgIqnApigDwJFoASQPEasJuBjAwvG1F3NMkH9/Ylf2JkZHRGFgez0U3CUIBLAObw/zgU3AY6XA3sJpACkC9AGAgaofQMoPAekBxYEUgQ5AuQAAycOXMmE8gG28AElHx3f2/yBBZmxjKYAhBta2srOrdeJwvEBpn06T8jQ9LffwxnQQIw8O3bt+C1e1/ehfEZTE1NO2AcWBAAxZSsrKzEYOIoNEwRiiBdOeCECrKxoaGB6fPnz99kZGQ2ABPsa5grQE6UkpJygCViXGrB4Q30rMSWLVsWMDExqf3///+0hYWFAswgdBqXWrBB//796wEaMmljl+H3ulTl63///l6DbgCMj0st2CBg0vD8+/fv0x///p2VFmM3AiYwZZhGdBqXWhaQQqCkNtBLTxtm3r5z9e4XBmZmZiN0A2B8UtTC9IBpUGATkyYQeRdFO7jIwZbnwdkGTSl1uQDOJ8Ot8kPNJwAAAABJRU5ErkJggg=="
+										alt=""><span>现货</span></p><!----></div>
+							</div>
+						</div>
+					</div>
+					<div class="con_cont_slider">
+						<div class="cont-l"><a href="/exchange/huobi"
+											   class=""><img alt="火币Pro-Huobi"
+															 src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1522238442711.jpg"
+						></a></div>
+						<div class="cont-r">
+							<ul>
+								<li><a href="/exchange/huobi" title="火币Pro-Huobi"
+									   class="">火币Pro<span>塞舌尔</span></a></li>
+								<li>
+								</li>
+							</ul>
+							<p title="火币全球专业站，是火币集团旗下服务于全球专业交易用户的创新数字资产交易平台，致力于发现优质的创新数字资产投资机会，目前提供四十多种数字资产品类的交易及投资服务，总部位于新加坡，由火币全球专业站团队负责运营"
+							   class="size">
+								火币全球专业站，是火币集团旗下服务于全球专业交易用户的创新数字资产交易平台，致力于发现优质的创新数字资产投资机会，目前提供四十多种数字资产品类的交易及投资服务，总部位于新加坡，由火币全球专业站团队负责运营</p>
+							<div class="size-msg">
+								<div class="kind"><p>交易对&nbsp;：&nbsp;233</p>
+									<p>成交额(24h)&nbsp;：&nbsp;<span class="color-red"
+									>￥35.93亿</span>
+									</p></div>
+								<div class="adver"><p><img
+										src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAAEhyb7BAAAAAXNSR0IArs4c6QAAAktJREFUOBG9U01oE0EUnt1tXDRgI7WHoAcjelGokSSE9KBBveRgPGgQz41CEKWXgieDVSiK9NBeCx7Ug0QvXjyIa/wBidmIF6/ZlIIiaRANxLLJ7vi9SWabhBoRwYHdN++9b755870ZxoZHJBLhw7FNX4nH44ccx3m0GeqfxWKx4+SP0a/2+lLQbTufab7/ZFkhOzii0ehRGRFL5eZIpCkheFbf5HY5bXuF8SOTEv1nC6ob9Hk0mUxmm2VZbxVFmaOg67pFVVWTZOHmKcaoADqiLCSRSOzhnCuWMeNSXhQEhvcPbx1+p6p0prCQyzKybPFBjTD/MPqLHkkDgdYlQAiLwGNN02bRm4+o72zvVPMAXa9UKopKaJzkRKfTOQjgsR7gJsLLlBsYdHzZS3H8l9m8lERIQGiirRrZ54xPFWtGtgEdJiSL2I5qqr6Y4dj3FCUI4LpCLon7j3aL+/f73VF6vpcNQIBZuijlcvkVxTwBALoMfyoUCl0pFAo2JUm1nrSMFiFUBMET6gnmGr5pfIJooKJUKqXX6/WrAN8BuAHQBRA4mH8qlUpf4dPtnIfv+ny+Jdu2G9QBinsVUY9AcgaxawCeg22AsAB7HnaH7CH8SdM016vGxXRm7gPc7vCIyAXgKcwE3sB27OY3754OrrK1BTwHv75T9esdfexHq3Wf83CacfE8uiz49xO18fK027nxnwrnJlNY0HLX9nWRnG18d3IbrOUtHL4fnkbJZDLQbDa/ecgRE1VlfHdA/3Jg73h4+d6z+gjo36d+AbY77uOaYyWrAAAAAElFTkSuQmCC"
+										alt=""><span>期货</span></p>
+									<p><img
+											src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAAEhyb7BAAAAAXNSR0IArs4c6QAAAc5JREFUOBFjYEACjCC2iYlJAzMTQxGSODLzwqb4/8bGxu/gYswgFlBkmrS0tOmzZ88OgPhMIIKdnb0BROMGQLumw2SBRvxnVlZWPvXo0aNvIMFjS7wEmX78+MELUxFWcekHjA2nwW4G6r0FFFGFiyIxzp49C1YDFgIqnApigDwJFoASQPEasJuBjAwvG1F3NMkH9/Ylf2JkZHRGFgez0U3CUIBLAObw/zgU3AY6XA3sJpACkC9AGAgaofQMoPAekBxYEUgQ5AuQAAycOXMmE8gG28AElHx3f2/yBBZmxjKYAhBta2srOrdeJwvEBpn06T8jQ9LffwxnQQIw8O3bt+C1e1/ehfEZTE1NO2AcWBAAxZSsrKzEYOIoNEwRiiBdOeCECrKxoaGB6fPnz99kZGQ2ABPsa5grQE6UkpJygCViXGrB4Q30rMSWLVsWMDExqf3///+0hYWFAswgdBqXWrBB//796wEaMmljl+H3ulTl63///l6DbgCMj0st2CBg0vD8+/fv0x///p2VFmM3AiYwZZhGdBqXWhaQQqCkNtBLTxtm3r5z9e4XBmZmZiN0A2B8UtTC9IBpUGATkyYQeRdFO7jIwZbnwdkGTSl1uQDOJ8Ot8kPNJwAAAABJRU5ErkJggg=="
+											alt=""><span>现货</span></p>
+									<p><img
+											src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAAEhyb7BAAAAAXNSR0IArs4c6QAAA1tJREFUOBGlVFtIVEEYnnP2nONmm66umrewNl3SkgrXVtcyuwgF+RSK6UOaWNGLYUj3ixAR1EOQYvVSWYZhRNCDKWgbgaKuBKVYXnbFbdW8S6nraS99M+W2RfXSwM781+//5p//LCE+S0HlYwd3eogUMsfsSUlJJ3wCfoiWpiLPr9ZkrB3pKfdePsz76TEYDNHWpqIBgPw0+uZx8Igcx71fHanUWu0LRIBy1Ww2r62uL/S86pwivMfjkfV6/SGlxJO3vZ+/sHSkRcDBUYVtS6BwTAOiBvpKBPR3dnae9gbBOQXnXVEUz9VcTpivbRghoUESMSSqSeHFd5E8i+S4ZmRmtLa2Ltx6YiOxq/zJri0aMjK+SBQKRby3HNC6XS5XGoy5+3eHc21d0ztn56Rik8k0s0Tnn6cXCa0rcbvde8GtG6ULtVpteF1dnUyzGSfcvxrycwQsM25UF8REKIMMugULKIg0SEhLS4t0OBylkJM3rwtYPJ4XEyx/dZOyGx+iRIGjfJbzsiznoR8TaG99aX7MpuvVViKJPIlfoyKZhhAKxNr9Ec+WQpX2rtlPKn+BisRinyc9g3OMEyMOTvUgu8dcneVnHbUtNrVPsl6dutl3va2to4wFGY3GMJStQo+uCbxLf7Y4LvR8ZW8+aMQyWN8NiLlUT01NDfa1e/vka1wKdDqdW9A7Hc/zEujY8TMBfeT3WKr/EQhVjwCkARTXAyRWVLjd+7aHO3cbNIHnKvr2Ts3KoZKfX0ZLS8vYEqgXCA9wBY+ipfcDiBnygY77+54Ojtp6MPFamtDcMUmq6myk6kwCqXw8NI8uVrS3m09SH/ve6L2RuA3vkmO320ewyoeHh7ucvHJAqVSsmZj5Smh3s9LDSE5mOLl0u58UZEWL49OyTqEM+Uhj2SPh7lEAGgKroziTAVhEqyTqVOqG1gkqkq2b1OykmzbKn71riFpSQdVQG5s3nI8AVoDxrsVpxIAWU6dhQ2B5UnwAoT99QiA1sev12+bgU5PXb6ZcKPyE2n17RIeUTk6JIAgm9OkBZOcKf6EvMW5F5uiEI9ghu8mFw7Hk2cuxsRct42EajUbV2NjI/oK8QEhiKzs7W7JYLOVQjqBaM84hXLUUTDn0kn7idyDf+NsYfEf5j/0b/jJpGBWdnGEAAAAASUVORK5CYII="
+											alt=""><span>法币</span></p></div>
+							</div>
+						</div>
+					</div>
+					<div class="con_cont_slider">
+						<div class="cont-l"><a href="/exchange/zb-com"
+											   class=""><img alt="ZB网-ZB-com"
+															 src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1528271972238.jpg"
+						></a></div>
+						<div class="cont-r">
+							<ul>
+								<li><a href="/exchange/zb-com" title="ZB网-ZB-com"
+									   class="">ZB网<span>萨摩亚</span></a></li>
+								<li>
+								
+								</li>
+							</ul>
+							<p title="ZB.com是一个全球化的数字货币交易所，目前已获得泰国和迪拜的交易所牌照，并且已在瑞士、加拿大、美国、曼谷、迪拜等地设立运营中心。ZB.com专注为全球客户提供安全、便捷和合规的区块链资产交易服务。"
+							   class="size">
+								ZB.com是一个全球化的数字货币交易所，目前已获得泰国和迪拜的交易所牌照，并且已在瑞士、加拿大、美国、曼谷、迪拜等地设立运营中心。ZB.com专注为全球客户提供安全、便捷和合规的区块链资产交易服务。</p>
+							<div class="size-msg">
+								<div class="kind"><p>交易对&nbsp;：&nbsp;173</p>
+									<p>成交额(24h)&nbsp;：&nbsp;<span class="color-red"
+									>￥32.44亿</span>
+									</p></div>
+								<div class="adver"><!----><p><img
+										src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAAEhyb7BAAAAAXNSR0IArs4c6QAAAc5JREFUOBFjYEACjCC2iYlJAzMTQxGSODLzwqb4/8bGxu/gYswgFlBkmrS0tOmzZ88OgPhMIIKdnb0BROMGQLumw2SBRvxnVlZWPvXo0aNvIMFjS7wEmX78+MELUxFWcekHjA2nwW4G6r0FFFGFiyIxzp49C1YDFgIqnApigDwJFoASQPEasJuBjAwvG1F3NMkH9/Ylf2JkZHRGFgez0U3CUIBLAObw/zgU3AY6XA3sJpACkC9AGAgaofQMoPAekBxYEUgQ5AuQAAycOXMmE8gG28AElHx3f2/yBBZmxjKYAhBta2srOrdeJwvEBpn06T8jQ9LffwxnQQIw8O3bt+C1e1/ehfEZTE1NO2AcWBAAxZSsrKzEYOIoNEwRiiBdOeCECrKxoaGB6fPnz99kZGQ2ABPsa5grQE6UkpJygCViXGrB4Q30rMSWLVsWMDExqf3///+0hYWFAswgdBqXWrBB//796wEaMmljl+H3ulTl63///l6DbgCMj0st2CBg0vD8+/fv0x///p2VFmM3AiYwZZhGdBqXWhaQQqCkNtBLTxtm3r5z9e4XBmZmZiN0A2B8UtTC9IBpUGATkyYQeRdFO7jIwZbnwdkGTSl1uQDOJ8Ot8kPNJwAAAABJRU5ErkJggg=="
+										alt=""><span>现货</span></p>
+									<p><img
+											src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAAEhyb7BAAAAAXNSR0IArs4c6QAAA1tJREFUOBGlVFtIVEEYnnP2nONmm66umrewNl3SkgrXVtcyuwgF+RSK6UOaWNGLYUj3ixAR1EOQYvVSWYZhRNCDKWgbgaKuBKVYXnbFbdW8S6nraS99M+W2RfXSwM781+//5p//LCE+S0HlYwd3eogUMsfsSUlJJ3wCfoiWpiLPr9ZkrB3pKfdePsz76TEYDNHWpqIBgPw0+uZx8Igcx71fHanUWu0LRIBy1Ww2r62uL/S86pwivMfjkfV6/SGlxJO3vZ+/sHSkRcDBUYVtS6BwTAOiBvpKBPR3dnae9gbBOQXnXVEUz9VcTpivbRghoUESMSSqSeHFd5E8i+S4ZmRmtLa2Ltx6YiOxq/zJri0aMjK+SBQKRby3HNC6XS5XGoy5+3eHc21d0ztn56Rik8k0s0Tnn6cXCa0rcbvde8GtG6ULtVpteF1dnUyzGSfcvxrycwQsM25UF8REKIMMugULKIg0SEhLS4t0OBylkJM3rwtYPJ4XEyx/dZOyGx+iRIGjfJbzsiznoR8TaG99aX7MpuvVViKJPIlfoyKZhhAKxNr9Ec+WQpX2rtlPKn+BisRinyc9g3OMEyMOTvUgu8dcneVnHbUtNrVPsl6dutl3va2to4wFGY3GMJStQo+uCbxLf7Y4LvR8ZW8+aMQyWN8NiLlUT01NDfa1e/vka1wKdDqdW9A7Hc/zEujY8TMBfeT3WKr/EQhVjwCkARTXAyRWVLjd+7aHO3cbNIHnKvr2Ts3KoZKfX0ZLS8vYEqgXCA9wBY+ipfcDiBnygY77+54Ojtp6MPFamtDcMUmq6myk6kwCqXw8NI8uVrS3m09SH/ve6L2RuA3vkmO320ewyoeHh7ucvHJAqVSsmZj5Smh3s9LDSE5mOLl0u58UZEWL49OyTqEM+Uhj2SPh7lEAGgKroziTAVhEqyTqVOqG1gkqkq2b1OykmzbKn71riFpSQdVQG5s3nI8AVoDxrsVpxIAWU6dhQ2B5UnwAoT99QiA1sev12+bgU5PXb6ZcKPyE2n17RIeUTk6JIAgm9OkBZOcKf6EvMW5F5uiEI9ghu8mFw7Hk2cuxsRct42EajUbV2NjI/oK8QEhiKzs7W7JYLOVQjqBaM84hXLUUTDn0kn7idyDf+NsYfEf5j/0b/jJpGBWdnGEAAAAASUVORK5CYII="
+											alt=""><span>法币</span></p></div>
+							</div>
+						</div>
+					</div>
+					<div class="con_cont_slider">
+						<div class="cont-l"><a href="/exchange/exx" class=""><img
+								alt="Exx-Exx"
+								src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1521789293740.jpg"
+						></a></div>
+						<div class="cont-r">
+							<ul>
+								<li><a href="/exchange/exx" title="Exx-Exx"
+									   class="">Exx<span>中国香港</span></a></li>
+								<li>
+								
+								</li>
+							</ul>
+							<p title="Exx是中国团队打造的面向全球提供比特币、以太坊、莱特币、以太坊经典等多种数字货币交易服务，是安全可信赖的数字货币交易网" class="size"
+							>Exx是中国团队打造的面向全球提供比特币、以太坊、莱特币、以太坊经典等多种数字货币交易服务，是安全可信赖的数字货币交易网</p>
+							<div class="size-msg">
+								<div class="kind"><p>交易对&nbsp;：&nbsp;77</p>
+									<p>成交额(24h)&nbsp;：&nbsp;<span class="color-red"
+									>￥24.27亿</span>
+									</p></div>
+								<div class="adver"><p><img
+										src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAAEhyb7BAAAAAXNSR0IArs4c6QAAAktJREFUOBG9U01oE0EUnt1tXDRgI7WHoAcjelGokSSE9KBBveRgPGgQz41CEKWXgieDVSiK9NBeCx7Ug0QvXjyIa/wBidmIF6/ZlIIiaRANxLLJ7vi9SWabhBoRwYHdN++9b755870ZxoZHJBLhw7FNX4nH44ccx3m0GeqfxWKx4+SP0a/2+lLQbTufab7/ZFkhOzii0ehRGRFL5eZIpCkheFbf5HY5bXuF8SOTEv1nC6ob9Hk0mUxmm2VZbxVFmaOg67pFVVWTZOHmKcaoADqiLCSRSOzhnCuWMeNSXhQEhvcPbx1+p6p0prCQyzKybPFBjTD/MPqLHkkDgdYlQAiLwGNN02bRm4+o72zvVPMAXa9UKopKaJzkRKfTOQjgsR7gJsLLlBsYdHzZS3H8l9m8lERIQGiirRrZ54xPFWtGtgEdJiSL2I5qqr6Y4dj3FCUI4LpCLon7j3aL+/f73VF6vpcNQIBZuijlcvkVxTwBALoMfyoUCl0pFAo2JUm1nrSMFiFUBMET6gnmGr5pfIJooKJUKqXX6/WrAN8BuAHQBRA4mH8qlUpf4dPtnIfv+ny+Jdu2G9QBinsVUY9AcgaxawCeg22AsAB7HnaH7CH8SdM016vGxXRm7gPc7vCIyAXgKcwE3sB27OY3754OrrK1BTwHv75T9esdfexHq3Wf83CacfE8uiz49xO18fK027nxnwrnJlNY0HLX9nWRnG18d3IbrOUtHL4fnkbJZDLQbDa/ecgRE1VlfHdA/3Jg73h4+d6z+gjo36d+AbY77uOaYyWrAAAAAElFTkSuQmCC"
+										alt=""><span>期货</span></p>
+									<p><img
+											src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAAEhyb7BAAAAAXNSR0IArs4c6QAAAc5JREFUOBFjYEACjCC2iYlJAzMTQxGSODLzwqb4/8bGxu/gYswgFlBkmrS0tOmzZ88OgPhMIIKdnb0BROMGQLumw2SBRvxnVlZWPvXo0aNvIMFjS7wEmX78+MELUxFWcekHjA2nwW4G6r0FFFGFiyIxzp49C1YDFgIqnApigDwJFoASQPEasJuBjAwvG1F3NMkH9/Ylf2JkZHRGFgez0U3CUIBLAObw/zgU3AY6XA3sJpACkC9AGAgaofQMoPAekBxYEUgQ5AuQAAycOXMmE8gG28AElHx3f2/yBBZmxjKYAhBta2srOrdeJwvEBpn06T8jQ9LffwxnQQIw8O3bt+C1e1/ehfEZTE1NO2AcWBAAxZSsrKzEYOIoNEwRiiBdOeCECrKxoaGB6fPnz99kZGQ2ABPsa5grQE6UkpJygCViXGrB4Q30rMSWLVsWMDExqf3///+0hYWFAswgdBqXWrBB//796wEaMmljl+H3ulTl63///l6DbgCMj0st2CBg0vD8+/fv0x///p2VFmM3AiYwZZhGdBqXWhaQQqCkNtBLTxtm3r5z9e4XBmZmZiN0A2B8UtTC9IBpUGATkyYQeRdFO7jIwZbnwdkGTSl1uQDOJ8Ot8kPNJwAAAABJRU5ErkJggg=="
+											alt=""><span>现货</span></p>
+									<p><img
+											src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAAEhyb7BAAAAAXNSR0IArs4c6QAAA1tJREFUOBGlVFtIVEEYnnP2nONmm66umrewNl3SkgrXVtcyuwgF+RSK6UOaWNGLYUj3ixAR1EOQYvVSWYZhRNCDKWgbgaKuBKVYXnbFbdW8S6nraS99M+W2RfXSwM781+//5p//LCE+S0HlYwd3eogUMsfsSUlJJ3wCfoiWpiLPr9ZkrB3pKfdePsz76TEYDNHWpqIBgPw0+uZx8Igcx71fHanUWu0LRIBy1Ww2r62uL/S86pwivMfjkfV6/SGlxJO3vZ+/sHSkRcDBUYVtS6BwTAOiBvpKBPR3dnae9gbBOQXnXVEUz9VcTpivbRghoUESMSSqSeHFd5E8i+S4ZmRmtLa2Ltx6YiOxq/zJri0aMjK+SBQKRby3HNC6XS5XGoy5+3eHc21d0ztn56Rik8k0s0Tnn6cXCa0rcbvde8GtG6ULtVpteF1dnUyzGSfcvxrycwQsM25UF8REKIMMugULKIg0SEhLS4t0OBylkJM3rwtYPJ4XEyx/dZOyGx+iRIGjfJbzsiznoR8TaG99aX7MpuvVViKJPIlfoyKZhhAKxNr9Ec+WQpX2rtlPKn+BisRinyc9g3OMEyMOTvUgu8dcneVnHbUtNrVPsl6dutl3va2to4wFGY3GMJStQo+uCbxLf7Y4LvR8ZW8+aMQyWN8NiLlUT01NDfa1e/vka1wKdDqdW9A7Hc/zEujY8TMBfeT3WKr/EQhVjwCkARTXAyRWVLjd+7aHO3cbNIHnKvr2Ts3KoZKfX0ZLS8vYEqgXCA9wBY+ipfcDiBnygY77+54Ojtp6MPFamtDcMUmq6myk6kwCqXw8NI8uVrS3m09SH/ve6L2RuA3vkmO320ewyoeHh7ucvHJAqVSsmZj5Smh3s9LDSE5mOLl0u58UZEWL49OyTqEM+Uhj2SPh7lEAGgKroziTAVhEqyTqVOqG1gkqkq2b1OykmzbKn71riFpSQdVQG5s3nI8AVoDxrsVpxIAWU6dhQ2B5UnwAoT99QiA1sev12+bgU5PXb6ZcKPyE2n17RIeUTk6JIAgm9OkBZOcKf6EvMW5F5uiEI9ghu8mFw7Hk2cuxsRct42EajUbV2NjI/oK8QEhiKzs7W7JYLOVQjqBaM84hXLUUTDn0kn7idyDf+NsYfEf5j/0b/jJpGBWdnGEAAAAASUVORK5CYII="
+											alt=""><span>法币</span></p></div>
+							</div>
+						</div>
+					</div>
+					<div class="con_cont_slider">
+						<div class="cont-l"><a href="/exchange/bitfinex" class=""><img
+								alt="Bitfinex-Bitfinex"
+								src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1522239679120.jpg"
+						></a></div>
+						<div class="cont-r">
+							<ul>
+								<li><a href="/exchange/bitfinex" title="Bitfinex-Bitfinex"
+									   class="">Bitfinex<span>中国香港</span></a>
+								</li>
+								<li>
+								
+								</li>
+							</ul>
+							<p title="Bitfinex是全世界最大、最高级的比特币交易平台之一，支持以太坊、比特币、莱特币、以太经典等虚拟币的交易，每天的成交量达30多亿人民币。"
+							   class="size">
+								Bitfinex是全世界最大、最高级的比特币交易平台之一，支持以太坊、比特币、莱特币、以太经典等虚拟币的交易，每天的成交量达30多亿人民币。</p>
+							<div class="size-msg">
+								<div class="kind"><p>交易对&nbsp;：&nbsp;178</p>
+									<p>成交额(24h)&nbsp;：&nbsp;<span class="color-red"
+									>￥23.94亿</span>
+									</p></div>
+								<div class="adver"><p><img
+										src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAAEhyb7BAAAAAXNSR0IArs4c6QAAAktJREFUOBG9U01oE0EUnt1tXDRgI7WHoAcjelGokSSE9KBBveRgPGgQz41CEKWXgieDVSiK9NBeCx7Ug0QvXjyIa/wBidmIF6/ZlIIiaRANxLLJ7vi9SWabhBoRwYHdN++9b755870ZxoZHJBLhw7FNX4nH44ccx3m0GeqfxWKx4+SP0a/2+lLQbTufab7/ZFkhOzii0ehRGRFL5eZIpCkheFbf5HY5bXuF8SOTEv1nC6ob9Hk0mUxmm2VZbxVFmaOg67pFVVWTZOHmKcaoADqiLCSRSOzhnCuWMeNSXhQEhvcPbx1+p6p0prCQyzKybPFBjTD/MPqLHkkDgdYlQAiLwGNN02bRm4+o72zvVPMAXa9UKopKaJzkRKfTOQjgsR7gJsLLlBsYdHzZS3H8l9m8lERIQGiirRrZ54xPFWtGtgEdJiSL2I5qqr6Y4dj3FCUI4LpCLon7j3aL+/f73VF6vpcNQIBZuijlcvkVxTwBALoMfyoUCl0pFAo2JUm1nrSMFiFUBMET6gnmGr5pfIJooKJUKqXX6/WrAN8BuAHQBRA4mH8qlUpf4dPtnIfv+ny+Jdu2G9QBinsVUY9AcgaxawCeg22AsAB7HnaH7CH8SdM016vGxXRm7gPc7vCIyAXgKcwE3sB27OY3754OrrK1BTwHv75T9esdfexHq3Wf83CacfE8uiz49xO18fK027nxnwrnJlNY0HLX9nWRnG18d3IbrOUtHL4fnkbJZDLQbDa/ecgRE1VlfHdA/3Jg73h4+d6z+gjo36d+AbY77uOaYyWrAAAAAElFTkSuQmCC"
+										alt=""><span>期货</span></p>
+									<p><img
+											src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAAEhyb7BAAAAAXNSR0IArs4c6QAAAc5JREFUOBFjYEACjCC2iYlJAzMTQxGSODLzwqb4/8bGxu/gYswgFlBkmrS0tOmzZ88OgPhMIIKdnb0BROMGQLumw2SBRvxnVlZWPvXo0aNvIMFjS7wEmX78+MELUxFWcekHjA2nwW4G6r0FFFGFiyIxzp49C1YDFgIqnApigDwJFoASQPEasJuBjAwvG1F3NMkH9/Ylf2JkZHRGFgez0U3CUIBLAObw/zgU3AY6XA3sJpACkC9AGAgaofQMoPAekBxYEUgQ5AuQAAycOXMmE8gG28AElHx3f2/yBBZmxjKYAhBta2srOrdeJwvEBpn06T8jQ9LffwxnQQIw8O3bt+C1e1/ehfEZTE1NO2AcWBAAxZSsrKzEYOIoNEwRiiBdOeCECrKxoaGB6fPnz99kZGQ2ABPsa5grQE6UkpJygCViXGrB4Q30rMSWLVsWMDExqf3///+0hYWFAswgdBqXWrBB//796wEaMmljl+H3ulTl63///l6DbgCMj0st2CBg0vD8+/fv0x///p2VFmM3AiYwZZhGdBqXWhaQQqCkNtBLTxtm3r5z9e4XBmZmZiN0A2B8UtTC9IBpUGATkyYQeRdFO7jIwZbnwdkGTSl1uQDOJ8Ot8kPNJwAAAABJRU5ErkJggg=="
+											alt=""><span>现货</span></p><!---->
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="con_cont_slider">
+						<div class="cont-l"><a href="/exchange/upbit"
+											   class=""><img alt="Upbit-Upbit"
+															 src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1522239273504.jpg"
+						></a></div>
+						<div class="cont-r">
+							<ul>
+								<li><a href="/exchange/upbit" title="Upbit-Upbit"
+									   class="">Upbit<span>韩国</span></a></li>
+								<li>
+								
+								</li>
+							</ul>
+							<p title="Upbit可视为是韩国B网，是韩国金融科技公司Dunamu与美国交易所Bittrex合作推出的数字货币交易所，目前支持200多个交易对，超过110种代币的交易"
+							   class="size">
+								Upbit可视为是韩国B网，是韩国金融科技公司Dunamu与美国交易所Bittrex合作推出的数字货币交易所，目前支持200多个交易对，超过110种代币的交易</p>
+							<div class="size-msg">
+								<div class="kind"><p>交易对&nbsp;：&nbsp;269</p>
+									<p>成交额(24h)&nbsp;：&nbsp;<span class="color-red"
+									>￥19.98亿</span>
+									</p></div>
+								<div class="adver"><!----><p><img
+										src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAAEhyb7BAAAAAXNSR0IArs4c6QAAAc5JREFUOBFjYEACjCC2iYlJAzMTQxGSODLzwqb4/8bGxu/gYswgFlBkmrS0tOmzZ88OgPhMIIKdnb0BROMGQLumw2SBRvxnVlZWPvXo0aNvIMFjS7wEmX78+MELUxFWcekHjA2nwW4G6r0FFFGFiyIxzp49C1YDFgIqnApigDwJFoASQPEasJuBjAwvG1F3NMkH9/Ylf2JkZHRGFgez0U3CUIBLAObw/zgU3AY6XA3sJpACkC9AGAgaofQMoPAekBxYEUgQ5AuQAAycOXMmE8gG28AElHx3f2/yBBZmxjKYAhBta2srOrdeJwvEBpn06T8jQ9LffwxnQQIw8O3bt+C1e1/ehfEZTE1NO2AcWBAAxZSsrKzEYOIoNEwRiiBdOeCECrKxoaGB6fPnz99kZGQ2ABPsa5grQE6UkpJygCViXGrB4Q30rMSWLVsWMDExqf3///+0hYWFAswgdBqXWrBB//796wEaMmljl+H3ulTl63///l6DbgCMj0st2CBg0vD8+/fv0x///p2VFmM3AiYwZZhGdBqXWhaQQqCkNtBLTxtm3r5z9e4XBmZmZiN0A2B8UtTC9IBpUGATkyYQeRdFO7jIwZbnwdkGTSl1uQDOJ8Ot8kPNJwAAAABJRU5ErkJggg=="
+										alt=""><span>现货</span></p><!----></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="newPage">
+				<a href="/" class="aDisabled nuxt-link-exact-active nuxt-link-active">上一页</a>
+				<a href="/" class="nuxt-link-exact-active nuxt-link-active active">1</a>
+				<a href="/page2" class="">2</a>
+				<a href="/page3" class="">3</a>
+				<a href="/page4" class="">4</a>
+				<a href="/page5" class="">5</a>
+				<a href="/page6" class="">6</a>
+				<a href="/page7" class="">···</a>
+				<a href="/page19" class="">19</a>
+				<a href="/page2" class="">下一页</a>
+			</div>
+		</div>
+		<div class="bourse_right">
+			<a class="goToUrl AppDown" href="/App">
+				<img src="../static/images/newIndex/bannerRight.png" alt="">
+			</a>
+			<div class="price-list active">
+				<div class="list_nav">
+					<div class="list_nav_l"><img
+							src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAASCAYAAABb0P4QAAABS2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS42LWMxMzggNzkuMTU5ODI0LCAyMDE2LzA5LzE0LTAxOjA5OjAxICAgICAgICAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIi8+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+IEmuOgAAAQZJREFUOI3N1M8qRVEUx/HP1U2UBxBFHkApJSa6paQMRDK5EwMZmhiIjJTyBAbKLaRIJjIgXkB5AXmFm4FEKa7B2XScto46V/nVGuy11/quP7V36f50tIEtrGJQQbUUBfwFcBlLzQJ2YRZtzQIu4B21PGAZ7TmwHkziBPU84ByuMJPT3Sv2086fgAOSvaxhB/2Z+z5M4AgPecBWDOEMG5LRathEZ4hZxAsOssnlCHAEHbjEDa4xjyoqOMcYdvGYTY51OB7GuA3nZ2xjKhSZxhMOI7nRDhu4wFvGX5es4Bi9Afor4HosMKW7YFH9y7f8TZ8jD2MF3QVYe2lgJVgRfQFLKWfhD/YDcFssf1M80OUAAAAASUVORK5CYII="
+							alt="">
+						<p class="goToUrl active">涨幅榜</p>
+						<p class="goToUrl">跌幅榜</p></div>
+					<div class="list_nav_r"><p></p>
+						<p></p>
+						<p></p></div>
+				</div>
+				<div class="list_btn"><p class="">一小时</p>
+					<p class="active">24小时</p>
+					<p class="">一周</p></div>
+				<div element-loading-text="数据加载中，请耐心等待" element-loading-background="rgba(0, 0, 0, 0.6)"
+					 class="list_con resetLoading">
+					<ul class="con-title">
+						<li>排名</li>
+						<li>名称</li>
+						<li>价格</li>
+						<li>涨幅</li>
+					</ul>
+					<div class="el-loading-mask" style="background-color: rgba(0, 0, 0, 0.6); display: none;">
+						<div class="el-loading-spinner">
+							<svg viewBox="25 25 50 50" class="circular">
+								<circle cx="50" cy="50" r="20" fill="none" class="path"></circle>
+							</svg>
+							<p class="el-loading-text">数据加载中，请耐心等待</p></div>
+					</div>
+					<a href="/coin/russiacoin" class="con-cont goToUrl">
+						<li class="color-red"><p>1</p></li>
+						<li title="SouthXchange">RC</li>
+						<li>￥1.24</li>
+						<li class="color-green">
+							+833.33%
+						</li>
+					</a>
+					<a href="/coin/vivo" class="con-cont goToUrl">
+						<li class="color-red"><p>2</p></li>
+						<li title="Stocks.Exchange">VIVO</li>
+						<li>￥11.79</li>
+						<li class="color-green">
+							+726.21%
+						</li>
+					</a>
+					<a href="/coin/apx" class="con-cont goToUrl">
+						<li class="color-red"><p>3</p></li>
+						<li title="C网">APX</li>
+						<li>￥41.5</li>
+						<li class="color-green">
+							+311.78%
+						</li>
+					</a>
+					<a href="/coin/earth-token" class="con-cont goToUrl">
+						<li class=""><p>4</p></li>
+						<li title="Fubt">EARTH</li>
+						<li>￥0.183745</li>
+						<li class="color-green">
+							+287.71%
+						</li>
+					</a>
+					<a href="/coin/bcd" class="con-cont goToUrl">
+						<li class=""><p>5</p></li>
+						<li title="酷币">BCD</li>
+						<li>￥32.13</li>
+						<li class="color-green">
+							+275.01%
+						</li>
+					</a>
+					<a href="/coin/aeternity" class="con-cont goToUrl">
+						<li class=""><p>6</p></li>
+						<li title="IDEX">AE</li>
+						<li>￥57.39</li>
+						<li class="color-green">
+							+213.61%
+						</li>
+					</a>
+					<a href="/coin/vice-industry token" class="con-cont goToUrl">
+						<li class=""><p>7</p></li>
+						<li title="IDEX">VIT</li>
+						<li>￥0.2269</li>
+						<li class="color-green">
+							+157.69%
+						</li>
+					</a>
+					<a href="/coin/cleverness" class="con-cont goToUrl">
+						<li class=""><p>8</p></li>
+						<li title="澳洲U网">CES</li>
+						<li>￥0.002</li>
+						<li class="color-green">
+							+150.01%
+						</li>
+					</a>
+					<a href="/coin/hero-coin" class="con-cont goToUrl">
+						<li class=""><p>9</p></li>
+						<li title="CoinBene满币">PLAY</li>
+						<li>￥0.2184</li>
+						<li class="color-green">
+							+150.01%
+						</li>
+					</a>
+					<a href="/coin/fantomcoin" class="con-cont goToUrl">
+						<li class=""><p>10</p></li>
+						<li title="HitBTC">FCN</li>
+						<li>￥1.5965</li>
+						<li class="color-green">
+							+146.67%
+						</li>
+					</a>
+				</div>
+			</div>
+			<div class="deal-list active">
+				<div class="list_nav">
+					<div class="list_nav_l"><img
+							src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAUCAYAAABiS3YzAAABS2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS42LWMxMzggNzkuMTU5ODI0LCAyMDE2LzA5LzE0LTAxOjA5OjAxICAgICAgICAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIi8+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+IEmuOgAAAlRJREFUOI2N1E1olUcUBuBnvlylsVHQJCr1B6OxtVDQlQWRriwKYlZF3AkiVIIgWIoglEK7qAU3ggE3LkSQGu0mVmxAoVDqHwq60hC14g/+ZlENimlyp4uZK583N7ce+OCbM+d958ycc94w/OsXmlgrFmAuPsR0jOEVnuAhXteDKlOQLcVOfImPMAsv8AhX8Cfm4BPcxU1M1MChLtNW7EMvWjCMvzGKNnRhOao4jaN4g39wMd/inUw7MYhVOIOTeN7gFh34CpvwGb7P/tU4j2qRHdNxCp/iJxyaglD2H8pxC/AdpmF2xquR/pxP2p+v8T52Mccvx9bs68KMChZLRTmOyzVECMVKofhxElWMfTFODObVJfyOjRjAUywqsA0B/Y3SidXxntonxj4hbCW0lUL6M35dXncWeXFBqnBTyxm2CcqkI7ghFRjaCqknb0jFamohtKzHqBgf1209kIoG0ypoz6eN4YNJREVloC7fwfoYvMTM/P9vJRO2S6M3iTRWx3tKJ3SHUPwQQsu1GCf+KoXNzMQwWuAOVpi6L8sn3MJtzK/bWSjpADwrcA5rpNmNTUlD0Y1lxFslb7vU9Ncy/n4Fh7EXu9EnFa7EU/emMR6JsXq95Nmcyc5KOvGqgns4iF3S7I9gdozV62K1R3NbjQ34DUNSF70d0z3SNB3DPEl1/s8+x7eSkh3I+GqZdExSnSGcwBZJfBu9cQd2SE/2ENvxR+bAu9L3DGsl9enF17gqVXtcEuVl+DhndBTfaNA19SJdsyU5242ZqCODb0vi/Iuk+A3tP20Wr6AeL8J+AAAAAElFTkSuQmCC"
+							alt="">
+						<p class="active">币种成交量排行榜</p></div>
+					<a href="/Rank/currency" class="list_nav_r"><p></p>
+						<p></p>
+						<p></p></a></div>
+				<div class="list_con">
+					<ul class="con-title">
+						<li>排名</li>
+						<li>名称</li>
+						<li>成交额</li>
+					</ul>
+					<a href="/coin/fcoin-token" class="con-cont goToUrl">
+						<li class="color-red"><p>1</p></li>
+						<li title="FCoin Token"><img alt=""
+													 src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1529046896907.jpg"
+						>FT
+						</li>
+						<li>￥352.16亿</li>
+					</a><a href="/coin/bitcoin" class="con-cont goToUrl">
+					<li class="color-red"><p>2</p></li>
+					<li title="比特币"><img alt=""
+										 src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1524738854323.jpg"
+					>BTC
+					</li>
+					<li>￥213.95亿</li>
+				</a><a href="/coin/ethereum" class="con-cont goToUrl">
+					<li class="color-red"><p>3</p></li>
+					<li title="以太坊"><img alt=""
+										 src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1524797967956.jpg"
+					>ETH
+					</li>
+					<li>￥120.93亿</li>
+				</a><a href="/coin/eos" class="con-cont goToUrl">
+					<li class=""><p>4</p></li>
+					<li title="柚子"><img alt=""
+										src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1521709470217.jpg"
+					>EOS
+					</li>
+					<li>￥72.05亿</li>
+				</a><a href="/coin/bitcoin-cash" class="con-cont goToUrl">
+					<li class=""><p>5</p></li>
+					<li title="比特现金"><img alt=""
+										  src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1524737438547.jpg"
+					>BCH
+					</li>
+					<li>￥28.37亿</li>
+				</a><a href="/coin/tron" class="con-cont goToUrl">
+					<li class=""><p>6</p></li>
+					<li title="波场"><img alt=""
+										src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1521710311443.jpg"
+					>TRX
+					</li>
+					<li>￥26.87亿</li>
+				</a><a href="/coin/zilliqa" class="con-cont goToUrl">
+					<li class=""><p>7</p></li>
+					<li title="Zilliqa"><img alt=""
+											 src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1521615238916.jpg"
+					>ZIL
+					</li>
+					<li>￥23.09亿</li>
+				</a><a href="/coin/litecoin" class="con-cont goToUrl">
+					<li class=""><p>8</p></li>
+					<li title="莱特币"><img alt=""
+										 src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1521708972425.jpg"
+					>LTC
+					</li>
+					<li>￥19.19亿</li>
+				</a><a href="/coin/ethereum-classic" class="con-cont goToUrl">
+					<li class=""><p>9</p></li>
+					<li title="以太经典"><img alt=""
+										  src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1521710563575.jpg"
+					>ETC
+					</li>
+					<li>￥17.88亿</li>
+				</a><a href="/coin/ripple" class="con-cont goToUrl">
+					<li class=""><p>10</p></li>
+					<li title="瑞波币"><img alt=""
+										 src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1521708776468.jpg"
+					>XRP
+					</li>
+					<li>￥17.62亿</li>
+				</a></div>
+			</div>
+			<div class="new-list active">
+				<div class="list_nav">
+					<div class="list_nav_l"><img
+							src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAQCAYAAAAMJL+VAAABS2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS42LWMxMzggNzkuMTU5ODI0LCAyMDE2LzA5LzE0LTAxOjA5OjAxICAgICAgICAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIi8+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+IEmuOgAAAddJREFUOI3dUq1y20AQ/r7bkzRTK/UEWThWsUGhMqUOMTIryTuE5wFKyvoAfQCThLS0M4KdaXDdYAd1nMruxNLdFsiSldbImZAuut3Z2+9nl99nbwBggmcK81yD/yOAV9Mv9SOIzyXsXxnbGz9qsC8yCftXlCg9CKB5ECYFAFJOH7cwAQB1D/MnAYAcAroAOaIJkl3dJIAeNLwFICUGEKt3MwAFTZjtcDmE6t3TAEw4BADV6oeqz2mkswcmqv5gBbaeUfuv7mFOygAMxpQohfoCQAzoAgAkfPm+zutQX30k5dSVv94Z25vSSOY29xeUKDUmOnfl/WUD0Prsq3UuYb+gCTJsmau6u/qKmLjN8m2rTaKUJhjVIyQDmNAECU04VtR/LfCvz6ruMyljVS0aZfX5amFsb7qlP1f4FVCfcgtKOyBN5qv1RbuDv31WX+YAYho77VxQDMXeZZP2TL3LAV3Q2DOov1FfLgDA3l5PTro+N4wh0Rxg2igjTarqvvlqNdsNlhgCgBj4cjWT4CgFzUh9+aG75NeNz11W6l1OY9NWGTkkJJbgKN0u+JN3v2/qvz4HAAUKQgtfrfOWxD7J+2Kr9LjJTybXX5u62yxvm7qE/WO3Wf5s8j8RNs3EbU5g+AAAAABJRU5ErkJggg=="
+							alt="">
+						<p class="active">新币上市</p></div>
+				</div>
+				<div class="list_con">
+					<ul class="con-title">
+						<li>日期</li>
+						<li>名称</li>
+						<li>涨跌幅</li>
+						<li>价格</li>
+					</ul>
+					<a href="/coin/vsportcoin" class="con-cont goToUrl">
+						<li>2018-06-11</li>
+						<li title="体育币">VSC</li>
+						<li class="color-red">-23.36%</li>
+						<li>￥0.3381</li>
+					</a>
+					<a href="/coin/red-community token" class="con-cont goToUrl">
+						<li>2018-05-31</li>
+						<li title="红色令牌">RED</li>
+						<li class="color-green">+17.36%</li>
+						<li>￥0.0124</li>
+					</a>
+					<a href="/coin/etherzero" class="con-cont goToUrl">
+						<li>2018-05-31</li>
+						<li title="以太零">ETZ</li>
+						<li class="color-green">+8.57%</li>
+						<li>￥2.29</li>
+					</a>
+					<a href="/coin/globalvillage-ecosystem" class="con-cont goToUrl">
+						<li>2018-05-31</li>
+						<li title="世界村">GVE</li>
+						<li class="color-green">+5.64%</li>
+						<li>￥0.0663</li>
+					</a>
+					<a href="/coin/niu-coin system" class="con-cont goToUrl">
+						<li>2018-05-31</li>
+						<li title="牛币">NCS</li>
+						<li class="color-green">+5.51%</li>
+						<li>￥0.3291</li>
+					</a>
+					<a href="/coin/seele" class="con-cont goToUrl">
+						<li>2018-05-29</li>
+						<li title="SEELE">SEELE</li>
+						<li class="color-green">+2.28%</li>
+						<li>￥1.72</li>
+					</a>
+					<a href="/coin/kan" class="con-cont goToUrl">
+						<li>2018-05-25</li>
+						<li title="KAN">KAN</li>
+						<li class="color-green">+2.2%</li>
+						<li>￥0.1513</li>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<footer>
+	<div class="container">
+		<div class="links">
+			<div class="links-info">
+				<div class="links-info-title">
+					友情链接：
+				</div>
+				<div class="links-info-all">
+				</div>
+			</div>
+		</div>
+		<div class="cont">
+			<ul>
+				<li>
+					<p>关于我们</p>
+					<a href="/About" target="_blank">关于考拉</a>
+					<a href="/Join" target="_blank">加入我们</a>
+				</li>
+				<li>
+					<p>关注我们</p>
+					<a href="https://t.me/joinchat/FwW6lwrZ8CIDqxGIp1L1oA" target="_blank">Telegram</a>
+					<a href="https://www.facebook.com/coin.la.98" target="_blank">Facebook</a>
+					<a href="https://twitter.com/mpOSxKrPDcVzXr2" target="_blank">Twitter</a>
+				</li>
+			</ul>
+			<div class="guanZhu">
+				<img src="../static/images/icon/weiXin.jpg" alt="">
+				<p>关注考拉公众号</p>
+			</div>
+		</div>
+		<p class="Copyright">Copyright © 2018 - CoinLa.com All Rights Reserved <a target="_blank"
+																				  href="http://www.coinla.com/">备案号：</a><a
+				target="_blank" href="https://www.miibeian.gov.cn/">浙ICP备18008896号-1</a></p>
+	</div>
+
+</footer>
+</body>
+</html>

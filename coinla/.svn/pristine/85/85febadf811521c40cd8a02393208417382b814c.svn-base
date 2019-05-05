@@ -1,0 +1,638 @@
+<template>
+  <div class="turntable">
+    <img class="turntable_bac_banner" src="/static/images/turntable/turntable_bac_banner.jpg" alt="">
+    <div class="wallet" @click="wallet"><p>钱包地址</p></div>
+    <div class="turntable_page_wrap">
+      <div class="turntable_page">
+        <p class="active_end_days">
+          距离活动结束还有<span>{{dayData}}</span>天
+        </p>
+        <!--轮播中奖信息-->
+        <div class="turnTable_active">
+          <img src="/static/images/turntable/horn.png" alt="">
+          <text-scroll></text-scroll>
+        </div>
+        <!--幸运转盘-->
+        <div class="turntable_wrap">
+          <lottery  :uuidData="uuidData" :invitationCode="invitationCode" :beforeLottery="beforeLottery" :lotteryBtn="lotteryBtn" :prizesList="prizesList" :prize="prize" :afterLottery="afterLottery" ></lottery>
+        </div>
+        <div class="turntable_today">
+          <p class="today_time">今日已抽奖<span>{{lotteryNumber}}</span>次</p>
+          <p class="surplus_time">剩余<span>{{remainlotteryNumber}}</span>次抽奖机会</p>
+        </div>
+        <div class="assistance" @click="shareAssistant">
+          <img src="/static/images/turntable/assistance.png" alt="">
+        </div>
+        <div class="my_prize_list">
+          <img src="/static/images/turntable/my_prize_title.png" alt="" class="record_pic">
+          <div class="list" v-for="(item, key) in myPrizeList">
+            <div>{{key}}</div>
+            <p><span>{{item}}</span>个</p>
+          </div>
+        </div>
+        <div class="turntable_record">
+          <div class="record_title">
+            <p @click=toggleTab(index) v-for="(item, index) in recordTab" :class="{active: index ==num}"><span>{{item}}</span></p>
+          </div>
+          <div class="record_detail">
+            <div class="list_wrap" v-show="num == 0">
+              <div class="detail_title">
+                <p>时间</p>
+                <p>奖品</p>
+              </div>
+              <ul>
+                <li class="list" v-for="(item, index) in myPrizeRecordList">
+                  <p>{{item.createDate | filterDate}}</p>
+                  <p>{{item.awardsNumber}}{{item.awardsType}}</p>
+                </li>
+              </ul>
+            </div>
+            <div class="list_wrap" v-show="num == 1">
+              <div class="detail_title">
+                <p>时间</p>
+                <p>昵称</p>
+              </div>
+              <ul>
+                <li class="list" v-for="(item, index) in assistantRecord">
+                  <p>{{item.createDate | filterDate}}</p>
+                  <div class="other_assistant"><img :src="item.pic" alt=""><span>{{item.nick}}</span></div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--遮罩层-->
+    <rule-toast></rule-toast>
+    <div class="shadow_wrap" v-show="ethData" @click="hide1">
+      <div class="draw_lottery">
+        <div class="x_btn"  @click="ethHide">
+          <img src="/static/images/turntable/x_btn.png" alt="">
+        </div>
+        <p class="lottery_content_wrap">恭喜您获得<span class="lottery_content">{{test2}}</span></p>
+        <div class="lottery_address">
+          <p>请输入ETH钱包地址</p>
+          <input type="text" placeholder="单行输入">
+        </div>
+        <div class="btn">
+          <p class="next" @click="ethHide">确认</p>
+          <p class="share" @click="shareChangePic">炫耀一下</p>
+        </div>
+      </div>
+    </div>
+    <div class="shadow_wrap" v-show="clbData" @click="hide2">
+      <div class="draw_lottery draw_lottery_clb">
+        <div class="x_btn" @click="clbHide">
+          <img src="/static/images/turntable/x_btn.png" alt="">
+        </div>
+        <p class="lottery_content_wrap">恭喜您获得<span class="lottery_content">{{test2}}</span></p>
+        <div class="btn">
+          <p class="next" @click="clbHide">确认</p>
+          <p class="share"  @click="shareChangePic">炫耀一下</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  import {shareWeixin, isIos} from 'assets/js/case'
+  import {getCoinlaSingle, getCoinlaToken} from 'assets/js/httpAll'
+  import TextScroll from './page/textScroll'
+  import lottery from './page/lotteryPage.vue'
+  import RuleToast from './page/ruleToast'
+  export default {
+    name: "turntable",
+    metaInfo:{
+      title: '幸运转盘'
+    },
+    components: {
+      'text-scroll': TextScroll,
+      'lottery': lottery,
+      'rule-toast': RuleToast
+    },
+    data () {
+      return {
+        callData: '',
+        headersData: '',
+        bindParams: '',
+        childData: '',
+        invitationCode: this.$route.query.invitationCode,
+        uuidData: '',
+        num: 0,
+        recordTab: ['我的中奖纪录', '好友助力记录'],
+        clbData: false,
+        ethData: false,
+        myPrizeList: '',
+        myPrizeRecordList: '',
+        assistantRecord: '',
+        lotteryNumber: '',
+        remainlotteryNumber: '',
+        shareInfo: '',
+        prize: 0,
+        prizesList: '',
+        lotteryBtn:{
+          img1 : "/static/images/lottery/prize_btn.png",
+          img2 : "/static/images/lottery/prize_btn_grey.png",
+          status: true
+        },
+        test: '',
+        test2: '',
+        dayData: ''
+      }
+    },
+    /*filters: {
+      filterDate (value) {
+        let date = new Date(value)
+        let month = date.getMonth()+1
+        let day = date.getDate()
+        let hour = date.getHours()
+        let minute = date.getMinutes()
+        let val = `${month}-${day} ${hour}:${minute}`
+        return val
+      }
+    },*/
+    created () {
+      this.$nextTick(() => {
+        this.getAwardsList()
+      })
+    },
+    mounted () {
+      this.getDays()
+      this.getTokenData()
+    },
+    methods: {
+      //抽奖
+      beforeLottery(resolve, reject, idData){
+        /*send ajax to get result and pass to child component*/
+        // get result : this.prize
+        let _this = this
+        setTimeout(()=>{
+          _this.prize =  idData.awardsId//控制抽到哪里
+          _this.test = idData.awardsType
+          _this.test2 = idData.name
+          resolve();
+        },10)
+      },
+      afterLottery(){
+        if(this.test == 'CLB'){
+          this.clbData = true
+        }else{
+          this.ethData = true
+        }
+        this.apiFunction(this.callData)
+      },
+      //奖项列表接口
+      getAwardsList () {
+        getCoinlaSingle('/turntable/selectAwardsList', {activityId: 1}).then((res) => {
+          let resData = res.data.data
+          this.prizesList = resData
+        }).catch((err) => {})
+      },
+      shareChangePic () {
+        this.$router.push({name: 'flaunt', params: {getNumber: this.test2}})
+      },
+      toggleTab (index) {
+        this.num = index
+      },
+      ethHide () {
+        this.ethData = !this.ethData
+      },
+      clbHide () {
+        this.clbData = !this.clbData
+      },
+      hide1 () {
+        let el1 = event.currentTarget;
+        let el2 = event.target;
+        if(el1 == el2){
+          this.ethData = false
+        }
+      },
+      hide2 () {
+        let el1 = event.currentTarget;
+        let el2 = event.target;
+        if(el1 == el2){
+          this.clbData = false
+        }
+      },
+      //判断是否微信绑定
+      getWechatCheck (headersMessage) {
+        getCoinlaToken('/user/wechatCheck', {}, headersMessage).then((res) => {
+          let resData = res.data.data
+          //code为0代表以及绑定，获取后端传过来的uuid
+          if(res.data.code == 0){
+            this.uuidData = resData.uuid
+            this.callData =  resData
+            this.getShareInfo(resData, resData.uuid)
+            this.apiFunction(resData)
+            this.getAssistantRecord(resData)
+          }else{
+            this.getApiParams()
+          }
+        })
+      },
+      //headers-token获取
+      getTokenData () {
+        let _this = this
+        if(isIos()){
+          //ios headers获取
+          window.sendCLBRank = function (apiParams) {
+            _this.headersData = apiParams
+            _this.getWechatCheck(_this.headersData)
+          }
+          window.webkit.messageHandlers.NativeMethod.postMessage("getCLBRank");
+        }else{
+          //安卓 获取headers
+          window.setData = function (apiParams) {
+            _this.headersData = apiParams
+            _this.getWechatCheck(_this.headersData)
+          }
+          window.coinla.sendCLBRank('coinlaApp')
+        }
+      },
+      //微信登录授权，以及headers token等内容获取
+      getApiParams () {
+        let _this = this
+        if(isIos()){
+          //ios 微信授权登陆
+          window.webkit.messageHandlers.NativeMethod.postMessage("getWeChatUserData");
+          window.sendWeChatUserData = function (json) {
+            _this.callData = json
+            _this.uuidData = json.UID
+            //ios headers获取
+            window.sendCLBRank = function (apiParams) {
+              _this.headersData = apiParams
+              _this.getWechatBind(_this.callData, _this.headersData)
+            }
+            window.webkit.messageHandlers.NativeMethod.postMessage("getCLBRank");
+          }
+        }else{
+          //安卓 微信授权登陆
+          window.coinla.getWeChatUserData('123')
+          window.sendWeChatUserData = function (json) {
+            _this.callData = json
+            _this.uuidData = json.UID
+            //安卓 获取headers
+            window.setData = function (apiParams) {
+              _this.headersData = apiParams
+              _this.getWechatBind(_this.callData, _this.headersData)
+            }
+            window.coinla.sendCLBRank('coinlaApp')
+          }
+        }
+      },
+      //钱包地址跳转
+      wallet () {
+        this.$router.push({name: 'wallet', params: {invitationCode: this.invitationCode, uuid: this.callData.uuid}})
+      },
+      //微信绑定接口
+      getWechatBind (getParams, getHeaders) {
+        getCoinlaToken('/user/wechatBind', {openid: getParams.OpenID, uuid: getParams.UID, nick: getParams.UserName, pic: getParams.iconurl}, getHeaders).then((res) => {
+          this.bindParams = res
+          this.getShareInfo(getParams, getParams.UID)
+          this.apiFunction(getParams)
+          this.getAssistantRecord(getParams)
+        }).catch((error) => {})
+      },
+      //封装
+      apiFunction (getParams) {
+        //我的奖品接口
+        getCoinlaSingle('/turntable/selectMyPrize', {activityId: 1, invitationCode: this.invitationCode, uuid: getParams.UID || getParams.uuid}).then((res) => {
+          this.myPrizeList = res.data.data
+        }).catch((err) => {})
+        //我的中奖纪录接口
+        getCoinlaSingle('/turntable/selectWinningList', {activityId: 1, invitationCode: this.invitationCode, uuid: getParams.UID || getParams.uuid}).then((res) => {
+          this.myPrizeRecordList = res.data.data.list
+        }).catch((err) => {})
+        //好友助力纪录接口
+        getCoinlaSingle('/turntable/selectHelpList', {activityId: 1, invitationCode: this.invitationCode, uuid: getParams.UID || getParams.uuid}).then((res) => {
+          this.assistantRecord = res.data.data.list
+        }).catch((err) => {})
+        //抽奖次数，剩余抽奖机会接口
+        getCoinlaSingle('/turntable/selectNumber', {activityId: 1, invitationCode: this.invitationCode, uuid: getParams.UID || getParams.uuid}).then((res) => {
+          let message = res.data.data
+          this.lotteryNumber = message.drawNumber
+          this.remainlotteryNumber =  message.totalNumber - this.lotteryNumber
+          if(this.remainlotteryNumber == 0){
+            this.lotteryBtn.status = false
+          }
+        }).catch((err) => {})
+      },
+      /*getLotteryNumber (getParams) {
+        //抽奖次数，剩余抽奖机会接口
+        getCoinlaSingle('/turntable/selectNumber', {activityId: 1, invitationCode: this.invitationCode, uuid: getParams.UID || getParams.uuid}).then((res) => {
+          let message = res.data.data
+          this.lotteryNumber = message.drawNumber
+          this.remainlotteryNumber =  message.totalNumber - this.lotteryNumber
+          if(this.remainlotteryNumber == 0){
+            this.$toast({message: '今日抽奖次数已用完', duration: 1500})
+            this.lotteryBtn.status = false
+          }
+        }).catch((err) => {})
+      },*/
+      //邀请好友助力，增加抽奖机会接口
+      shareAssistant () {
+        if (isIos()) {
+          window.webkit.messageHandlers.NativeMethod.postMessage("ios_share");
+        } else {
+          window.coinla.getData(JSON.stringify(this.shareInfo))
+        }
+      },
+      //右上角按钮邀请
+      getShareInfo (getParams, uuidData) {
+        let _this = this
+        getCoinlaSingle('/share/multi', {type: 6}).then((res) => {
+          if (res.data.code === 0) {
+            //拼接uuid,方便在好友助力页面判断是否是本人还是好友
+            let url = res.data.data.shareUrl
+            //存在?
+            if(url.indexOf("?") != -1 ){
+              res.data.data.shareUrl =  url+'&uuid='+ uuidData+'&invitationCode='+this.invitationCode+'&bannerId='+this.$route.query.bannerId
+              //不存在?
+            }else{
+              res.data.data.shareUrl =  url+'?uuid='+ uuidData+'&invitationCode='+this.invitationCode+'&bannerId='+this.$route.query.bannerId
+            }
+            this.shareInfo = res.data.data
+            if (isIos()) {
+              window.setData = function () {
+                return res.data.data
+              }
+            } else {
+              window.sendData = function () {
+                window.coinla.getData(JSON.stringify(res.data.data))
+              }
+            }
+          }
+        }).catch((err) => {})
+      },
+      //时间天数
+      getDays () {
+        getCoinlaSingle('/headline/selectBannerDetail' ,{bannerId: this.$route.query.bannerId}).then((res) => {
+          let endDay = new Date(res.data.data.endDate);
+          let now = new Date();
+          let days = endDay.getTime() - now.getTime();
+          this.dayData = parseInt(days / (1000 * 60 * 60 * 24));
+        })
+      }
+    }
+  }
+</script>
+
+<style lang="stylus">
+  .turntable {
+    position: relative
+    .turntable_bac_banner{
+      width: 100%
+      display: block
+    }
+    .wallet {
+      width: 0.6rem
+      /*height: 1.56rem*/
+      z-index:99
+      border-radius: 0.1rem
+      position: absolute
+      right: 0
+      background: rgba(255, 255, 255, 0.3)
+      color: #fff
+      font-size: 0.3rem
+      p {
+        width: 0.3rem
+        padding: 0.18rem 0
+        margin: 0 auto
+      }
+    }
+    .wallet {
+      top: 2.9rem
+    }
+    &_page_wrap {
+      background: url(/static/images/turntable/bacImg.jpg) no-repeat
+      background-size:100% 100%
+      padding: 0 0.195rem 0.5rem
+      .turntable_page{
+        max-width: 7.21rem
+        margin: 0 auto
+        .active_end_days {
+          text-align: center
+          font-size: 0.3rem
+          color: #fff
+          font-weight: 600
+        }
+        .turnTable_active {
+          width: 5rem
+          height: 0.41rem
+          margin: 0.32rem auto 0.22rem
+          background-color: #FAF0EE
+          border-radius: 0.3rem
+          display: flex
+          align-items: center
+          img {
+            width: 0.32rem
+            margin: 0 0.3rem 0 0.22rem
+          }
+        }
+        .turntable_today {
+          color: #b0730b
+          font-size: 0.3rem
+          display: flex
+          justify-content: space-between
+          align-items: center
+          margin: 0.34rem 0.32rem
+          p {
+            width: 2.58rem
+            height: 0.5rem
+            line-height: 0.5rem
+            border-radius: 0.3rem
+            background-color: #FFDE7D
+            text-align: center
+            span {
+              color: #e7202a
+            }
+          }
+          .surplus_time {
+            width: 3rem
+          }
+        }
+        .assistance {
+          text-align: center
+          img {
+            width: 5.76rem
+            height: 1.51rem
+          }
+        }
+        .my_prize_list {
+          position: relative
+          border: 0.08rem solid rgba(250,229,107,1);
+          background-color: #F8F4DB
+          border-radius: 5px;
+          box-shadow: 0px 9px 27px 0px rgba(183,52,12,0.64);
+          display: flex
+          align-items: center
+          justify-content: space-between
+          height: 1.8rem
+          margin: 0.26rem 0.32rem 0.3rem 0.32rem
+          font-size: 0.24rem
+          padding-top:0.18rem
+          .record_pic{
+            width: 2.22rem
+            height: 0.56rem
+            position: absolute
+            top: -0.34rem
+            left: 50%
+            margin-left:-1.11rem
+          }
+          .list {
+            width: 25%
+            text-align: center
+            color: #080808
+            p {
+              margin-top: 0.25rem
+            }
+            span {
+              color: #e7202a
+            }
+          }
+        }
+        .turntable_record {
+          margin: 0 0.32rem
+          border: 0.08rem solid rgba(250,229,107,1);
+          background-color: #F8F4DB
+          border-radius: 5px;
+          box-shadow: 0px 9px 27px 0px rgba(183,52,12,0.64);
+          font-size: 0.24rem
+          .record_title {
+            overflow: hidden
+            p{
+              width: 50%
+              padding: 0 0.32rem
+              float: left
+              background-color: #faf1b9
+              span {
+                height: 0.76rem
+                line-height: 0.76rem
+                text-align: center
+                display: block
+              }
+            }
+            .active {
+              background-color: #f8f4db
+              color: #e7202a
+              span {
+                border-bottom: 3px solid #e7202e
+              }
+            }
+          }
+          .record_detail {
+            padding: 0 0.1rem 0.4rem
+            color: #080808
+            .detail_title {
+              display: flex
+              justify-content: center
+              align-items: center
+              height: 0.46rem
+              line-height: 0.46rem
+              border-bottom: 1px solid #e1e1e1
+              p {
+                width: 50%
+                text-align: center
+              }
+            }
+            .list {
+              display: flex
+              justify-content: center
+              align-items: center
+              height: 0.46rem
+              line-height: 0.46rem
+              border-bottom: 1px solid #e1e1e1
+              p {
+                text-align: center
+                width: 50%
+              }
+            }
+          }
+          .other_assistant{
+            width: 50%
+            display: flex
+            justify-content: center
+            align-items: center
+            img{
+              width:0.3rem
+              border-radius:50%
+              margin-right:0.1rem
+              vertical-align:middle
+            }
+            span{
+              font-weight:bold
+            }
+          }
+        }
+      }
+    }
+    .draw_lottery {
+      color: #080808
+      z-index:1000
+      position: absolute
+      left: 50%
+      top: 50%
+      padding: 0 25px
+      margin-top: -132px
+      margin-left: -162.5px
+      width: 325px
+      height: 264px
+      background-color: #fff
+      border-radius: 16px
+      box-shadow: 0 0px 81px rgba(241, 76, 11, .77)
+      .lottery_content_wrap {
+        margin: 38px auto 0
+        font-size: 20px
+        text-align: center
+        .lottery_content {
+          color: #e7202a
+          font-size:20px
+        }
+      }
+      .lottery_address {
+        font-size: 14px
+        margin: 35px 0 30px
+        p {
+          margin-bottom: 11px
+        }
+        input {
+          width: 100%
+          padding: 12px 0 12px 10px
+          border: none
+          border: 1px solid #bebaba
+        }
+      }
+      .btn {
+        overflow: hidden
+        .next, .share {
+          width: 106px
+          height: 41px
+          line-height: 41px
+          text-align: center
+          color: #fff
+          font-size: 18px
+          float: left
+          border-radius: 6px
+        }
+        .next{
+          background-color: #f5a214
+        }
+        .share{
+          background-color: #f13536
+          float: right
+        }
+      }
+    }
+    .draw_lottery_clb{
+      z-index:1000
+      .lottery_content_wrap{
+        margin-top:74px
+      }
+      .btn{
+        margin-top:60px
+      }
+    }
+  }
+</style>

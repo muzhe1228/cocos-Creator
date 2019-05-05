@@ -1,0 +1,157 @@
+<!DOCTYPE>
+<html>
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="./css/icon/style.css">
+	<script type="text/javascript" src="./js/jquery.min.js"></script>
+	<style>
+		.sel_mask { /*将<a></a>相对定位*/
+			position: relative;
+			width: 200px;
+			height: 25px;
+			background: #24A0D8;
+			border-radius: 5px;
+			box-shadow: 1px 1px 5px #169BD5;
+			display: inline-block;
+			text-decoration: none;
+		}
+		
+		.sel_mask:hover { /*添加hover效果*/
+			background: #169BD5;
+		}
+		
+		.sel_mask select { /*以相同大小将<select></select>绝对定位*/
+			top: 0px;
+			left: 0px;
+			position: absolute;
+			width: 200px;
+			height: 25px;
+			opacity: 0;
+		}
+		
+		.sel_mask select option[selected] {
+			font-weight: bold
+		}
+		
+		.sel_mask select option:nth-child(even) {
+			background-color: #A7DAEF;
+		}
+		
+		.sel_mask select option {
+			color: #EA5400;
+			/*-webkit-transform: rotate(-180deg);*/
+			/*-moz-transform: rotate(-180deg);*/
+			/*-ms-transform: rotate(-180deg);*/
+			/*-o-transform: rotate(-180deg);*/
+			/*transform: rotate(-180deg);*/
+		}
+		
+		.sel_mask .le { /*显示内容*/
+			position: absolute;
+			top: 3px;
+			left: 5px;
+			right: 20px;
+			display: inline-block;
+			color: #fff;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+		
+		.sel_mask .selIcon { /*箭头图标*/
+			display: inline-block;
+			position: absolute;
+			top: 2px;
+			right: 5px;
+			-webkit-transition: all .4s linear;
+			-moz-transition: all .4s linear;
+			-ms-transition: all .4s linear;
+			-o-transition: all .4s linear;
+			transition: all .4s linear;
+		}
+		.rot{
+			transform: rotate(0) !important;
+		}
+	</style>
+</head>
+<body>
+
+<div class="newPage">
+	<a href="/" class="aDisabled nuxt-link-exact-active nuxt-link-active">上一页</a>
+	<a href="/" class="nuxt-link-exact-active nuxt-link-active active">1</a>
+	<a href="/page2" class="">2</a>
+	<a href="/page3" class="">3</a>
+	<a href="/page4" class="">4</a>
+	<a href="/page5" class="">5</a>
+	<a href="/page6" class="">6</a>
+	<a href="/page7" class="">···</a>
+	<a href="/page19" class="">19</a>
+	<a href="/page2" class="">下一页</a>
+</div>
+
+
+<a href="javascript:void(0)" class="sel_mask"><span class="le">请选择</span><span class="selIcon"><i
+		class="icon-kenbot"></i></span>
+	<select class="sel">
+		<option class="opt">请选择</option>
+		<option class="opt">选项一</option>
+		<option class="opt">选项二</option>
+		<option class="opt">选项三</option>
+		<option class="opt">选项四</option>
+		<option class="opt">选项五</option>
+		<option class="opt">选项六</option>
+		<option class="opt">选项七</option>
+	</select>
+</a>
+
+
+<select id='province'>
+	<option value='6'>66
+	<option value='7'>77
+	<option value='8'>88
+</select>
+<input type='button' id="btn1" value='setPi'>
+<script type="text/javascript">
+    $('#province').on("change", function () {
+        alert($('#province').get(0).selectedIndex);
+    })
+    $('#btn1').on("click", function () {
+        $('#province').get(0).selectedIndex = 1
+        $('#province').trigger("change");
+    })
+</script>
+
+
+<script>
+    $(function () {
+        $('.sel').change(function () {    // 选择后替换内容并恢复箭头方向
+            console.log(1111)
+            // window.location.href = '//www.baidu.com'
+            $('.selIcon').addClass('rot')
+            // console.log($('.sel_mask').find('img').attr('src'));
+            // $('span').html($('.sel').find('option:selected').html());
+            // console.log($('.sel').val())
+        })
+
+        function setCss() {
+            console.log('yes')
+            $('.selIcon').css({
+                transform: 'rotate(0)'
+            })
+        }
+
+        // $(".sel").trigger("change");
+        $('.sel').blur(function () {      //什么也不选恢复箭头方向
+            // $('.sel_mask').find('img').attr('src', './select/arrow_down.png');
+            setCss()
+        })
+        $('.sel').click(function () {     // 点击后更改箭头方向
+            // $('.sel_mask').find('img').attr('src', './select/arrow_up.png');
+            $('.selIcon').css({
+                transform: 'rotate(-180deg)'
+            })
+        })
+    })
+</script>
+</body>
+</html>

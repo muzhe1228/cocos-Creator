@@ -1,0 +1,1254 @@
+<template>
+  <div class="group">
+    <div class="group_banner">
+      <img src="/static/images/group/group_banner.jpg" alt="">
+      <div class="my_wrap">
+        <div class="my_group" @click="groupRecord">
+          我参与的团
+        </div>
+        <div class="my_awards" @click="groupAward">
+          我的奖励
+          <p class="icon" v-show="circleStatus"></p>
+        </div>
+      </div>
+    </div>
+    <div class="group_main">
+      <div class="group_content">
+        <img src="/static/images/group/four_group.png" alt="" class="four_group_img">
+        <img v-show="groupStatus" src="/static/images/group/group_ing.png" alt=""  class="group_status_img">
+        <img v-show="groupSuccessStatus" src="/static/images/group/group_success.png" alt=""  class="group_status_img">
+        <img v-show="groupFailure" src="/static/images/group/group_failure.png" alt=""  class="group_status_img">
+        <div class="content">
+          <div class="time" v-show="groupStatus">
+            <p>距离组团结束还有</p>
+            <p class="count_down">
+              <span>{{hour}}</span> <em>:</em>
+              <span>{{minute}}</span> <em>:</em>
+              <span>{{seconds}}</span>
+            </p>
+          </div>
+          <div class="time" v-show="groupSuccessStatus">
+            恭喜你组团成功！团队可瓜分<span>88CLB</span>
+          </div>
+          <div class="time" v-show="groupFailure">
+            未在规定时间内组团成功奖励已失效
+          </div>
+          <div class="content_people">
+            <img src="/static/images/group/four_group_line.png" alt="" class="four_group_line">
+            <div class="content_people_detail">
+              <div class="captain">
+                <span>团长</span>
+                <img :src="memberList[0].pic" alt="" :onerror="errorImg">
+                <p class="nick">{{memberList[0].nick}}</p>
+              </div>
+              <div class="member">
+                <img :src="memberList[1].pic" alt="" :onerror="errorImg" v-if="memberList[1].pic">
+                <img src="/static/images/group/add_icon.png" alt="" v-if="!memberList[1].pic" @click="addBtn">
+                <p class="nick">{{memberList[1].nick?memberList[1].nick: ''}}</p>
+              </div>
+              <div class="member">
+                <img :src="memberList[2].pic" alt="" :onerror="errorImg" v-if="memberList[2].pic">
+                <img src="/static/images/group/add_icon.png" alt="" v-if="!memberList[2].pic" @click="addBtn">
+                <p class="nick">{{memberList[2].nick?memberList[2].nick: ''}}</p>
+              </div>
+              <div class="member">
+                <img :src="memberList[3].pic" alt="" :onerror="errorImg" v-if="memberList[3].pic">
+                <img src="/static/images/group/add_icon.png" alt="" v-if="!memberList[3].pic" @click="addBtn">
+                <p class="nick">{{memberList[3].nick?memberList[3].nick: ''}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="btn">
+            <img v-show="groupStatus" src="/static/images/group/add_btn.png" alt="" class="add_btn" @click="addBtn">
+            <img v-show="groupSuccessStatus" src="/static/images/group/group_btn.png" alt="" class="group_btn"  @click="selectGroupNum">
+            <img v-show="groupFailure" src="/static/images/group/group_btn.png" alt="" class="group_btn"  @click="selectGroupNum">
+          </div>
+          <div class="btn" v-show="isCaptain">
+            <img src="/static/images/group/add_btn_small.png" alt="" class="add_btn_small" @click="addBtn">
+            <img src="/static/images/group/group_btn_small.png" alt="" class="group_btn_small" @click="selectGroupNum">
+          </div>
+        </div>
+      </div>
+      <group-rule></group-rule>
+    </div>
+    <!--拆红包等-->
+    <div class="shadow_wrap" v-show="shadow">
+      <div class="open_award_wrap" v-show="openStatus">
+        <img src="/static/images/group/open.png" alt="" @click="openAward">
+      </div>
+      <div class="open_award_number" v-show="awardsNumberToast">
+        <h3>恭喜您获得</h3>
+        <p class="number">{{awardsNumber}}<span>{{awardsNumber}}</span></p>
+        <p class="get_btn" @click="getGroupAward">领取奖励</p>
+      </div>
+      <div class="bind_wx_wrap"  v-show="wxBind">
+        <p>绑定微信才能参与活动</p>
+        <a href="javascript:;" @click="wxLoginAuthorization" class="btn">去绑定</a>
+      </div>
+    </div>
+    <!--下载app弹框-->
+    <div class="shadow_wrap"  v-show="downloadShadow" @click="downloadShadow = false">
+      <div class="download">
+        <h3>绑定卡拉行情账号</h3>
+        <div class="btn">
+          <p class="cancle_btn"  @click="downloadShadow = false">取消</p>
+          <p class="download_btn" @click="download">下载</p>
+        </div>
+      </div>
+    </div>
+    <!--登录app才能参与活动弹框-->
+    <div class="shadow_wrap" v-show="loginShadow">
+      <div class="go_app_login">
+        <p>登录app账号才能参与活动</p>
+        <a href="javascript:;" @click="getByTokenTurnAppLogin" class="btn">去登录</a>
+      </div>
+    </div>
+    <!--绑定app弹框-->
+    <div class="shadow_wrap" v-show="showAccountToast" @click="showAccountToast = false">
+      <div class="bind_app_toast">
+        <h3>绑定卡拉行情账号</h3>
+        <div class="userMessage">
+          <div class="account">
+            <span class="account_text"><em>账</em><em>号 :</em></span>
+            <input type="text" placeholder="输入手机号或邮箱" v-model="bindData.account" @change="changeInfo('account')">
+          </div>
+          <div class="captcha">
+            <span class="captcha_text">验证码 :</span>
+            <input type="text" placeholder="输入验证码" v-model="bindData.captcha" @change="changeInfo('captcha')">
+            <button @click="getcaptcha" :disabled = 'isDisabled'>{{captchaText}}</button>
+          </div>
+        </div>
+        <p class="notice_text">发起组团拆红包需绑定考拉行情APP账号</p>
+        <div class="btn">
+          <p class="cancle_btn" @click="showAccountToast = false">取消</p>
+          <p class="bind_btn" @click="bindAccount">立即绑定</p>
+        </div>
+      </div>
+    </div>
+    <!--拆红包之后彩带飘落特效-->
+    <div id="drift" v-show="awardsNumberToast"></div>
+    <!--引导app下载-->
+    <p class="yd" v-show="downloadAppLead" @click="downloadAppLead = false">
+      <img src="/static/images/download/yd.png" alt="">
+    </p>
+  </div>
+</template>
+
+<script>
+  import GroupRule from './page/groupRule.vue'
+  import {shareWeixin, isIos, openInApp} from 'assets/js/case'
+  import {getCoinlaSingle, getCoinlaToken} from 'assets/js/httpAll'
+  import {countDownTime} from 'assets/js/filters'
+  export default {
+    name: 'group',
+    metaInfo:{
+      title: '好友齐上阵 组团拿大奖'
+    },
+    data () {
+      return {
+        circleStatus: false, //我的奖励列表右上角红圈
+        infoId: '',
+        downloadAppLead: false, //引导用户下载app
+        downloadShadow: false, //下载app弹框阴影
+        errorImg: "this.onerror=null;this.src='/static/images/group/add_icon.png'", //默认图片
+        isCaptain: false, //是否为发团者
+        groupStatus: false, //成团状态：组团中
+        groupSuccessStatus: false, //成团状态：已成团
+        groupFailure: false, //组团失效
+        hour: '00', //组团结束倒计时
+        minute: '00',
+        seconds: '00',
+        shareInfo: '', //分享信息,
+        shadow: false, //遮罩层
+        loginShadow: true, //去登录遮罩层
+        openStatus: false, //拆红包弹框
+        awardsNumberToast: false, //获得红包数量弹框
+        awardsNumber: '', //中奖数量
+        awardsName: '', //中奖名称
+        awardsType: '', //中奖类型
+        headersData: '', //headers中的token等数据
+        wxHeadersData: '', //微信中headers中的token等数据
+        wxBind: false, //是否微信绑定弹框
+        userWxData: '', //app中，后台传过来的用户uuid,openid等微信信息
+        userUuidData: '', //用户的uuid
+        codeData: '', //用户微信code数据
+        wxGroupData: '', //微信打开，后台传过来的用户微信信息,
+        captainIndex: '', //标记团长下标
+        memberList: [], //团队成员
+        endDate: '', //组团活动结束时间，
+        isDisabled: false, //绑定app账号，禁用
+        bindData: {
+          account: '',
+          captcha: '',
+          client: 0,
+          recommendCode: this.$route.query.inviteCode
+        },
+        captchaText: '获取验证码',
+        showAccountToast: false, //绑定app账号弹框
+      }
+    },
+    components: {
+      GroupRule
+    },
+    mounted () {
+      this.isOpenInApp()
+      this.getShareInfo()
+    },
+    methods: {
+      //-----------------微信打开--------------
+      //微信登录授权，获取code
+      getWxCode () {
+        let _this = this
+        let code = this.$route.query.code
+        let wxUrlData = window.location.href
+        if (code == null || '') {
+          //微信授权接口
+          getCoinlaSingle('/wechatOAuthUrl', {url: wxUrlData}).then((res) => {
+            window.location.href = res.data
+          })
+        } else {
+          if(code != null || '') {
+            _this.codeData = code
+          }
+          //调用用户微信信息接口
+          getCoinlaSingle('/wechatUserInfo', {code: _this.codeData}).then((res) => {
+            this.wxGroupData = res.data
+            this.selectGroup(res.data)
+          })
+        }
+      },
+      //获取验证码
+      getcaptcha () {
+        let validateData = validateHandles.phoneEmail(this.bindData.account)
+        if(!validateData){
+          let timer = null
+          let _this = this
+          let num = 60
+          getCoinlaSingle('/captcha/sms', {account: this.bindData.account, type: 1}).then((res) => {
+            if(res.data.code == 0){
+              this.$toast({message: '验证码已发送', duration: 1500})
+              this.isDisabled = true
+              timer = setInterval(() => {
+                num--
+                console.log(num)
+                _this.captchaText = num + 's'
+                if(num <= 0){
+                  clearInterval(timer)
+                  this.isDisabled = false
+                  _this.captchaText = '获取验证码'
+                }
+              }, 1000)
+            }else{
+              this.$toast({message: res.data.code< 0 ? '失败': res.message, duration: 1500})
+            }
+          }).catch((err) => {})
+        }else{
+          this.$toast({message: validateData, duration: 1500})
+        }
+      },
+      //点击立即绑定, 注册登录
+      bindAccount () {
+        let validateAccountData = validateHandles.phoneEmail(this.bindData.account)
+        let validateCaptchaData = validateHandles.captcha(this.bindData.captcha)
+        if(validateAccountData){
+          this.$toast({message: validateAccountData, duration: 1500})
+        }else if(validateCaptchaData){
+          this.$toast({message: validateCaptchaData, duration: 1500})
+        }else{
+          getCoinlaSingle('/user/login/registerOrLogin', this.bindData).then((res) => {
+            let resData = res.data.data
+            if(res.data.code == 0){
+              this.wxHeadersData = resData //获取token等数据
+              this.$toast({message: '绑定成功', duration: 1500})
+              this.showAccountToast = false
+              //判断是新用户还是老用户（是否微信绑定），新用户显示下载app弹框，老用户显示获取到的奖励弹框
+              getCoinlaToken('/user/wechatCheck', {}, this.wxHeadersData).then((res) => {
+                //code为0代表已经绑定，也就是老用户，获取后端传过来的uuid
+                if(res.data.code == 0){
+                  this.wxBind = false
+                  this.shadow = false
+                  this.downloadShadow = false
+                  //请求拆红包接口
+                  getCoinlaToken('/groupActivity/updateReceiveState', {
+                    activity: 2,
+                    infoId: this.$route.query.infoId || this.$route.params.infoId,
+                    uuid: this.wxGroupData.uuid
+                  }, this.wxHeadersData).then((res) => {
+                    let resData = res.data.data
+                    this.awardsNumberToast = true
+                    this.shadow = true
+                    this.awardsNumber = resData.awardsNumber
+                    this.awardsType = resData.awardsType
+                    this.awardsName = resData.awardsName
+                    this.awardsNumberToast = true
+                  }).catch((err) => {
+                    this.$toast({message: '失败', duration: 1500})
+                  })
+                }else{
+                  //新用户,去绑定微信
+                  this.wxBind = true
+                  this.shadow = true
+                }
+              })
+            }else{
+              this.$toast({message: res.data.code< 0 ? '失败' : res.message, duration: 1500})
+            }
+          }).catch((err) => {})
+        }
+      },
+      //注册登录之后，新用户出现下载考拉详情弹框，老用户不需要
+      //验证输入框内容，blur，change
+      changeInfo (type) {
+        let validateAccountData = validateHandles.phoneEmail(this.bindData.account)
+        let validateCaptchaData = validateHandles.captcha(this.bindData.captcha)
+        if(type == 'account'){
+          if(validateAccountData){
+            this.$toast({message: validateAccountData, duration: 1500})
+          }
+        }else{
+          if(validateCaptchaData){
+            this.$toast({message: validateCaptchaData, duration: 1500})
+          }
+        }
+      },
+      //下载app
+      download () {
+        if (isIos()) {
+          window.location.href = 'https://itunes.apple.com/cn/app/coinla/id1359706851?mt=8'
+        } else {
+          let ua = navigator.userAgent.toLowerCase();
+          if (ua.match(/MicroMessenger/i) == "micromessenger" || ua.match(/QQ/i)=='qq') {
+            this.downloadAppLead = true
+          } else {
+            window.location.href = 'https://api.coinla.com/download/android'
+          }
+        }
+      },
+      //-----------------app打开--------------
+      //判断是否微信绑定
+      getWechatCheck (headersMessage) {
+        getCoinlaToken('/user/wechatCheck', {}, headersMessage).then((res) => {
+          let resData = res.data.data
+          //code为0代表已经绑定，获取后端传过来的uuid
+          if(res.data.code == 0){
+            this.userUuidData = resData.uuid
+            this.userWxData = resData
+            //调用需要刷新数据的方法
+            this.selectGroup()
+            this.wxBind = false
+            this.shadow = false
+          }else{
+            this.wxBind = true
+            this.shadow = true
+          }
+        })
+      },
+      //headers-token获取，通过获取token，有数据代表已经登录，否则就是没有登录app
+      getByTokenTurnAppLogin () {
+        let _this = this
+        if (isIos()) {
+          //ios headers获取
+          window.sendCLBRank = function (apiParams) {
+            _this.headersData = apiParams
+            //取到token字段的值之后 根据逗号拆分为两个字符串 判断第二个字符串的值就是真正的token
+            let token = apiParams.token.split(",")[1]
+            if(token){
+              //获取到token等数据，说明已经登陆了
+              _this.loginShadow = false
+              _this.getWechatCheck(_this.headersData)
+            }else{
+              //没有获取到token等数据，要跳转到登录页面
+              window.iosLoginSuccess = function () {
+                //登录成功之后的操作,ios没有传数据过来,刷新页面,重新获取token
+                _this.$toast({message: '登录成功', duration: 1500})
+                _this.loginShadow = false
+                _this.isOpenInApp()
+              }
+              window.webkit.messageHandlers.NativeMethod.postMessage("ios_showLogin") //调用此方法，会显示登录页面
+            }
+
+          }
+          window.webkit.messageHandlers.NativeMethod.postMessage("getCLBRank");
+        } else {
+          //安卓 获取headers
+          window.setData = function (apiParams) {
+            _this.headersData = apiParams
+            let token = apiParams.token.split(",")[1]
+            if(token){
+              _this.loginShadow = false
+              _this.getWechatCheck(_this.headersData)
+            }else{
+              //安卓
+              window.andriodLoginSuccess = function (apiParams) {
+                //登录成功之后，刷新页面
+                _this.loginShadow = false
+                _this.isOpenInApp()
+              }
+              window.coinla.showLoginWindow('coinlaApp')
+            }
+          }
+          window.coinla.sendCLBRank('coinlaApp')
+        }
+      },
+      //微信登录授权，以及headers token等内容获取
+      wxLoginAuthorization () {
+        let _this = this
+        if(openInApp()){
+          if(isIos()) {
+            //ios 微信授权登陆
+            window.webkit.messageHandlers.NativeMethod.postMessage("getWeChatUserData");
+            window.sendWeChatUserData = function (json) {
+              _this.userWxData = json
+              _this.userUuidData = json.UID
+              //ios headers获取
+              window.sendCLBRank = function (apiParams) {
+                _this.headersData = apiParams
+                _this.getWechatBind(_this.userWxData, _this.headersData)
+                this.getMyPrize()
+              }
+              window.webkit.messageHandlers.NativeMethod.postMessage("getCLBRank");
+            }
+          }else{
+            //安卓 微信授权登陆
+            window.coinla.getWeChatUserData('123')
+            window.sendWeChatUserData = function (json) {
+              _this.userWxData = json
+              _this.userUuidData = json.UID
+              //安卓 获取headers
+              window.setData = function (apiParams) {
+                _this.headersData = apiParams
+                _this.getWechatBind(_this.userWxData, _this.headersData)
+                this.getMyPrize()
+              }
+              window.coinla.sendCLBRank('coinlaApp')
+            }
+          }
+        }else{
+          //如果是微信中打开
+          this.getWechatBind(_this.wxGroupData, _this.wxHeadersData)
+          this.getMyPrize()
+        }
+      },
+      //微信绑定接口
+      getWechatBind (getWxParams, getHeaders) {
+        if (this.userUuidData) {
+          this.wxBind = false
+          this.shadow = false
+        }
+        if(this.wxGroupData.uuid){
+          this.wxBind = false
+          this.shadow = false
+        }
+        getCoinlaToken('/user/wechatBind', {
+          code: getWxParams.code,
+          openid: getWxParams.OpenID,
+          uuid: getWxParams.UID || getWxParams.uuid,
+          nick: getWxParams.UserName,
+          pic: getWxParams.iconurl
+        }, getHeaders).then((res) => {
+          //需要刷新的数据方法
+          this.$toast({message: '微信绑定成功', duration: 1500})
+          if(!openInApp()){
+            this.downloadShadow = true
+          }
+        }).catch((error) => {})
+      },
+      //判断用户是否在app中打开，还是微信中或者其他地方打开
+      isOpenInApp () {
+        if(openInApp()){
+          // 在app内打开
+          //判断是否登录app账号（）
+          this.loginShadow = true
+          this.getByTokenTurnAppLogin()
+        }else{
+          // 不是app内打开
+          //微信授权登录，获取code
+          this.getWxCode()
+          this.loginShadow = false
+        }
+      },
+      //登录app账号后，判断用户有没有发起过团(后端)，是进入最后发团页面，否判断是否绑定微信（绑定微信才可发团），然后自动发团
+      //进入最后发团页面判断成团状态：超时，成功，组团中
+      //如果为组团中，判断是否为发团者，不是显示邀请好友和我要组团按钮，是只显示邀请好于按钮
+      //查询组团活动信息接口，判断用户有没有发起过团
+      selectGroup (wxData) {
+        //如果是微信打开不传token,app打开传token
+        let postData = ''
+        let tokenData = ''
+        let infoIdData = this.$route.params.infoId //用来判断从哪个入口进，然后传不同的参数
+        if(openInApp()){
+          if(infoIdData){
+            postData = {
+              activityId: 2,
+              infoId: this.$route.query.infoId || this.$route.params.infoId
+            }
+            tokenData = ''
+          }else{
+            postData = {
+              activityId: 2
+            }
+            tokenData = this.headersData
+          }
+        }else{
+          if(infoIdData){
+            postData = {
+              activityId: 2,
+              infold: this.$route.query.infoId || this.$route.params.infoId
+            }
+            tokenData = ''
+          }else{
+            postData = {
+              activityId: 2,
+              infoId: this.$route.query.infoId || this.$route.params.infoId,
+              uuid: wxData.uuid,
+              openid: wxData.openid,
+              nick: wxData.nick,
+              pic: wxData.pic,
+              code: this.codeData
+            }
+            tokenData = ''
+          }
+        }
+        getCoinlaToken('/groupActivity/selectGroup', postData,  tokenData).then((res) => {
+          let _this = this
+          let resData = res.data.data
+          let state = resData.state
+          let memberType = resData.memberList[0].memberType
+          _this.memberList = resData.memberList
+          _this.infoId = resData.infoId
+          let len = _this.memberList.length
+          if(len < 4){
+            if(len == 3){
+              _this.memberList.push({})
+            }else if(len == 2){
+              _this.memberList.push({}, {})
+            }else if(len == 1){
+              _this.memberList.push({}, {}, {})
+            }else{
+              _this.memberList.push({}, {}, {}, {})
+            }
+          }
+          if(res.data.code == 0){
+            if(state == 0){
+              //组团中
+              this.groupStatus = true
+              this.groupFailure = false
+              this.groupSuccessStatus = false
+              this.endDate = resData.endDate
+              this.countDownTimeFunc(this.endDate)
+              if(memberType == 0){
+                //发团者，团长
+                this.isCaptain = false
+              }else{
+                //团员
+                this.isCaptain = true
+              }
+            }else if(state == 1){
+              //已成团
+              this.groupSuccessStatus = true
+              this.groupFailure = false
+              this.groupStatus = false
+              this.isCaptain = false
+              //判断是否已经拆过红包
+              this.isOpenAward()
+            }else{
+              //已失效
+              this.groupFailure = true
+              this.groupStatus = false
+              this.groupSuccessStatus = false
+              this.isCaptain = false
+            }
+          }else{
+            //判断是否已经参加过该发起人的团，是提示语
+            //否判断是否已经成团，是否已经超时，是否成团（成团可拆红包，进入奖励明细页面）
+            this.$toast({message: res.data.message, duration: 1500})
+          }
+        }).catch((err) => {})
+      },
+      //组团成功判断是否已经拆红包，否拆红包进入获取奖励页面，是进入已成团页面
+      //是否可拆红包接口
+      isOpenAward () {
+        getCoinlaToken('/groupActivity/updateReceiveState', {
+          activity: 2,
+          infoId: this.$route.query.infoId || this.$route.params.infoId,
+          uuid: this.userUuidData || this.wxGroupData.uuid
+        }, this.headersData || this.wxHeadersData).then((res) => {
+          let resData = res.data.data
+          if(resData == 0){
+            //未拆红包
+            this.openStatus = true
+            this.shadow = true
+          }else{
+            //已拆红包
+            this.groupSuccessStatus = true
+            this.groupFailure = false
+            this.groupStatus = false
+            this.isCaptain = false
+          }
+        }).catch((err) => {
+          this.$toast({message: '失败', duration: 1500})
+        })
+      },
+      //拆红包，点击 开 出现彩带飘落效果1-2s，同时出现一个弹框提示拆红包成功，然后跳转到获取奖励页面
+      openAward () {
+        if(openInApp()){
+          getCoinlaToken('/groupActivity/updateReceiveState', {
+            activity: 2,
+            infoId: this.$route.query.infoId || this.$route.params.infoId,
+            uuid: this.userUuidData
+          }, this.headersData).then((res) => {
+            let resData = res.data.data
+            this.awardsNumberToast = true
+            this.shadow = true
+            this.awardsNumber = resData.awardsNumber
+            this.awardsType = resData.awardsType
+            this.awardsNumberToast = true
+          }).catch((err) => {
+            this.$toast({message: '失败', duration: 1500})
+          })
+        }else{
+          //微信中通过判断token是否登录app
+          if(this.wxHeadersData){
+            this.showAccountToast = false
+            getCoinlaToken('/groupActivity/updateReceiveState', {
+              activity: 2,
+              infoId: this.$route.query.infoId || this.$route.params.infoId,
+              uuid: this.wxGroupData.uuid
+            }, this.wxHeadersData).then((res) => {
+              let resData = res.data.data
+              this.awardsNumberToast = true
+              this.shadow = true
+              this.awardsNumber = resData.awardsNumber
+              this.awardsType = resData.awardsType
+              this.awardsNumberToast = true
+            }).catch((err) => {
+              this.$toast({message: '失败', duration: 1500})
+            })
+          }else{
+            this.showAccountToast = true //未登录,绑定app弹框显示
+          }
+        }
+      },
+      //我要组团接口
+      organizeGroup () {
+        getCoinlaToken('/groupActivity/insertGroup', {
+          activityId: 2,
+          uuid: this.userUuidData || this.wxGroupData.uuid,
+        }, this.headersData || this.wxHeadersData).then((res) => {
+          if(res.data.code == 0){
+            this.isOpenInApp()
+          }else{
+            //如果有组团中不能再发团
+            this.$toast({message: res.data.message, duration: 1500})
+          }
+        }).catch((err) => {
+          this.$toast({message: '失败', duration: 1500})
+        })
+      },
+      //成团数量接口
+      selectGroupNum () {
+        getCoinlaToken('/groupActivity/selectGroupNumber', {
+          activityId: 2,
+        }, this.headersData || this.wxHeadersData).then((res) => {
+          let resData = res.data.data
+          if(resData < 10){
+            this.organizeGroup()
+          }else{
+            this.$toast({message: '发团次数超过10次不可再发团', duration: 1500})
+          }
+        }).catch((err) => {
+          this.$toast({message: '失败', duration: 1500})
+        })
+      },
+      //根据我的奖励记录列表接口，判断右上角红点是否显示
+      getMyPrize () {
+        getCoinlaSingle('/groupActivity/selectMyPrize', {
+          activityId: 2,
+          uuid: this.userUuidData || this.wxGroupData.uuid
+        }).then((res) => {
+          let resData = res.data.data
+          if(res.data.code == 0){
+            for(let i = 0, len = resData.length; i < len; i++){
+              if(resData[i].myReceiveState == 0){
+                this.circleStatus = true
+                return false
+              }
+            }
+          }else{
+            this.$toast({message: res.data.message, duration: 1500})
+          }
+        }).catch((err) => {
+          this.$toast({message: '失败', duration: 1500})
+        })
+      },
+      //组团结束倒计时
+      countDownTimeFunc (value) {
+        let time = countDownTime(value)
+         this.seconds = time.seconds
+         this.hour =time.hour
+         this.minute = time.minute
+         let timer = setTimeout(() => {
+            if(time.date >= 0){
+              this.countDownTimeFunc(value)
+            }else{
+              clearTimeout(timer)
+            }
+         }, 1000)
+      },
+      //跳转到我参与的团列表页面
+      groupRecord () {
+        this.$router.push({name: 'groupRecord', params: {uuid: this.userUuidData || this.wxGroupData.uuid}})
+      },
+      //跳转到我的奖励列表页面
+      groupAward (){
+        this.$router.push({name: 'groupAward', params: {uuid: this.userUuidData || this.wxGroupData.uuid}})
+      },
+      getGroupAward (){
+        this.$router.push({name: 'getGroupAward', params: {
+          uuid: this.userUuidData || this.wxGroupData.uuid,
+          awardsName: this.awardsName,
+          infoId: this.infoId,
+          headersToken: this.headersData || this.wxHeadersData
+        }})
+      },
+      //邀请好友参团，分享
+      addBtn () {
+        //组团中这个状态才可邀请好友
+        if(this.groupStatus){
+          if(isIos()){
+            window.webkit.messageHandlers.NativeMethod.postMessage("ios_share");
+          }else{
+            window.coinla.getData(JSON.stringify(this.shareInfo))
+          }
+        }else{
+          return false
+        }
+      },
+      //右上角按钮邀请，分享
+      getShareInfo () {
+        getCoinlaSingle('/share/multi', {type: 9}).then((res) => {
+          if(res.data.code === 0){
+            /*拼接infoId*/
+            let url = res.data.data.shareUrl
+            /*存在?*/
+            if(url.indexOf("?") != -1 ){
+              res.data.data.shareUrl =  url+'&infold='+ this.infold
+              /*不存在?*/
+            }else{
+              res.data.data.shareUrl =  url+'?infold='+ this.infold
+            }
+            this.shareInfo = res.data.data
+            shareWeixin(res.data.data.shareUrl, res.data.data)
+            if(isIos()){
+              window.setData = function () {
+                return res.data.data
+              }
+            }else{
+              window.sendData = function () {
+                window.coinla.getData(JSON.stringify(res.data.data))
+              }
+            }
+          }
+        }).catch((err) => {
+        })
+      }
+    }
+  }
+</script>
+
+<style scoped lang="stylus">
+  .group {
+    &_banner {
+      position: relative
+      img {
+        display: block
+        width: 100%
+      }
+      .my_wrap {
+        position: absolute
+        top: 0
+        left: 0
+        width: 100%
+        display: flex
+        justify-content: space-between
+        color: #fff
+        font-size: 0.3rem
+        padding: 0.42rem 0.26rem 0
+        .my_awards {
+          position: relative
+          .icon {
+            position: absolute
+            right: -0.12rem
+            top: -0.06rem
+            width: 0.18rem
+            height: 0.18rem
+            background-color: #e2571a
+            border-radius: 50%
+          }
+        }
+      }
+    }
+    &_main {
+      background: url(/static/images/group/group_main.jpg) no-repeat
+      background-size: 100% 100%
+      padding: 0 0.26rem 0.51rem
+      .group_content {
+        position: relative
+        background: url(/static/images/group/four_group_bac.png) no-repeat
+        background-size: 100% 100%
+        min-height: 4.13rem
+        padding-bottom: 0.3rem
+        max-width: 7.5rem
+        margin: 0 auto 1.04rem
+        .four_group_img {
+          position: absolute
+          top: -0.30rem
+          left: 50%
+          margin-left: -1.3rem
+          width: 2.6rem
+          height: 0.6rem
+        }
+        .group_status_img {
+          position: absolute
+          left: 0
+          top: 0
+          width: 1.54rem
+        }
+        .content {
+          .time {
+            display: flex
+            justify-content: center
+            align-items: center
+            color: #098ee1
+            font-size: 0.34rem
+            padding: 0.77rem 0 0.44rem
+            .count_down {
+              margin-left: 0.16rem
+              font-size: 0
+              span {
+                font-size: 0.24rem
+                width: 0.36rem
+                height: 0.38rem
+                display: inline-block
+                text-align: center
+                line-height: 0.38rem
+                background-color: #246bee
+                color: #fff
+                border-radius: 5px
+              }
+              em {
+                font-size: 0.24rem
+                margin: 0 0.1rem
+                font-style: normal
+              }
+            }
+          }
+          .content_people {
+            position: relative
+            padding: 0 0.48rem
+            .four_group_line {
+              position: absolute
+              left: 50%
+              top: 0.605rem
+              transform: translate(-50%, -50%)
+              width: 3.72rem
+              z-index: 0
+              display: block
+            }
+            .content_people_detail {
+              position: relative
+              z-index: 1
+              max-width: 6.02rem
+              display: flex
+              justify-content: space-between
+              margin: 0 auto
+              img {
+                width: 1.21rem
+                height: 1.21rem
+                border-radius: 50%
+                overflow: hidden
+              }
+              .captain {
+                span {
+                  display: block
+                  position: absolute
+                  left: 0.155rem
+                  top: -0.08rem
+                  width: 0.9rem
+                  height: 0.34rem
+                  line-height: 0.34rem
+                  background-color: #f3611f
+                  color: #fff
+                  font-size: 0.26rem
+                  text-align: center
+                  border-radius: 5px
+                }
+              }
+              .nick {
+                text-align: center
+                margin-top: 0.1rem
+                font-size: 0.24rem
+                color: #667379
+              }
+            }
+          }
+          .btn {
+            display: flex
+            justify-content: space-around
+            padding: 0.2rem 0 0
+            img {
+              width: 2.46rem
+              height: 0.61rem
+              display: block
+            }
+            .add_btn_small, .group_btn_small {
+              width: 1.98rem
+            }
+          }
+        }
+      }
+    }
+    .shadow_wrap {
+      position: fixed
+      width: 100%
+      height: 100%
+      z-index: 998
+      left: 0
+      top: 0
+      background: rgba(0, 0, 0, .6)
+      .open_award_wrap {
+        width: 7rem
+        height: 8.28rem
+        text-align: center
+        position: absolute
+        top: 50%
+        left: 50%
+        transform: translate(-50%, -50%)
+        z-index: 999
+        background: url(/static/images/group/open_award_bac.png) no-repeat
+        background-size: 100% 100%
+        img {
+          width: 3.16rem
+          height: 3.16rem
+          margin-top: 3.3rem
+        }
+      }
+      .open_award_number{
+        width: 6.21rem
+        padding: 0 0 0.75rem
+        position: absolute
+        top: 50%
+        left: 50%
+        transform: translate(-50%, -50%)
+        z-index: 999
+        background-color: #fff
+        border-radius: 0.2rem
+        text-align: center
+        h3{
+          margin: 0.88rem auto 0.55rem
+          color: #2f3133
+          font-size: 0.36rem
+        }
+        .number{
+          font-size: 0.6rem
+          color: #f64819
+          margin-bottom: 0.67rem
+        }
+        .get_btn{
+          width: 1.92rem
+          height: 0.6rem
+          text-align: center
+          line-height: 0.6rem
+          border-radius: 0.2rem
+          font-size: 0.3rem
+          background-color: #f64819
+          margin: auto
+          color: #fff
+        }
+      }
+      .download {
+        width: 6.21rem
+        padding: 0 0.55rem 0.94rem
+        position: absolute
+        top: 50%
+        left: 50%
+        transform: translate(-50%, -50%)
+        z-index: 999
+        background-color: #fff
+        border-radius: 0.2rem
+        h3 {
+          text-align: center
+          margin: 1.21rem auto 1.13rem
+          color: #2f3133
+          font-size: 0.36rem
+        }
+        .btn {
+          display: flex
+          justify-content: space-between
+          p {
+            width: 1.92rem
+            height: 0.6rem
+            text-align: center
+            line-height: 0.6rem
+            border-radius: 0.2rem
+            font-size: 0.3rem
+            background-color: #ebebeb
+            color: #bab9b9
+          }
+          .download_btn {
+            background-color: #f64819
+            color: #fff
+          }
+        }
+      }
+      .bind_wx_wrap {
+        z-index: 1000
+        width: 290px
+        height: 152px
+        background-color: #fff
+        text-align: center
+        position: absolute
+        left: 50%
+        top: 50%
+        transform: translate(-50%, -50%)
+        border-radius: 15px
+        p {
+          margin: 52px auto 29px
+          font-size: 15px
+        }
+        .btn {
+          display: inline-block
+          width: 130px
+          height: 31px
+          line-height: 31px
+          font-size: 17px
+          border: none
+          background-color: #eb4d1d
+          color: #fff
+          text-align: center
+          border-radius: 15px
+        }
+      }
+      .bind_app_toast{
+        width: 6.21rem
+        padding: 0 0.55rem 0.7rem
+        position: absolute
+        top: 50%
+        left: 50%
+        transform: translate(-50%, -50%)
+        z-index: 999
+        background-color: #fff
+        border-radius: 0.2rem
+        h3{
+          text-align: center
+          margin: 0.96rem auto 0.53rem
+          color: #2f3133
+          font-size: 0.36rem
+        }
+        .userMessage{
+          .account, .captcha{
+            display: flex
+            align-items: center
+            width: 100%
+            height: 0.82rem
+            padding: 0 0.21rem 0 0.24rem
+            color: #605e5e
+            font-size: 0.28rem
+            margin-bottom: 0.25rem
+            background-color: #f8f7f7
+            border-radius: 0.2rem
+            overflow: hidden
+          }
+          .account_text, .captcha_text{
+            display: block
+            text-align: right
+            width: 1.05rem
+          }
+          .account_text{
+            display: flex
+            em{
+              display: block
+              width: 50%
+              text-align: left
+              justify-content: space-between
+            }
+          }
+          .captcha{
+            button{
+              display: block
+              width: 1.16rem
+            //width: 216rem
+              height: 0.4rem
+              line-height: 0.4rem
+              font-size: 0.20rem
+              border: 1px solid #5dd2fd
+              border-radius: 0.2rem
+              text-align: center
+            }
+          }
+          input, button{
+            line-height: normal
+            border: none
+            background: none
+          }
+          input{
+            padding: 0.1rem 0 0.1rem 0.15rem
+            flex: 1
+            color: #333
+          }
+        }
+        .notice_text{
+          color: #b6b6b6
+          font-size: 0.22rem
+          text-align: center
+          margin: 0.22rem auto 0.74rem
+
+        }
+        .btn{
+          p{
+            width: 1.92rem
+            height: 0.6rem
+            line-height: 0.6rem
+            border-radius: 0.2rem
+            font-size: 0.3rem
+            background-color: #ebebeb
+            color: #bab9b9
+          }
+          .bind_btn{
+            background-color: #f64819
+            color: #fff
+          }
+        }
+      }
+      .go_app_login {
+        z-index: 1000
+        width: 290px
+        height: 152px
+        background-color: #fff
+        text-align: center
+        position: absolute
+        left: 50%
+        top: 50%
+        transform: translate(-50%, -50%)
+        border-radius: 15px
+        p {
+          margin: 52px auto 29px
+          font-size: 15px
+        }
+        .btn {
+          display: inline-block
+          width: 130px
+          height: 31px
+          line-height: 31px
+          font-size: 17px
+          border: none
+          background-color: #eb4d1d
+          color: #fff
+          text-align: center
+          border-radius: 15px
+        }
+      }
+    }
+    .yd {
+      width: 100%
+      height: 100%
+      position: fixed
+      background-color: rgba(0, 0, 0, .5)
+      left: 0
+      top: 0
+      z-index: 9999
+      img {
+        position: absolute
+        right: 10px
+        width: 6.1rem
+        top: 0
+      }
+    }
+  //彩带飘落
+     #drift{
+      position: absolute
+      top: 0
+      left: 50%
+      transform: translate(-50%, -50%)
+      z-index: 1000
+      width: 7.26rem
+      height: 3.34rem
+      background: url(/static/images/group/caidai1.png)
+      background-size: 100% 100%
+      -webkit-animation: drift 2s 0s linear
+      animation: drift 2s 0s linear
+    }
+    @-webkit-keyframes drift{
+      0% {
+        top: 10%
+        //background-image: url(/static/images/group/caidai1.png)
+        opacity: 1
+      }
+      25%{
+        top: 20%
+        opacity: 0.8
+        //background-image: url(/static/images/group/caidai2.png)
+      }
+      50%{
+        top: 30%
+        opacity: 0.6
+       // background-image: url(/static/images/group/caidai1.png)
+      }
+      50%{
+        top: 40%
+        opacity: 0.4
+        //background-image: url(/static/images/group/caidai2.png)
+      }
+      100% {
+        top: 50%
+        opacity: 0
+       // background-image: url(/static/images/group/caidai1.png)
+      }
+    }
+    @keyframes drift{
+      0% {
+        top: 10%
+        //background-image: url(/static/images/group/caidai1.png)
+        opacity: 1
+      }
+      25%{
+        top: 20%
+        opacity: 0.8
+       // background-image: url(/static/images/group/caidai2.png)
+      }
+      50%{
+        top: 30%
+        opacity: 0.6
+        //background-image: url(/static/images/group/caidai1.png)
+      }
+      50%{
+        top: 40%
+        opacity: 0.4
+        //background-image: url(/static/images/group/caidai2.png)
+      }
+      100% {
+        top: 50%
+        opacity: 0
+        //background-image: url(/static/images/group/caidai1.png)
+      }
+    }
+    input:
+    :input-placeholder {
+      color: #d7d7d7 !important;
+    }
+    input:
+    :-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+      color: #d7d7d7 !important;
+    }
+    input:-moz-placeholder, textarea:-moz-placeholder {
+      color: #d7d7d7 !important;
+    }
+    input:
+    :-moz-placeholder, textarea::-moz-placeholder {
+      color: #d7d7d7 !important;
+    }
+    input:-ms-input-placeholder, textarea:-ms-input-placeholder {
+      color: #d7d7d7 !important;
+    }
+  }
+</style>

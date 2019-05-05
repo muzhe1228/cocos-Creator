@@ -1,0 +1,157 @@
+<template>
+  <div class="billboard">
+    <div class="billboard_banner">
+      <img src="/static/images/billboard/img_top.png" alt="">
+    </div>
+    <top-range></top-range>
+    <div class="billboard_rules">
+      <div class="rules_title">
+        <span class="left"></span>
+        <span class="center">活动规则</span>
+        <span class="right"></span>
+      </div>
+      <p class="rules_text">活动期间，每周根据用户获得的CLB数量进行排名，前10名可获得相应奖励。</p>
+      <div class="rules_table">
+        <div class="table_content first">
+          <p class="number">排名</p>
+          <p class="content">奖励</p>
+        </div>
+        <div class="table_content">
+          <p class="number">1</p>
+          <p class="content">5000CLB</p>
+        </div>
+        <div class="table_content">
+          <p class="number">2</p>
+          <p class="content">3000CLB</p>
+        </div>
+        <div class="table_content">
+          <p class="number">3</p>
+          <p class="content">1500CLB</p>
+        </div>
+        <div class="table_content last">
+          <p class="number">4-10</p>
+          <p class="content">800CLB</p>
+        </div>
+      </div>
+      <div class="rule_detail">
+        <h4 class="active_text">活动说明:</h4>
+        <ul class="detail_text">
+          <li>
+            1、<p>最终奖励以每周活动结束时的排名情况为准；
+            <span>(若CLB数量相同，以先达到此数量的时间先后顺序进行排名);</span></p>
+          </li>
+          <li>2、<span>奖励将于每周活动结束后第二天11点前系统自动发放;</span></li>
+          <li>3、<span>对于恶意刷奖的用户，考拉行情有权在不事先通知的情况下取消其得奖资格;</span></li>
+          <li>4、<p>如需帮助，请联系考拉行情客服。<span>微信号: KAOLAhq123。</span></p></li>
+        </ul>
+        <p class="text">考拉行情保留对此活动的解释权</p>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  import TopRange from './page/topRange'
+  export default {
+    name: "billboard",
+    components: {
+      TopRange
+    },
+    metaInfo: {
+      title: '风云榜'
+    },
+  }
+</script>
+
+<style lang="stylus">
+  @import "~assets/stylus/variable"
+  .billboard{
+    margin: 0 auto
+    background-color: #fee6c2
+    position: relative
+    max-width: 1080px
+    &_banner img{
+      width:100%
+    }
+    &_rules{
+      padding: 0 0.586rem
+      margin:0.8rem auto 0
+      color: #da8b3c
+      font-size:0.26rem
+      .rules_title{
+        font-size:0
+        text-align: center
+        span{
+          display: inline-block
+        }
+        .center{
+          width: 26%
+          font-size: 0.3rem
+          vertical-align: middle;
+        }
+        .left,.right{
+          width: 37%;
+          height: 1px
+          background-color: #da8b3c
+        }
+      }
+      .rules_text{
+        line-height: 0.48rem
+        margin:0.25rem auto 0.21rem
+        text-align: justify
+      }
+      .rules_table{
+        border:2px solid #DA8B3C
+        border-top: none
+        text-align: center
+        .table_content{
+          overflow: hidden
+          border-bottom:1px solid #EEBD88
+          .number{
+            width:36.28%
+            float: left
+            height:0.72rem
+            line-height:0.72rem
+            border-right:1px solid #EEBD88
+          }
+          .content{
+            width:63.72%
+            float: left
+            height:0.72rem
+            line-height:0.72rem
+          }
+        }
+        .first{
+          background-color: #DA8B3C
+          color: #fee6c2
+        }
+        .last{
+          border-bottom:none
+        }
+      }
+      .rule_detail{
+        font-size:0.24rem
+        .active_text{
+          margin:0.32rem 0 0.11rem
+        }
+        .detail_text{
+          text-align: justify
+          line-height:0.46rem
+          li{
+            display: flex
+            span{
+              display: block
+              -webkit-box-flex: 1;
+              -webkit-flex: 1;
+              flex: 1;
+            }
+          }
+        }
+        .text{
+          padding:0.49rem 0 0.4rem
+          text-align: center
+        }
+      }
+    }
+  }
+</style>

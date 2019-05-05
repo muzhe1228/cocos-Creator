@@ -1,0 +1,147 @@
+<template>
+    <div class="turntable">
+      <div class="turntable_page">
+        <p class="active_end_days">
+          距离活动结束还有<span>5</span>天
+        </p>
+        <!--轮播中奖信息-->
+        <div class="turnTable_active">
+          <img src="/static/images/turntable/horn.png" alt="">
+          <text-scroll></text-scroll>
+        </div>
+        <!--幸运转盘-->
+        <div class="turntable_wrap">
+          <v-lottery></v-lottery>
+        </div>
+        <div class="turntable_today">
+          <p class="today_time">今日已抽奖<span>4</span>次</p>
+          <p class="surplus_time">剩余<span>5</span>次抽奖机会</p>
+        </div>
+        <div class="assistance">
+          <img src="/static/images/turntable/assistance.png" alt="">
+        </div>
+        <div class="turntable_share">
+          邀请好友助力  增加抽奖机会
+        </div>
+        <div class="my_prize_list">
+          <div class="list">
+            <div>ETH</div>
+            <p><span>0</span>个</p>
+          </div>
+          <div class="list">
+            <div>ETH</div>
+            <p><span>0</span>个</p>
+          </div>
+          <div class="list">
+            <div>ETH</div>
+            <p><span>0</span>个</p>
+          </div>
+          <div class="list">
+            <div>ETH</div>
+            <p><span>0</span>个</p>
+          </div>
+        </div>
+        <div class="turntable_record">
+          <div>
+            <p>我的中奖记录</p>
+            <p>好友助力记录</p>
+          </div>
+          <div>
+            <div>
+              <p>时间</p>
+              <p>奖品</p>
+            </div>
+            <ul>
+              <li>
+                <span>08-09 13：32</span>
+                <span>88CLB</span>
+              </li>
+              <li>
+                <span>08-09 13：32</span>
+                <span>88CLB</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+</template>
+
+<script>
+  import TextScroll from './page/textScroll'
+  import Lottery from './page/lottery'
+    export default {
+      name: "turntable",
+      metaInfo:{
+        title: '幸运转盘'
+      },
+      components: {
+        'v-lottery': Lottery,
+        'text-scroll': TextScroll
+      }
+    }
+</script>
+
+<style lang="stylus">
+.turntable{
+  width: 100%
+  height:23.58rem
+  background: url(/static/images/turntable/bacImg.jpg) no-repeat
+  background-size: 100% 100%
+   &_page{
+    padding:5.54rem 0.195rem 0.5rem
+    .active_end_days{
+      text-align: center
+      font-size:0.3rem
+      color: #fff
+      font-weight:600
+    }
+    .turnTable_active{
+      width: 4.51rem
+      height: 0.41rem
+      margin: 0.32rem auto 0.22rem
+      background-color: #FAF0EE
+      border-radius:0.3rem
+      display: flex
+      align-items:center
+      img{
+        width:0.32rem
+        margin: 0 0.3rem 0 0.22rem
+      }
+    }
+     .turntable_today{
+       color: #b0730b
+       font-size:0.3rem
+       display: flex
+       justify-content: space-between
+       align-items:center
+       margin:0.34rem 0.32rem
+       p{
+         width:2.58rem
+         height:0.5rem
+         line-height: 0.5rem
+         border-radius:0.3rem
+         background-color: #FFDE7D
+         text-align: center
+         span{
+           color: #e7202a
+         }
+       }
+       .surplus_time{
+         width:3rem
+       }
+     }
+     .assistance{
+       text-align: center
+       img{
+         width:5.76rem
+         height:1.51rem
+       }
+     }
+     .my_prize_list{
+       background: url(/static/images/turntable/my_award) no-repeat
+       background-size:100% 100%
+     }
+  }
+}
+</style>

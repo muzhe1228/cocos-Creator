@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+	<link rel="stylesheet" href="./css/icon/style.css">
+	<script src="./js/jquery.min.js"></script>
+</head>
+<style>
+	.selectWrap {
+		width: 240px;
+		height: 36px;
+		border-radius: 4px;
+		margin: 50px auto;
+		position: relative;
+	}
+	
+	.selectWrap .showSelect {
+		width: 240px;
+		height: 36px;
+		border-radius: 4px;
+		border: 1px solid #aeaeae;
+		cursor: pointer;
+		padding: 0 36px 0 16px;
+		/*border-bottom: none;*/
+	}
+	
+	.selectWrap .showSelect .selectIcon {
+		position: absolute;
+		right: 0;
+		top: 0;
+		height: 36px;
+		display: inline-block;
+		width: 36px;
+		text-align: center;
+		line-height: 36px;
+	}
+	
+	.selectWrap .showSelect .value {
+		line-height: 36px;
+	}
+	
+	.selectWrap .options {
+		display: none;
+		position: absolute;
+		width: 100%;
+		top: 40px;
+		border: 1px solid #aeaeae;
+		padding: 4px 0;
+		border-radius: 4px;
+		z-index: 1;
+		background-color: #fff;
+	}
+	
+	.selectWrap .options li {
+		height: 30px;
+		line-height: 30px;
+		cursor: pointer;
+		padding: 0 16px;
+	}
+	
+	.selectWrap .options li:hover, .options li.active {
+		background-color: #debd63;
+	}
+</style>
+<body>
+<section class="selectWrap selectWrap1">
+	<p class="showSelect"><span class="value"></span><span class="selectIcon"><i class="icon-kenbot"></i></span></p>
+	<ul class="options">
+		<li data="1">select1</li>
+		<li data="2">select2</li>
+		<li data="3">select3</li>
+		<li data="4">select4</li>
+		<li data="5">select5</li>
+	</ul>
+</section>
+<section class="selectWrap selectWrap2">
+	<p class="showSelect"><span class="value"></span><span class="selectIcon"><i class="icon-kenbot"></i></span></p>
+	<ul class="options">
+		<li data="1d">select1</li>
+		<li data="2d">select2</li>
+		<li data="3d">select3</li>
+		<li data="4d">select4</li>
+		<li data="5d">select5</li>
+	</ul>
+</section>
+</body>
+<script>
+    function setSelect(main, callback) {
+        main = $(main)
+        let sub = main.children('.options')
+        main.click(function () {
+            $('.options').slideUp()
+            sub.slideDown()
+            return false
+        })
+        sub.children('li').click(function (e) {
+            let value = main.find('.value')
+            if ($(this).text() === value.text()) {
+                return
+            }
+            sub.slideUp()
+            $(this).addClass('active').siblings().removeClass('active')
+            main.find('.value').text($(this).text())
+            // console.log($(this).parents('.selectWrap').)
+            callback($(this).attr('data'), $(this).text())//参数，选项的值，
+            return false
+        })
+        $(document).click(function () {
+            sub.slideUp()
+        });
+    }
+
+    $(document).ready(function () {
+        setSelect('.selectWrap1', function (val, name) {
+            console.log(val, name)
+        })
+        setSelect('.selectWrap2', function (val, name) {
+            console.log(val, name)
+        })
+    })
+</script>
+</html>

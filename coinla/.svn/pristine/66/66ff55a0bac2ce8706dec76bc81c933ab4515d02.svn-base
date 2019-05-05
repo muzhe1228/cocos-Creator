@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+	<link rel="stylesheet" href="./css/icon/style.css">
+	<link rel="stylesheet/less" href="./css/index.less">
+	<link rel="stylesheet/less" href="./css/searchInp.less">
+	<link rel="icon" type="image/x-icon" href="./favicon.ico">
+	<script src="./js/jquery.min.js"></script>
+	<script src="./js/less.min.js"></script>
+	<script src="./js/common.js"></script>
+	<script src="./js/indexTop.js"></script>
+	<script src="./js/footer.js"></script>
+	<script src="./js/index.js"></script>
+	<style>
+		.rateWrap{
+			display: inline-block;
+		}
+		.rateWrap i{
+			float: left;
+			margin: 2px;
+		}
+	</style>
+</head>
+<body>
+	<p class="rateWrap clear-f"><i class="icon-ken_star"></i><i class="icon-ken_star"></i><i class="icon-ken_star"></i><i class="icon-ken_star"></i><i class="icon-ken_star"></i></p>
+</body>
+
+</html>

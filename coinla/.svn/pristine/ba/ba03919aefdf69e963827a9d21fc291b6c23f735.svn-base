@@ -1,0 +1,24 @@
+@import './assets/variable';
+@import './assets/mixin';
+@import "./assets/base";
+@import "./assets/header-footer";
+@import "./assets/reset";
+@import "assets/pageCmn";
+@import "assets/cptCmn";
+
+.bourse {
+  padding: 16px 0;
+  .container {
+    .flex;
+    .justify-content(space-between);
+    .bourse_left {
+      width: 850px;
+      background-color: #fff;
+    }
+    .bourse_right {
+      .top {
+        margin-top: 16px;
+      }
+    }
+  }
+}

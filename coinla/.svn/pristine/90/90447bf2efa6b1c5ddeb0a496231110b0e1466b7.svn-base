@@ -1,0 +1,20 @@
+<template>
+  <div class="group_record">
+
+  </div>
+</template>
+
+<script>
+  export default {
+    name: 'groupRecord',
+    metaInfo: {
+      title: '我参与的团'
+    }
+  }
+</script>
+
+<style scoped lang="stylus">
+  .group_record{
+
+  }
+</style>

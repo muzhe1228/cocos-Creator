@@ -1,0 +1,78 @@
+<template>
+  <div class="ruleWrap container">
+    <ul class="rule">
+      <li>
+        <p class="rule-title">1、CLB是什么？</p>
+        <p class="rule-cont">CLB是考拉行情推出的基于区块链底层技术的数字货币。总量恒定，永不增发。随着时间的推移获取难度会越来越大，前期参与会获得更大收益！</p>
+      </li>
+      <li>
+        <p class="rule-title">2、如何获得CLB？</p>
+        <p class="rule-cont">目前可通过注册、创建账本、币价预警、签到、分享、邀请好友、风云榜等方式获取CLB。后续会推出更多获得CLB的途径，敬请期待！</p>
+      </li>
+      <li>
+        <p class="rule-title">3、推荐有币的规则是什么？</p>
+        <p class="rule-cont">活动规则：活动期间，邀请一级好友可获得100CLB，邀请二级好友可获得50CLB，多邀多得，上不封顶。</p>
+      </li>
+      <li><img ref="downloadApp" src="/static/images/ruleImg.png" alt=""></li>
+    </ul>
+    <ul class="ruleWrap-info">
+      <li class="ruleWrap-info-title">活动说明：</li>
+      <li>1）好友须在注册时填写邀请码或通过邀请链接进行注册，方能生效；</li>
+      <li>2）奖励将于被邀请的好友注册并下载APP登录成功后系统自动发放；</li>
+      <li>3）仅限手机号注册用户参与，一个设备仅限注册两个考拉行情账号；</li>
+      <li>4）对于恶意刷奖的用户，考拉行情有权取消其奖励资格；</li>
+      <li>5）考拉行情保留对此活动的解释权，并有权随时对上述细则进行调整；</li>
+    </ul>
+    <p class="help">如需帮助，请联系考拉行情客服。微信号：KAOLAhq123</p>
+  </div>
+</template>
+
+<script>
+  export default {
+
+  }
+</script>
+
+<style scoped lang="stylus">
+  @import "~assets/stylus/variable"
+  .ruleWrap {
+    padding: .48rem .32rem
+    font-size: .26rem
+    color: $size-lColor
+    .rule {
+      li {
+        margin-bottom: .4rem
+        img{
+          max-width: 100%
+        }
+      }
+      &-title {
+        font-size: .3rem
+        color: $size-color
+        margin-bottom: .24rem
+        font-weight: 600
+      }
+      &-cont {
+        line-height: .48rem
+        padding-left: .45rem
+      }
+    }
+    &-info{
+      li{
+        line-height: .42rem
+        padding-left: .45rem
+        margin-bottom: .24rem
+        &.ruleWrap-info-title{
+          padding-left: 0
+          color: $size-color
+          font-size: .3rem
+        }
+      }
+    }
+    .help{
+      text-align: center
+      margin-top: .48rem
+      color: $size-sColor
+    }
+  }
+</style>

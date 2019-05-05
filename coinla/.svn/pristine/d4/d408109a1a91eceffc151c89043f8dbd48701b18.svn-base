@@ -1,0 +1,17 @@
+<template>
+  <div class="group_award">
+
+  </div>
+</template>
+
+<script>
+  export default {
+    name: 'groupAward'
+  }
+</script>
+
+<style scoped lang="stylus">
+  .group_award{
+
+  }
+</style>

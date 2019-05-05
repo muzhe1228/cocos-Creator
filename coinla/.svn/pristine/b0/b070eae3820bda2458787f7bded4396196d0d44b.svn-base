@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>考拉行情我的自选</title>
+	<link rel="stylesheet" href="./css/icon/style.css">
+	<link rel="stylesheet/less" href="./css/optional.less">
+	<link rel="icon"  type="image/x-icon" href="./favicon.ico">
+	<script src="./js/jquery.min.js"></script>
+	<script src="./js/less.min.js"></script>
+	<script src="./js/common.js"></script>
+	<script src="./js/indexTop.js"></script>
+	<script src="./js/footer.js"></script>
+</head>
+<body>
+<header>
+	<div class="container v-head">
+		<a href="/" class="logo"><img src="./static/images/icon/logo.png"></a>
+		<div class="v-head__menu">
+			<div class="kenMenu">
+				<a href="./" class="item">首页</a>
+				<a href="/Optional" class="item">自选</a>
+				<div class="kenSubMenu item">
+					<p>排行<span></span></p>
+					<div class="subMenuInfo">
+						<a href="/Rank">涨跌幅榜</a>
+						<a href="/Rank/currency">币种成交榜</a>
+						<a href="/Rank/bourse">交易所成交榜</a>
+						<a href="/Rank/trend">市值趋势</a>
+					</div>
+				</div>
+				<a href="exchange/index.html" class="item">交易所</a>
+				<a href="./template.html" class="item">模块概念</a>
+				<a class="item">账本</a>
+				<a class="item" href="/App" target="_blank">App</a>
+			</div>
+			<div>
+				<p class="login">
+					<span>注册</span> / <span>登录</span>
+				</p>
+			</div>
+		</div>
+	</div>
+	<div class="hover-hand">
+		<div class="hover-hand-wrap">
+			<div class="hover-hand-logo"></div>
+			<div class="hover-hand__menu">
+				<div class="kenMenu">
+					<a href="/" class="item">首页</a>
+					<a href="/Optional" class="item">自选</a>
+					<div class="kenSubMenu item">
+						<p>排行<span></span></p>
+						<div class="subMenuInfo">
+							<a href="/Rank">涨跌幅榜</a>
+							<a href="/Rank/currency">币种成交榜</a>
+							<a href="/Rank/bourse">交易所成交榜</a>
+							<a href="/Rank/trend">市值趋势</a>
+						</div>
+					</div>
+					<a href="/exchange" class="item">交易所</a>
+					<a href="/template" class="item">模块概念</a>
+					<a class="item" @click="Ishref()">账本</a>
+					<a class="item" href="/App" target="_blank">App</a>
+				</div>
+				<div>
+					<p class="login" v-show="!isLine">
+						<span>注册</span> / <span>登录</span>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</header>
+<div class="optional">
+	<div class="index_top">
+		<div class="container">
+			<div class="top-left">
+				<div class="top-svg">
+				</div>
+			</div>
+			<a href="/App" class="top-right gohrefUrl">
+				<img src="./static/images/newIndex/bannerRight.png" alt="">
+			</a>
+		</div>
+	</div>
+	<div class="optional_cont">
+		<div class="container">
+			<div class="cont_left">
+				<div class="con_nav"><p class="con_nav_l">我的自选<span
+				>Optional Currency</span></p>
+				</div>
+				<div class="con_cont">
+					<div class="con_cont_table resetLoading">
+						<ul class="table_title">
+							<li>币种</li>
+							<li>交易对</li>
+							<li>交易所</li>
+							<li>当前价</li>
+							<li>成交额(24H)</li>
+							<li>涨跌幅</li>
+							<li>流通市值</li>
+							<li>操作</li>
+						</ul>
+						<div style="display: none">
+							<ul class="table_cont">
+								<li><a href="/coin/bitcoin" class="aClick"><img
+										src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1524738854323.jpg"
+										alt="比特币-BTC">比特币
+								</a></li>
+								<li><a href="/coin/bitcoin" class="aClick">
+									BTC/USDT
+								</a></li>
+								<li>
+									火币Pro
+								</li>
+								<li>
+									￥43,482.86
+								</li>
+								<li>
+									￥1.21亿
+								</li>
+								<li class="color-red">
+									-1.52%
+								</li>
+								<li>
+									￥7,408.72亿
+								</li>
+								<li><p class="delete">删除</p></li>
+							</ul>
+							<ul class="table_cont">
+								<li><a href="/coin/bitcoin" class="aClick"><img
+										src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1524738854323.jpg"
+										alt="比特币-BTC">比特币
+								</a></li>
+								<li><a href="/coin/bitcoin" class="aClick">
+									BTC/CNY
+								</a></li>
+								<li>
+									全网
+								</li>
+								<li>
+									￥43,312
+								</li>
+								<li>
+									￥231.16亿
+								</li>
+								<li class="color-red">
+									-1.37%
+								</li>
+								<li>
+									￥7,408.72亿
+								</li>
+								<li><p class="delete">删除</p></li>
+							</ul>
+							<ul class="table_cont">
+								<li><a href="/coin/ethereum" class="aClick"><img
+										src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1524797967956.jpg"
+										alt="以太坊-ETH">以太坊
+								</a></li>
+								<li><a href="/coin/ethereum" class="aClick">
+									ETH/CNY
+								</a></li>
+								<li>
+									全网
+								</li>
+								<li>
+									￥3,362
+								</li>
+								<li>
+									￥108.49亿
+								</li>
+								<li class="color-red">
+									-4.55%
+								</li>
+								<li>
+									￥3,350.45亿
+								</li>
+								<li><p class="delete">删除</p></li>
+							</ul>
+							<ul class="table_cont">
+								<li><a href="/coin/bitcoin-cash" class="aClick"
+								><img
+										src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1524737438547.jpg"
+										alt="比特现金-BCH">比特现金
+								</a></li>
+								<li><a href="/coin/bitcoin-cash" class="aClick">
+									BCH/CNY
+								</a></li>
+								<li>
+									全网
+								</li>
+								<li>
+									￥5,556
+								</li>
+								<li>
+									￥26.2亿
+								</li>
+								<li class="color-red">
+									-4.73%
+								</li>
+								<li>
+									￥954.53亿
+								</li>
+								<li><p class="delete">删除</p></li>
+							</ul>
+							<ul class="table_cont">
+								<li><a href="/coin/eos" class="aClick"><img
+										src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1521709470217.jpg"
+										alt="柚子-EOS">柚子
+								</a></li>
+								<li><a href="/coin/eos" class="aClick">
+									EOS/BTC
+								</a></li>
+								<li>
+									火币Pro
+								</li>
+								<li>
+									￥66.4399
+								</li>
+								<li>
+									￥2,457.66万
+								</li>
+								<li class="color-red">
+									-3.4%
+								</li>
+								<li>
+									￥665.69亿
+								</li>
+								<li><p class="delete">删除</p></li>
+							</ul>
+							<ul class="table_cont">
+								<li><a href="/coin/eos" class="aClick"><img
+										src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1521709470217.jpg"
+										alt="柚子-EOS">柚子
+								</a></li>
+								<li><a href="/coin/eos" class="aClick">
+									EOS/CNY
+								</a></li>
+								<li>
+									全网
+								</li>
+								<li>
+									￥66.52
+								</li>
+								<li>
+									￥41.28亿
+								</li>
+								<li class="color-red">
+									-4.4%
+								</li>
+								<li>
+									￥665.69亿
+								</li>
+								<li><p class="delete">删除</p></li>
+							</ul>
+							<ul class="table_cont">
+								<li><a href="/coin/stellar" class="aClick"><img
+										src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1521709351136.jpg"
+										alt="恒星币-XLM">恒星币
+								</a></li>
+								<li><a href="/coin/stellar" class="aClick">
+									XLM/CNY
+								</a></li>
+								<li>
+									全网
+								</li>
+								<li>
+									￥1.47
+								</li>
+								<li>
+									￥2.38亿
+								</li>
+								<li class="color-red">
+									-3.35%
+								</li>
+								<li>
+									￥275.71亿
+								</li>
+								<li><p class="delete">删除</p></li>
+							</ul>
+							<ul class="table_cont">
+								<li><a href="/coin/cardano" class="aClick"><img
+										src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1521709034431.jpg"
+										alt="艾达币-ADA">艾达币
+								</a></li>
+								<li><a href="/coin/cardano" class="aClick">
+									ADA/CNY
+								</a></li>
+								<li>
+									全网
+								</li>
+								<li>
+									￥1.01
+								</li>
+								<li>
+									￥2.83亿
+								</li>
+								<li class="color-red">
+									-3.89%
+								</li>
+								<li>
+									￥266.44亿
+								</li>
+								<li><p class="delete">删除</p></li>
+							</ul>
+							<ul class="table_cont">
+								<li><a href="/coin/cardano" class="aClick"><img
+										src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1521709034431.jpg"
+										alt="艾达币-ADA">艾达币
+								</a></li>
+								<li><a href="/coin/cardano" class="aClick">
+									ADA/BTC
+								</a></li>
+								<li>
+									火币Pro
+								</li>
+								<li>
+									￥1.0154
+								</li>
+								<li>
+									￥219.17万
+								</li>
+								<li class="color-red">
+									-2.55%
+								</li>
+								<li>
+									￥262亿
+								</li>
+								<li><p class="delete">删除</p></li>
+							</ul>
+							<ul class="table_cont">
+								<li><a href="/coin/tether" class="aClick"><img
+										src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1524798351230.jpg"
+										alt="泰达币-USDT">泰达币
+								</a></li>
+								<li><a href="/coin/tether" class="aClick">
+									USDT/CNY
+								</a></li>
+								<li>
+									全网
+								</li>
+								<li>
+									￥6.5
+								</li>
+								<li>
+									￥153.15亿
+								</li>
+								<li class="color-green">
+									+0.13%
+								</li>
+								<li>
+									￥169.45亿
+								</li>
+								<li><p class="delete">删除</p></li>
+							</ul>
+							<ul class="table_cont">
+								<li><a href="/coin/dash" class="aClick"><img
+										src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1521709647914.jpg"
+										alt="达世币-DASH">达世币
+								</a></li>
+								<li><a href="/coin/dash" class="aClick">
+									DASH/CNY
+								</a></li>
+								<li>
+									全网
+								</li>
+								<li>
+									￥1,669
+								</li>
+								<li>
+									￥3.14亿
+								</li>
+								<li class="color-red">
+									-3.6%
+								</li>
+								<li>
+									￥136.03亿
+								</li>
+								<li><p class="delete">删除</p></li>
+							</ul>
+							<ul class="table_cont">
+								<li><a href="/coin/monero" class="aClick"><img
+										src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1521709560655.jpg"
+										alt="门罗币-XMR">门罗币
+								</a></li>
+								<li><a href="/coin/monero" class="aClick">
+									XMR/CNY
+								</a></li>
+								<li>
+									全网
+								</li>
+								<li>
+									￥793
+								</li>
+								<li>
+									￥1.87亿
+								</li>
+								<li class="color-red">
+									-1.67%
+								</li>
+								<li>
+									￥127.89亿
+								</li>
+								<li><p class="delete">删除</p></li>
+							</ul>
+							<ul class="table_cont">
+								<li><a href="/coin/binance-coin" class="aClick"
+								><img
+										src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1521711028020.jpg"
+										alt="币安币-BNB">币安币
+								</a></li>
+								<li><a href="/coin/binance-coin" class="aClick">
+									BNB/CNY
+								</a></li>
+								<li>
+									全网
+								</li>
+								<li>
+									￥109
+								</li>
+								<li>
+									￥8.52亿
+								</li>
+								<li class="color-green">
+									+2.36%
+								</li>
+								<li>
+									￥124.18亿
+								</li>
+								<li><p class="delete">删除</p></li>
+							</ul>
+							<ul class="table_cont">
+								<li><a href="/coin/nem" class="aClick"><img
+										src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1521709733641.jpg"
+										alt="新经币-XEM">新经币
+								</a></li>
+								<li><a href="/coin/nem" class="aClick">
+									XEM/CNY
+								</a></li>
+								<li>
+									全网
+								</li>
+								<li>
+									￥1.22
+								</li>
+								<li>
+									￥5,808.21万
+								</li>
+								<li class="color-red">
+									-3.35%
+								</li>
+								<li>
+									￥109.07亿
+								</li>
+								<li><p class="delete">删除</p></li>
+							</ul>
+							<ul class="table_cont">
+								<li><a href="/coin/okb" class="aClick"><img
+										src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1523277743852.jpg"
+										alt="OK全球通用积分-OKB">OK全球通用积分
+								</a></li>
+								<li><a href="/coin/okb" class="aClick">
+									OKB/CNY
+								</a></li>
+								<li>
+									全网
+								</li>
+								<li>
+									￥29.93
+								</li>
+								<li>
+									￥5.1亿
+								</li>
+								<li class="color-red">
+									-8.11%
+								</li>
+								<li>
+									￥89.78亿
+								</li>
+								<li><p class="delete">删除</p></li>
+							</ul>
+							<ul class="table_cont">
+								<li><a href="/coin/omisego" class="aClick"><img
+										src="http://image.coinla.com/currency/logo/OmiseGo.jpg" alt="嫩模币-OMG"
+								>嫩模币
+								</a></li>
+								<li><a href="/coin/omisego" class="aClick">
+									OMG/CNY
+								</a></li>
+								<li>
+									全网
+								</li>
+								<li>
+									￥57.91
+								</li>
+								<li>
+									￥1.36亿
+								</li>
+								<li class="color-red">
+									-2.95%
+								</li>
+								<li>
+									￥59.18亿
+								</li>
+								<li><p class="delete">删除</p></li>
+							</ul>
+							<ul class="table_cont">
+								<li><a href="/coin/bitshares" class="aClick"><img
+										src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1521712689181.jpg"
+										alt="比特股-BTS">比特股
+								</a></li>
+								<li><a href="/coin/bitshares" class="aClick">
+									BTS/BTC
+								</a></li>
+								<li>
+									火币Pro
+								</li>
+								<li>
+									￥1.0281
+								</li>
+								<li>
+									￥21.73万
+								</li>
+								<li class="color-red">
+									-1.87%
+								</li>
+								<li>
+									￥27.13亿
+								</li>
+								<li><p class="delete">删除</p></li>
+							</ul>
+							<ul class="table_cont">
+								<li><a href="/coin/bitshares" class="aClick"><img
+										src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1521712689181.jpg"
+										alt="比特股-BTS">比特股
+								</a></li>
+								<li><a href="/coin/bitshares" class="aClick">
+									BTS/CNY
+								</a></li>
+								<li>
+									全网
+								</li>
+								<li>
+									￥1.03
+								</li>
+								<li>
+									￥7,692.8万
+								</li>
+								<li class="color-red">
+									-3.06%
+								</li>
+								<li>
+									￥27.12亿
+								</li>
+								<li><p class="delete">删除</p></li>
+							</ul>
+							<ul class="table_cont">
+								<li><a href="/coin/dogecoin" class="aClick"><img
+										src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1521712221058.jpg"
+										alt="狗狗币-DOGE">狗狗币
+								</a></li>
+								<li><a href="/coin/dogecoin" class="aClick">
+									DOGE/CNY
+								</a></li>
+								<li>
+									全网
+								</li>
+								<li>
+									￥0.019
+								</li>
+								<li>
+									￥5,664.25万
+								</li>
+								<li class="color-red">
+									-3.18%
+								</li>
+								<li>
+									￥21.64亿
+								</li>
+								<li><p class="delete">删除</p></li>
+							</ul>
+							<ul class="table_cont">
+								<li><a href="/coin/monacoin" class="aClick"><img
+										src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1521719503024.jpg"
+										alt="萌奈币-MONA">萌奈币</a></li>
+								<li><a href="/coin/monacoin" class="aClick">MONA/CNY</a></li>
+								<li>全网</li>
+								<li>￥16.98</li>
+								<li>￥419.22万</li>
+								<li class="color-red">-1.88%</li>
+								<li>￥10.26亿</li>
+								<li><p class="delete">删除</p></li>
+							</ul>
+							<div class="newPage">
+								<a href="/" class="aDisabled nuxt-link-exact-active nuxt-link-active">上一页</a>
+								<a href="/" class="nuxt-link-exact-active nuxt-link-active active">1</a>
+								<a href="/page2" class="">2</a>
+								<a href="/page3" class="">3</a>
+								<a href="/page4" class="">4</a>
+								<a href="/page5" class="">5</a>
+								<a href="/page6" class="">6</a>
+								<a href="/page7" class="">···</a>
+								<a href="/page19" class="">19</a>
+								<a href="/page2" class="">下一页</a>
+							</div>
+						</div>
+						
+						<div class="not-login">
+							<p>登陆后可添加自选</p>
+							<p>
+								<button>立即登录</button>
+								<button>注册账户</button>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="cont_right">
+				<div class="new-list active">
+					<div class="list_nav">
+						<div class="list_nav_l"><img
+								src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAQCAYAAAAMJL+VAAABS2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS42LWMxMzggNzkuMTU5ODI0LCAyMDE2LzA5LzE0LTAxOjA5OjAxICAgICAgICAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIi8+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+IEmuOgAAAddJREFUOI3dUq1y20AQ/r7bkzRTK/UEWThWsUGhMqUOMTIryTuE5wFKyvoAfQCThLS0M4KdaXDdYAd1nMruxNLdFsiSldbImZAuut3Z2+9nl99nbwBggmcK81yD/yOAV9Mv9SOIzyXsXxnbGz9qsC8yCftXlCg9CKB5ECYFAFJOH7cwAQB1D/MnAYAcAroAOaIJkl3dJIAeNLwFICUGEKt3MwAFTZjtcDmE6t3TAEw4BADV6oeqz2mkswcmqv5gBbaeUfuv7mFOygAMxpQohfoCQAzoAgAkfPm+zutQX30k5dSVv94Z25vSSOY29xeUKDUmOnfl/WUD0Prsq3UuYb+gCTJsmau6u/qKmLjN8m2rTaKUJhjVIyQDmNAECU04VtR/LfCvz6ruMyljVS0aZfX5amFsb7qlP1f4FVCfcgtKOyBN5qv1RbuDv31WX+YAYho77VxQDMXeZZP2TL3LAV3Q2DOov1FfLgDA3l5PTro+N4wh0Rxg2igjTarqvvlqNdsNlhgCgBj4cjWT4CgFzUh9+aG75NeNz11W6l1OY9NWGTkkJJbgKN0u+JN3v2/qvz4HAAUKQgtfrfOWxD7J+2Kr9LjJTybXX5u62yxvm7qE/WO3Wf5s8j8RNs3EbU5g+AAAAABJRU5ErkJggg=="
+								alt="">
+							<p class="active">新币上市</p></div>
+					</div>
+					<div class="list_con">
+						<ul class="con-title">
+							<li>日期</li>
+							<li>名称</li>
+							<li>涨跌幅</li>
+							<li>价格</li>
+						</ul>
+						<a href="/coin/vsportcoin" class="con-cont goToUrl">
+							<li>2018-06-11</li>
+							<li title="体育币">VSC</li>
+							<li class="color-red">-23.36%</li>
+							<li>￥0.3381</li>
+						</a>
+						<a href="/coin/red-community token" class="con-cont goToUrl">
+							<li>2018-05-31</li>
+							<li title="红色令牌">RED</li>
+							<li class="color-green">+17.36%</li>
+							<li>￥0.0124</li>
+						</a>
+						<a href="/coin/etherzero" class="con-cont goToUrl">
+							<li>2018-05-31</li>
+							<li title="以太零">ETZ</li>
+							<li class="color-green">+8.57%</li>
+							<li>￥2.29</li>
+						</a>
+						<a href="/coin/globalvillage-ecosystem" class="con-cont goToUrl">
+							<li>2018-05-31</li>
+							<li title="世界村">GVE</li>
+							<li class="color-green">+5.64%</li>
+							<li>￥0.0663</li>
+						</a>
+						<a href="/coin/niu-coin system" class="con-cont goToUrl">
+							<li>2018-05-31</li>
+							<li title="牛币">NCS</li>
+							<li class="color-green">+5.51%</li>
+							<li>￥0.3291</li>
+						</a>
+						<a href="/coin/seele" class="con-cont goToUrl">
+							<li>2018-05-29</li>
+							<li title="SEELE">SEELE</li>
+							<li class="color-green">+2.28%</li>
+							<li>￥1.72</li>
+						</a>
+						<a href="/coin/kan" class="con-cont goToUrl">
+							<li>2018-05-25</li>
+							<li title="KAN">KAN</li>
+							<li class="color-green">+2.2%</li>
+							<li>￥0.1513</li>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	
+	</div>
+
+</div>
+
+<footer>
+	<div class="container">
+		<div class="links">
+			<div class="links-info">
+				<div class="links-info-title">
+					友情链接：
+				</div>
+				<div class="links-info-all">
+				</div>
+			</div>
+			<Vline></Vline>
+		</div>
+		<div class="cont">
+			<ul>
+				<li>
+					<p>关于我们</p>
+					<a href="/About" target="_blank">关于考拉</a>
+					<a href="/Join" target="_blank">加入我们</a>
+				</li>
+				<li>
+					<p>关注我们</p>
+					<a href="https://t.me/joinchat/FwW6lwrZ8CIDqxGIp1L1oA" target="_blank">Telegram</a>
+					<a href="https://www.facebook.com/coin.la.98" target="_blank">Facebook</a>
+					<a href="https://twitter.com/mpOSxKrPDcVzXr2" target="_blank">Twitter</a>
+				</li>
+			</ul>
+			<div class="guanZhu">
+				<img src="./static/images/icon/weiXin.jpg" alt="">
+				<p>关注考拉公众号</p>
+			</div>
+		</div>
+		<p class="Copyright">Copyright © 2018 - CoinLa.com All Rights Reserved <a target="_blank"
+																				  href="http://www.coinla.com/">备案号：</a><a
+				target="_blank" href="https://www.miibeian.gov.cn/">浙ICP备18008896号-1</a></p>
+	</div>
+
+</footer>
+</body>
+</html>

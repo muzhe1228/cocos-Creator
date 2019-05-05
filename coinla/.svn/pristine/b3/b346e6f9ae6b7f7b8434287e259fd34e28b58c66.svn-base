@@ -1,0 +1,154 @@
+<template>
+  <div>
+    <div class="yesMode" >
+      <img id="yesImg" src="" alt="" ref="postPic">
+    </div>
+    <div ref="downloadApp" class="jietu">
+      <div class="flaunt">
+        <div class="flaunt_wrap">
+          <img src="/static/images/turntable/flaunt_banner.png" alt="">
+          <div class="flaunt_text">
+            <p class="text1">我在参加幸运转盘活动！</p>
+            <p class="text2">抽中了<span class="content">{{msg}}</span></p>
+            <div class="text3">
+              <p>快来玩转幸运转盘, <span>ETH、EOS、</span></p>
+              <p><span>CZR、CLB</span>等你拿！</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  //import axios from 'axios'
+  import {getContentType} from 'assets/js/httpAll'
+  import {shareWeixin, isIos} from 'assets/js/case'
+  //axios.defaults.baseURL = 'http://47.96.93.94:7080'
+  import html2canvas from 'html2canvas';
+    export default {
+      name: "flaunt",
+      data () {
+        return {
+          msg: this.$route.params.getNumber
+        }
+      },
+      metaInfo: {
+        title: '分享'
+      },
+      canvasHandle() {
+        html2canvas(document.body).then(function (canvas) {
+          document.body.appendChild(canvas);
+        });
+      },
+      mounted () {
+        this.getImgUrl()
+      },
+      methods: {
+        base64ToBlob(urlData) {
+          let arr = urlData.split(',');
+          let mime = arr[0].match(/:(.*?);/)[1] || 'image/png';
+          // 去掉url的头，并转化为byte
+          let bytes = window.atob(arr[1]);
+          // 处理异常,将ascii码小于0的转换为大于0
+          let ab = new ArrayBuffer(bytes.length);
+          // 生成视图（直接针对内存）：8位无符号整数，长度1个字节
+          let ia = new Uint8Array(ab);
+          for (let i = 0; i < bytes.length; i++) {
+            ia[i] = bytes.charCodeAt(i);
+          }
+          return new Blob([ab], {
+            type: mime
+          });
+        },
+        getImgUrl(){
+          let that = this;
+          html2canvas(that.$refs.downloadApp).then(canvas => {
+            let image1 = document.getElementById("yesImg");
+            image1.src = canvas.toDataURL();
+            if (image1.src != '') {
+             that.$refs.downloadApp.style.display = 'none'
+            }
+            let fileImg = that.base64ToBlob(image1.src)
+            let fd =  new FormData()
+            fd.append('file', fileImg)
+            let config = {
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              }
+            }
+            this.$nextTick(() => {
+              getContentType('/upload/uploadImages', fd, config).then((res) => {
+                if(res.data.code == 0){
+                  let imgUrl = res.data.data
+                  let params = {
+                    "shareUrl": "",
+                    "pic": imgUrl,
+                    "title": "",
+                    "note": "",
+                    "remark": ""
+                  }
+                  if (isIos()) {
+                    window.setData = function () {
+                      return params
+                    }
+                  } else {
+                    window.sendData = function () {
+                      window.coinla.getData(JSON.stringify(params))
+                    }
+                  }
+                }
+              }).catch((error) => {alert('失败')})
+            })
+          });
+        }
+      }
+    }
+</script>
+
+<style scoped lang="stylus">
+  .flaunt{
+    background:url(/static/images/turntable/flaunt.jpg) no-repeat
+    background-size:100% 100%
+    min-height:100vh
+    line-height:100vh
+    .flaunt_wrap{
+      width:90%
+      margin:0 auto
+      position: relative
+      img{
+        width: 100%
+        vertical-align :middle
+        display: inline-block
+      }
+      .flaunt_text{
+        position: absolute
+        top: 4.5rem
+        left:0.4rem
+        color: #080808
+        .text1,.text2{
+          font-size:0.48rem
+          font-weight:600
+          line-height:0.78rem
+        }
+        .content{
+          color: #f1680b
+          font-size:0.52rem
+        }
+        .text3{
+          font-size:0.36rem
+          line-height:0.5rem
+          margin-top:0.1rem
+          span{
+            color: #f1680b
+          }
+        }
+      }
+    }
+  }
+  #yesImg{
+    width: 100%;
+    display: block
+  }
+</style>

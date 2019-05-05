@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="./css/icon/style.css">
+    <link rel="stylesheet/less" href="./css/index.less">
+    <link rel="icon" type="image/x-icon" href="./favicon.ico">
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/less.min.js"></script>
+    <script src="./js/common.js"></script>
+    <script src="./js/indexTop.js"></script>
+    <script src="./js/footer.js"></script>
+    <script src="./js/index.js"></script>
+</head>
+<body>
+<header>
+    <div class="container v-head">
+        <a href="/" class="logo"><img src="./static/images/icon/logo.png"></a>
+        <div class="v-head__menu">
+            <div class="kenMenu">
+                <a href="/" class="item">首页</a>
+                <a href="/Optional" class="item">自选</a>
+                <div class="kenSubMenu item">
+                    <p>排行<span></span></p>
+                    <div class="subMenuInfo">
+                        <a href="/Rank">涨跌幅榜</a>
+                        <a href="/Rank/currency">币种成交榜</a>
+                        <a href="/Rank/bourse">交易所成交榜</a>
+                        <a href="/Rank/trend">市值趋势</a>
+                    </div>
+                </div>
+                <a href="/exchange" class="item">交易所</a>
+                <a href="/template" class="item">模块概念</a>
+                <a class="item">账本</a>
+                <a class="item" href="/App" target="_blank">App</a>
+            </div>
+            <div>
+                <p class="login">
+                    <span>注册</span> / <span>登录</span>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="hover-hand">
+        <div class="hover-hand-wrap">
+            <div class="hover-hand-logo"></div>
+            <div class="hover-hand__menu">
+                <div class="kenMenu">
+                    <a href="/" class="item">首页</a>
+                    <a href="/Optional" class="item">自选</a>
+                    <div class="kenSubMenu item">
+                        <p>排行<span></span></p>
+                        <div class="subMenuInfo">
+                            <a href="/Rank">涨跌幅榜</a>
+                            <a href="/Rank/currency">币种成交榜</a>
+                            <a href="/Rank/bourse">交易所成交榜</a>
+                            <a href="/Rank/trend">市值趋势</a>
+                        </div>
+                    </div>
+                    <a href="/exchange" class="item">交易所</a>
+                    <a href="/template" class="item">模块概念</a>
+                    <a class="item" @click="Ishref()">账本</a>
+                    <a class="item" href="/App" target="_blank">App</a>
+                </div>
+                <div>
+                    <p class="login" v-show="!isLine">
+                        <span>注册</span> / <span>登录</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="registerShade">
+    <div class="loginWrap">
+        <div class="loginWrap-title">
+            <i class="icon-ken_plus"></i>
+        </div>
+        <div class="loginWrap-top">
+            <a href="" class="login-logo"><img src="./static/images/loginRegister/login_logo.png" alt=""></a>
+            <p><strong>注册</strong></p>
+        </div>
+        <div class="loginWrap-form">
+            <div class="form-row">
+                <input type="text" placeholder="请输入用户名">
+                <span><i class="icon-kenquestion"></i></span>
+            </div>
+            <div class="form-row">
+                <input type="password" placeholder="请输入密码">
+                <span><i class="icon-kenquestion"></i></span>
+            </div>
+            <div class="form-row">
+                <input type="text" placeholder="请输入手机号">
+                <span><i class="icon-kenquestion"></i></span>
+            </div>
+            <div class="form-row captchaInp">
+                <input type="text" placeholder="请输入验证密码">
+                <span><i class="icon-kenquestion"></i></span>
+                <button class="captcha">发送验证码</button>
+            </div>
+            <div class="form-btn">
+                <button id="loginBtn" disabled>注册</button>
+            </div>
+        </div>
+        <div class="loginWrap-bot">
+            <p>已有考拉账号？<a href="">直接登录</a></p>
+            <p><a href="">下 载 考 拉 App</a></p>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    $(document).ready(function () {
+        $("input").focus(function(){
+            $(this).css({
+                backgroundColor: '#fff',
+                borderColor:"#debd63"
+            });
+            $(this).parents('.form-row').find('span i').css('color','#debd63')
+        }).blur(function () {
+            if(!$(this).val()){
+                $(this).css({
+                    backgroundColor: '#f0f0f0',
+                    borderColor:"#eaeaea"
+                });
+                $(this).parents('.form-row').find('span i').css('color','#454545')
+            }
+        });
+        $("#testBtn").click(function () {
+            console.log(111111)
+        })
+    })
+</script>
+</html>

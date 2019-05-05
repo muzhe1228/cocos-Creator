@@ -1,0 +1,802 @@
+<template>
+  <div class="turntable">
+    <img class="turntable_bac_banner" src="/static/images/turntable/turntable_bac_banner.jpg" alt="">
+    <div class="wallet" @click="wallet"><p>钱包地址</p></div>
+    <div class="turntable_page_wrap">
+      <div class="turntable_page">
+        <!--轮播中奖信息-->
+        <div class="turnTable_active">
+          <img src="/static/images/turntable/horn.png" alt="">
+          <text-scroll></text-scroll>
+        </div>
+        <!--竖条-->
+        <div class="vertical_bar">
+          <p></p>
+          <p class="right"></p>
+        </div>
+        <!--幸运转盘-->
+        <div class="turntable_wrap">
+          <lottery  :uuidData="uuidData" :invitationCode="invitationCode" :beforeLottery="beforeLottery" :lotteryBtn="lotteryBtn" :prizesList="prizesList" :prize="prize" :afterLottery="afterLottery" ></lottery>
+        </div>
+        <!--4个竖条-->
+        <div class="vertical_bar_center">
+          <div class="bar_left">
+            <p class="left"></p>
+            <p class="right"></p>
+          </div>
+          <div class="bar_right">
+            <p class="left"></p>
+            <p class="right"></p>
+          </div>
+        </div>
+        <div class="turntable_today">
+          <p class="today_time">今日已抽奖<span>{{lotteryNumber}}</span>次</p>
+          <p class="surplus_time">剩余<span>{{remainlotteryNumber}}</span>次抽奖机会</p>
+        </div>
+        <div class="assistance" @click="shareAssistant">
+          <img src="/static/images/turntable/assistance.png" alt="">
+        </div>
+        <div class="my_prize_list">
+          <div class="my_prize_title">
+            <img src="/static/images/turntable/my_prize_title.png" alt="" class="record_pic">
+          </div>
+          <div class="list_wrap">
+            <div class="list" v-for="(item, key) in myPrizeList">
+              <div>{{key}}</div>
+              <p><span>{{item}}</span></p>
+            </div>
+          </div>
+        </div>
+        <!--竖条底部-->
+        <div class="vertical_bar vertical_bar_bottom">
+          <p></p>
+          <p class="right"></p>
+        </div>
+        <div class="turntable_record">
+          <div class="record_title">
+            <div @click="toggleTab('left')" class="record_title_content">
+              <img v-show="tabFlag" src="/static/images/turntable/title_record_sel.png">
+              <img  v-show="!tabFlag" src="/static/images/turntable/title_record_unsel.png" alt="">
+            </div>
+            <div @click="toggleTab('right')" class="record_title_content">
+              <img v-show="tabFlag" src="/static/images/turntable/title_friends_unsel.png">
+              <img  v-show="!tabFlag" src="/static/images/turntable/title_friends_sel.png" alt="">
+            </div>
+          </div>
+          <div class="record_detail">
+            <div class="list_wrap" v-show="tabFlag">
+              <div class="detail_title">
+                <p>时间</p>
+                <p>奖品</p>
+              </div>
+              <ul>
+                <li class="list" v-for="(item, index) in myPrizeRecordList">
+                  <p class="left">{{item.createDate | filterDate}}</p>
+                  <p>{{item.awardsNumber}}{{item.awardsType}}</p>
+                </li>
+              </ul>
+            </div>
+            <div class="list_wrap" v-show="!tabFlag">
+              <div class="detail_title">
+                <p>时间</p>
+                <p>昵称</p>
+              </div>
+              <ul>
+                <li class="list" v-for="(item, index) in assistantRecord">
+                  <p class="left">{{item.createDate | filterDate}}</p>
+                  <div class="other_assistant"><img :src="item.pic" alt=""><span>{{item.nick}}</span></div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--遮罩层-->
+    <rule-toast></rule-toast>
+    <div class="shadow_wrap" v-show="ethData" @click="hide1">
+      <div class="draw_lottery">
+        <div class="toast_img_wrap">
+          <img src="/static/images/turntable/img_other.png" alt="" class="toast_img">
+          <div class="toast_text_wrap">
+            <p class="lottery_content_wrap">恭喜您获得</p>
+            <p class="lottery_content"><span>{{getAwardsNumber}}</span><span class="other_type">{{test}}</span></p>
+            <div class="lottery_address">
+              <input type="text" :placeholder="numbertext">
+            </div>
+            <div class="btn">
+              <p class="next" @click="ethHide">确认</p>
+              <p class="share" @click="shareChangePic"><a href="javascript:;">炫耀一下</a></p>
+            </div>
+          </div>
+        </div>
+        <div class="icon_delete_btn" @click="ethHide">
+          <img src="/static/images/turntable/icon_del.png" alt="">
+        </div>
+      </div>
+    </div>
+    <div class="shadow_wrap" v-show="clbData" @click="hide2">
+      <div class="draw_lottery draw_lottery_clb">
+        <div class="toast_img_wrap">
+          <img src="/static/images/turntable/img_CLB.png" alt="" class="toast_img">
+          <div class="toast_text_wrap">
+            <p class="lottery_content_wrap">恭喜您获得</p>
+            <p class="lottery_content">{{getAwardsNumber}}</p>
+            <p class="type">CLB</p>
+            <div class="btn">
+              <p class="next1" @click="clbHide"><a href="javascript:;">点击确认</a></p>
+              <p class="share1"  @click="shareChangePic">炫耀一下</p>
+            </div>
+          </div>
+        </div>
+        <div class="icon_delete_btn" @click="clbHide">
+          <img src="/static/images/turntable/icon_del.png" alt="">
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  import {shareWeixin, isIos} from 'assets/js/case'
+  import {getCoinlaSingle, getCoinlaToken} from 'assets/js/httpAll'
+  import TextScroll from './page/textScroll'
+  import lottery from './page/lotteryPage.vue'
+  import RuleToast from './page/ruleToast'
+  export default {
+    name: "turntable",
+    metaInfo:{
+      title: '幸运转盘'
+    },
+    components: {
+      'text-scroll': TextScroll,
+      'lottery': lottery,
+      'rule-toast': RuleToast
+    },
+    data () {
+      return {
+        callData: '',
+        headersData: '',
+        bindParams: '',
+        childData: '',
+        invitationCode: this.$route.query.invitationCode,
+        uuidData: '',
+        num: 0,
+        recordTab: {
+          img1: ['/static/images/turntable/title_record_sel.png', '/static/images/turntable/title_friends_unsel.png'],
+          img2: ['/static/images/turntable/title_record_unsel.png', '/static/images/turntable/title_friends_sel.png']
+        },
+        clbData: false,
+        ethData: false,
+        myPrizeList: '',
+        myPrizeRecordList: '',
+        assistantRecord: '',
+        lotteryNumber: '',
+        remainlotteryNumber: '',
+        shareInfo: '',
+        prize: 0,
+        prizesList: '',
+        lotteryBtn:{
+          img1 : "/static/images/lottery/prize_btn.png",
+          img2 : "/static/images/lottery/prize_btn_grey.png",
+          status: true
+        },
+        test: '',
+        test2: '',
+        getAwardsNumber: '',
+        numbertext: '',
+        tabFlag: true
+      }
+    },
+    filters: {
+      filterDate (value) {
+        let date = new Date(value)
+        let month = date.getMonth()+1
+        let day = date.getDate()
+        let hour = date.getHours()
+        let minute = date.getMinutes()
+        if(month < 10){
+          month = '0' + month
+        }
+        if(day < 10){
+          day = '0' + day
+        }
+        if(hour < 10){
+          hour = '0' + hour
+        }
+        if(minute < 10){
+          minute = '0' + minute
+        }
+        let val = `${month}-${day} ${hour}:${minute}`
+        return val
+      }
+    },
+    created () {
+      this.$nextTick(() => {
+        this.getAwardsList()
+      })
+    },
+    mounted () {
+        this.shareInfo()
+      this.getTokenData()
+    },
+    methods: {
+      //抽奖
+      beforeLottery(resolve, reject, idData){
+        let _this = this
+        setTimeout(()=>{
+          _this.prize =  idData.awardsId//控制抽到哪里
+          _this.test = idData.awardsType
+          _this.test2 = idData.name
+          _this.getAwardsNumber = idData.awardsNumber
+          _this.numbertext = '请输入'+_this.test+'钱包地址'
+          resolve();
+        },10)
+      },
+      afterLottery(){
+        if(this.test == 'CLB'){
+          this.clbData = true
+        }else{
+          this.ethData = true
+        }
+        this.apiFunction(this.callData)
+      },
+      //奖项列表接口
+      getAwardsList () {
+        getCoinlaSingle('/turntable/selectAwardsList', {activityId: 1}).then((res) => {
+          let resData = res.data.data
+          this.prizesList = resData
+        }).catch((err) => {})
+      },
+      shareChangePic () {
+        this.$router.push({name: 'flaunt', params: {getNumber: this.test2}})
+      },
+      toggleTab (tab) {
+        if (tab == 'right') {
+          this.tabFlag = false
+        }else{
+          this.tabFlag = true
+
+        }
+      },
+      ethHide () {
+        this.ethData = !this.ethData
+      },
+      clbHide () {
+        this.clbData = !this.clbData
+      },
+      hide1 () {
+        let el1 = event.currentTarget;
+        let el2 = event.target;
+        if(el1 == el2){
+          this.ethData = false
+        }
+      },
+      hide2 () {
+        let el1 = event.currentTarget;
+        let el2 = event.target;
+        if(el1 == el2){
+          this.clbData = false
+        }
+      },
+      //判断是否微信绑定
+      getWechatCheck (headersMessage) {
+        getCoinlaToken('/user/wechatCheck', {}, headersMessage).then((res) => {
+          let resData = res.data.data
+          //code为0代表以及绑定，获取后端传过来的uuid
+          if(res.data.code == 0){
+            this.uuidData = resData.uuid
+            this.callData =  resData
+            this.getShareInfo()
+            this.apiFunction(resData)
+            this.getAssistantRecord(resData)
+          }else{
+            alert('安装微信，才能参与活动')
+            this.getApiParams()
+          }
+        })
+      },
+      //headers-token获取
+      getTokenData () {
+        let _this = this
+        if(isIos()){
+          //ios headers获取
+          window.sendCLBRank = function (apiParams) {
+            _this.headersData = apiParams
+            _this.getWechatCheck(_this.headersData)
+          }
+          window.webkit.messageHandlers.NativeMethod.postMessage("getCLBRank");
+        }else{
+          //安卓 获取headers
+          window.setData = function (apiParams) {
+            _this.headersData = apiParams
+            _this.getWechatCheck(_this.headersData)
+          }
+          window.coinla.sendCLBRank('coinlaApp')
+        }
+      },
+      //微信登录授权，以及headers token等内容获取
+      getApiParams () {
+        let _this = this
+        if(isIos()){
+          //ios 微信授权登陆
+          window.webkit.messageHandlers.NativeMethod.postMessage("getWeChatUserData");
+          window.sendWeChatUserData = function (json) {
+            _this.callData = json
+            _this.uuidData = json.UID
+            //ios headers获取
+            window.sendCLBRank = function (apiParams) {
+              _this.headersData = apiParams
+              _this.getWechatBind(_this.callData, _this.headersData)
+            }
+            window.webkit.messageHandlers.NativeMethod.postMessage("getCLBRank");
+          }
+        }else{
+          //安卓 微信授权登陆
+          window.coinla.getWeChatUserData('123')
+          window.sendWeChatUserData = function (json) {
+            _this.callData = json
+            _this.uuidData = json.UID
+            //安卓 获取headers
+            window.setData = function (apiParams) {
+              _this.headersData = apiParams
+              _this.getWechatBind(_this.callData, _this.headersData)
+            }
+            window.coinla.sendCLBRank('coinlaApp')
+          }
+        }
+      },
+      //钱包地址跳转
+      wallet () {
+        this.$router.push({name: 'wallet', params: {invitationCode: this.invitationCode, uuid: this.callData.uuid}})
+      },
+      //微信绑定接口
+      getWechatBind (getParams, getHeaders) {
+        getCoinlaToken('/user/wechatBind', {openid: getParams.OpenID, uuid: getParams.UID, nick: getParams.UserName, pic: getParams.iconurl}, getHeaders).then((res) => {
+          this.bindParams = res
+          this.getShareInfo()
+          this.apiFunction(getParams)
+          this.getAssistantRecord(getParams)
+        }).catch((error) => {})
+      },
+      //封装
+      apiFunction (getParams) {
+        //我的奖品接口
+        getCoinlaSingle('/turntable/selectMyPrize', {activityId: 1, invitationCode: this.invitationCode, uuid: getParams.UID || getParams.uuid}).then((res) => {
+          this.myPrizeList = res.data.data
+        }).catch((err) => {})
+        //我的中奖纪录接口
+        getCoinlaSingle('/turntable/selectWinningList', {activityId: 1, invitationCode: this.invitationCode, uuid: getParams.UID || getParams.uuid}).then((res) => {
+          this.myPrizeRecordList = res.data.data.list
+        }).catch((err) => {})
+        //好友助力纪录接口
+        getCoinlaSingle('/turntable/selectHelpList', {activityId: 1, invitationCode: this.invitationCode, uuid: getParams.UID || getParams.uuid}).then((res) => {
+          this.assistantRecord = res.data.data.list
+        }).catch((err) => {})
+        //抽奖次数，剩余抽奖机会接口
+        getCoinlaSingle('/turntable/selectNumber', {activityId: 1, invitationCode: this.invitationCode, uuid: getParams.UID || getParams.uuid}).then((res) => {
+          let message = res.data.data
+          this.lotteryNumber = message.drawNumber
+          this.remainlotteryNumber =  message.totalNumber - this.lotteryNumber
+          if(this.remainlotteryNumber == 0){
+            this.lotteryBtn.status = false
+          }
+        }).catch((err) => {})
+      },
+      //邀请好友助力，增加抽奖机会接口
+      shareAssistant () {
+        if (isIos()) {
+          window.webkit.messageHandlers.NativeMethod.postMessage("ios_share");
+        } else {
+          window.coinla.getData(JSON.stringify(this.shareInfo))
+        }
+      },
+      //右上角按钮邀请
+      getShareInfo () {
+        //let _this = this
+        getCoinlaSingle('/share/multi', {type: 6}).then((res) => {
+          if (res.data.code === 0) {
+            //拼接uuid,方便在好友助力页面判断是否是本人还是好友
+            let url = res.data.data.shareUrl
+            //存在?
+            if(url.indexOf("?") != -1 ){
+              res.data.data.shareUrl =  url+'&invitationCode='+this.invitationCode+'&bannerId='+this.$route.query.bannerId
+              //不存在?
+            }else{
+              res.data.data.shareUrl =  url+'?invitationCode='+this.invitationCode+'&bannerId='+this.$route.query.bannerId
+            }
+            this.shareInfo = res.data.data
+            if (isIos()) {
+              window.setData = function () {
+                return res.data.data
+              }
+            } else {
+              window.sendData = function () {
+                window.coinla.getData(JSON.stringify(res.data.data))
+              }
+            }
+          }
+        }).catch((err) => {})
+      }
+    }
+  }
+</script>
+
+<style lang="stylus">
+  .turntable {
+    position: relative
+    .turntable_bac_banner{
+      width: 100%
+      display: block
+    }
+    .wallet {
+      width: 0.6rem
+      /*height: 1.56rem*/
+      z-index:99
+      border-radius: 0.1rem
+      position: absolute
+      right: 0
+      background: rgba(255, 255, 255, 0.3)
+      color: #fff
+      font-size: 0.3rem
+      p {
+        width: 0.3rem
+        padding: 0.18rem 0
+        margin: 0 auto
+      }
+    }
+    .wallet {
+      top: 1.76rem
+    }
+    &_page_wrap {
+      background: url(/static/images/turntable/bacImg.jpg) no-repeat
+      background-size:100% 100%
+      padding: 0 0.38rem 0.5rem
+      .turntable_page{
+        max-width: 7.21rem
+        margin: 0 auto
+        .turnTable_active {
+          width: 4.88rem
+          height: 0.5rem
+          margin: 0 auto
+          background-color: #ffde7d
+          border-radius: 0.3rem
+          display: flex
+          align-items: center
+          img {
+            width: 0.3rem
+            margin: 0 0.18rem 0 0.24rem
+          }
+        }
+        .vertical_bar{
+          width:3.32rem
+          height:0.18rem
+          overflow: hidden
+          margin:0 auto
+          p{
+            float: left
+            width: 0.1rem
+            height: 0.18rem
+            background: #f5a214
+          }
+          .right{
+            float: right
+          }
+        }
+        .vertical_bar_center{
+          height:0.2rem
+          padding: 0 0.34rem
+          display: flex
+          justify-content: space-between
+          align-items: center
+          .bar_left,.bar_right{
+            width: 2.48rem
+            overflow: hidden
+            padding:0 0.6rem
+          }
+          .left,.right{
+            width: 0.1rem
+            height: 0.2rem
+            background: #f5a214
+            float: left
+          }
+          .bar_left{
+            .right{
+              float: right
+            }
+          }
+          .bar_right{
+            width:2.82rem
+            .right{
+              float: right
+            }
+          }
+        }
+        .turntable_today {
+          color: #b0730b
+          font-size: 0.28rem
+          padding: 0 0.34rem
+          display: flex
+          justify-content: space-between
+          align-items: center
+          p {
+            width: 2.48rem
+            height: 0.5rem
+            line-height: 0.5rem
+            border-radius: 0.3rem
+            background-color: #FFDE7D
+            text-align: center
+            span {
+              color: #f40
+            }
+          }
+          .surplus_time {
+            width:2.82rem
+          }
+        }
+        .assistance {
+          text-align: center
+          font-size:0
+          margin: 0.5rem auto 0.48rem
+          img {
+            width: 5.26rem
+            height: 0.8rem
+          }
+        }
+        .my_prize_list {
+          position: relative
+          border-radius: 0.22rem;
+          font-size: 0.3rem
+          background-color: #ffde7d
+          padding: 0 0 0.12rem
+          .my_prize_title{
+            font-size:0
+            height: 0.88rem
+            display: flex
+            align-items: center
+            justify-content: center
+            .record_pic{
+              width: 1.26rem
+              height:0.3rem
+            }
+          }
+          .list_wrap{
+            display: flex
+            width: 6.5rem
+            height: 1.28rem
+            margin: 0 auto
+            overflow: hidden
+            border-bottom-left-radius:0.16rem
+            border-bottom-right-radius:0.16rem
+            .list {
+              width: 25%
+              text-align: center
+              color: #080808
+              div{
+                height:0.64rem
+                line-height: 0.64rem
+                background: #ffedba
+                color: #b47913
+              }
+              p {
+                height:0.64rem
+                line-height: 0.64rem
+                background: #f8f4db
+              }
+              span {
+                color: #f40
+              }
+            }
+          }
+        }
+        .vertical_bar_bottom{
+          width: 4.86rem
+          height: 0.3rem
+          p{
+            height:0.3rem
+          }
+        }
+        .turntable_wrap{
+          background-image: url(/static/images/lottery/lotteryBorder.png);
+          background-repeat: no-repeat;
+          background-size: 100%;
+        }
+        .turntable_record {
+          position: relative
+          border-radius: 0.22rem;
+          font-size: 0.26rem
+          background-color: #ffde7d
+          padding: 0 0 0.12rem 0
+          .record_title {
+            overflow: hidden
+            height:0.88rem
+            display: flex
+            .record_title_content{
+              display: flex
+              justify-content: center
+              align-items: center
+              width: 50%
+              img{
+                width: 1.78rem
+                height:0.29rem
+              }
+            }
+          }
+          .record_detail {
+            width: 6.5rem
+            margin:0 auto
+            overflow: hidden
+            border-bottom-left-radius:0.16rem
+            border-bottom-right-radius:0.16rem
+            .detail_title {
+              display: flex
+              align-items: center
+              height: 0.64rem
+              line-height: 0.64rem
+              background-color: #ffedba
+              color: #b17201
+              p {
+                width: 50%
+                text-align: center
+              }
+            }
+            .list {
+              display: flex
+              align-items: center
+              height: 0.64rem
+              line-height: 0.64rem
+              color: #b47913
+              background-color: #f8f4db
+              p {
+                width: 50%
+                padding-left:1.26rem
+              }
+              .left{
+                padding-left:0.9rem
+              }
+            }
+          }
+          .other_assistant{
+            width: 50%
+            display: flex
+            align-items: center
+            padding-left:1rem
+            img{
+              width:0.3rem
+              border-radius:50%
+              margin-right:0.1rem
+              vertical-align:middle
+            }
+            span{
+              font-weight:bold
+            }
+          }
+        }
+      }
+    }
+    .draw_lottery {
+      color: #080808
+      z-index:1000
+      position: absolute
+      left: 50%
+      top: 50%
+      transform: translate(-50%, -50%)
+      text-align: center
+      .toast_img_wrap{
+        position: relative
+        .toast_img{
+          width: 343px
+        }
+        .toast_text_wrap{
+          width: 100%
+          position: absolute
+          top:0
+          left:0
+        }
+      }
+      .lottery_content_wrap {
+        margin: 45px auto 9px
+        font-size: 15px
+        color: #e2aa06
+      }
+      .lottery_content {
+        color: #fb5a5a
+        font-size:56px
+      }
+      .other_type{
+        font-size:39px
+        color: #fb5a5a
+      }
+      .type{
+        font-size: 21px
+        color: #e2aa06
+        margin:5px auto 0
+      }
+      .lottery_address {
+        font-size: 14px
+        width: 209px
+        margin: 35px auto 0
+        input {
+          width: 100%
+          padding: 9px 0 9px 12px
+          border-radius:18px
+          background-color: transparent
+          border: 1px solid #e2aa06
+        }
+        input:
+        :input-placeholder {
+          color: #e2aa06 !important;
+        }
+        input:
+        :-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+          color: #e2aa06 !important;
+        }
+        input:-moz-placeholder, textarea:-moz-placeholder {
+          color: #e2aa06 !important;
+        }
+        input:
+        :-moz-placeholder, textarea::-moz-placeholder {
+          color: #e2aa06 !important;
+        }
+        input:-ms-input-placeholder, textarea:-ms-input-placeholder {
+          color: #e2aa06 !important;
+        }
+      }
+      .btn {
+        .share{
+          a{
+            color: #e2aa06
+            font-size: 14px
+            text-decoration: underline
+          }
+        }
+        .next{
+          background-color: #e2aa06
+          font-size: 15px
+          color: #fff2cb
+          width: 209px
+          height: 36px
+          line-height:36px
+          border-radius:18px
+          margin:9px auto
+        }
+      }
+      .icon_delete_btn{
+        font-size:0
+        img{
+          width:50px
+          margin-top:13px
+        }
+      }
+    }
+    .draw_lottery_clb{
+      z-index:1000
+      .lottery_content_wrap{
+        margin-bottom:5px
+      }
+      .lottery_content {
+        font-size:60px
+      }
+      .btn {
+        .next1{
+          margin-top:32px
+          a{
+            color: #e2aa06
+            font-size: 14px
+            text-decoration: underline
+          }
+        }
+        .share1{
+          background-color: #e2aa06
+          font-size: 15px
+          color: #fff2cb
+          width: 209px
+          height: 40px
+          line-height:40px
+          border-radius:20px
+          margin:9px auto 0
+        }
+      }
+    }
+  }
+</style>

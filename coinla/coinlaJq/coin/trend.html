@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>币种详情页</title>
+	<link rel="stylesheet" href="../css/icon/style.css">
+	<link rel="stylesheet/less" href="../css/coindetails.less">
+	<link rel="icon" type="image/x-icon" href="../favicon.ico">
+	<script src="../js/jquery.min.js"></script>
+	<script src="../js/highstock5.0.js"></script>
+	<script src="../js/exporting.js"></script>
+	<script src="../js/highcharts-zh_CN.js"></script>
+	<script src="../js/less.min.js"></script>
+	<script src="../js/common.js"></script>
+	<script src="../js/indexTop.js"></script>
+	<script src="../js/footer.js"></script>
+	<script src="../js/coinChart.js"></script>
+</head>
+<body>
+<header>
+	<div class="container v-head">
+		<a href="/" class="logo"><img src="../static/images/icon/logo.png"></a>
+		<div class="v-head__menu">
+			<div class="kenMenu">
+				<a href="./" class="item">首页</a>
+				<a href="./optional.html" class="item">自选</a>
+				<div class="kenSubMenu item">
+					<p>排行<span></span></p>
+					<div class="subMenuInfo">
+						<a href="./rank/">涨跌幅榜</a>
+						<a href="./rank/currency.html">币种成交榜</a>
+						<a href="./rank/bourse.html">交易所成交榜</a>
+						<a href="./rank/trend.html">市值趋势</a>
+					</div>
+				</div>
+				<a href="exchange/index.html" class="item">交易所</a>
+				<a href="./template.html" class="item">模块概念</a>
+				<a class="item">账本</a>
+				<a class="item" href="/App" target="_blank">App</a>
+			</div>
+			<div>
+				<p class="login">
+					<span>注册</span> / <span>登录</span>
+				</p>
+			</div>
+		</div>
+	</div>
+	<div class="hover-hand">
+		<div class="hover-hand-wrap">
+			<div class="hover-hand-logo"></div>
+			<div class="hover-hand__menu">
+				<div class="kenMenu">
+					<a href="/" class="item">首页</a>
+					<a href="/Optional" class="item">自选</a>
+					<div class="kenSubMenu item">
+						<p>排行<span></span></p>
+						<div class="subMenuInfo">
+							<a href="/Rank">涨跌幅榜</a>
+							<a href="/Rank/currency">币种成交榜</a>
+							<a href="/Rank/bourse">交易所成交榜</a>
+							<a href="/Rank/trend">市值趋势</a>
+						</div>
+					</div>
+					<a href="/exchange" class="item">交易所</a>
+					<a href="/template" class="item">模块概念</a>
+					<a class="item" @click="Ishref()">账本</a>
+					<a class="item" href="/App" target="_blank">App</a>
+				</div>
+				<div>
+					<p class="login" v-show="!isLine">
+						<span>注册</span> / <span>登录</span>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</header>
+<div class="detailWrap container">
+	<ul class="detailWrap_nav">
+		<li class="nuxt-link-active">考拉行情首页&nbsp;&nbsp;&gt;&nbsp;&nbsp;</li>
+		<li class="">自选&nbsp;&nbsp;&gt;&nbsp;&nbsp;</li>
+		<li class="active">BTC详情</li>
+	</ul>
+	<div class="details">
+		<div class="details_l">
+			<div class="details_l_top">
+				<ul class="top_l">
+					<li class="Nos"><p>NO.1</p></li>
+					<li class="b_logo"><img alt=""
+											src="http://bileimages.oss-cn-hangzhou.aliyuncs.com/images/1524738854323.jpg">
+					</li>
+					<li class="b_name"><p>比特币</p>
+						<p>BTC</p></li>
+					<li class="bot"><p><span class="size">946人</span><span
+					>关注</span></p></li>
+				</ul>
+				<div class="top_r">
+					<div class="top_r_title"><p class="name"><span
+					>比特币</span><span>BTC</span></p>
+						<p class="follow"><i
+								class="icon-ken_star color-star"></i>添加关注</p></div>
+					<p class="englishName">Bitcoin</p>
+					<div class="top_r_info">
+						<ul class="top_r_info_l">
+							<li class="nav">当前价</li>
+							<li class="price"><span>￥</span>43,839
+								<span class="Rise color-green">+2.29%</span></li>
+							<li class="rightName">BTC/CNY</li>
+						</ul>
+						<ul class="top_r_info_r">
+							<li>最高&nbsp;：<span
+									class="color-green">￥43,890</span></li>
+							<li>最低&nbsp;：<span
+									class="color-red">￥42,743</span></li>
+							<li>国行&nbsp;：<span>≈￥44,136.14</span><span
+							></span></li>
+						</ul>
+					</div>
+					<div class="top_r_bot">
+						<ul class="top_r_bot_l">
+							<li>成交额(24h)&nbsp;：<span>&nbsp;￥241.32亿</span>
+							</li>
+							<li>流通市值&nbsp;：<span>&nbsp;￥7,497.48亿</span></li>
+						</ul>
+						<ul class="top_r_bot_r">
+							<li>流通总量&nbsp;：<span>&nbsp;1,710.57万</span></li>
+							<li>发行总量&nbsp;：<span>&nbsp;2,100万</span></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="details_l_con">
+				<div class="details_l_con_nav">
+					<div class="nav_tab">
+						<a href="./">核心数据</a>
+						<a href="./market.html">交易所行情</a>
+						<a href="javascript:0;" class="active">市值趋势</a>
+						<a href="./history.html">历史数据</a>
+						<a href="./intro.html">币种介绍</a>
+					</div>
+					<div class="nav_right">
+					
+					</div>
+				</div>
+			</div>
+			<div class="market con_cont child">
+				<div id="coinChart" style="height: 600px;width: 100%"></div>
+			</div>
+		</div>
+		
+		<div class="details_r">
+			<div class="list_nav">
+				<div class="list_nav_l"><img
+						src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAASCAYAAABb0P4QAAABS2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS42LWMxMzggNzkuMTU5ODI0LCAyMDE2LzA5LzE0LTAxOjA5OjAxICAgICAgICAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIi8+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+IEmuOgAAAQZJREFUOI3N1M8qRVEUx/HP1U2UBxBFHkApJSa6paQMRDK5EwMZmhiIjJTyBAbKLaRIJjIgXkB5AXmFm4FEKa7B2XScto46V/nVGuy11/quP7V36f50tIEtrGJQQbUUBfwFcBlLzQJ2YRZtzQIu4B21PGAZ7TmwHkziBPU84ByuMJPT3Sv2086fgAOSvaxhB/2Z+z5M4AgPecBWDOEMG5LRathEZ4hZxAsOssnlCHAEHbjEDa4xjyoqOMcYdvGYTY51OB7GuA3nZ2xjKhSZxhMOI7nRDhu4wFvGX5es4Bi9Afor4HosMKW7YFH9y7f8TZ8jD2MF3QVYe2lgJVgRfQFLKWfhD/YDcFssf1M80OUAAAAASUVORK5CYII="
+						alt="">
+					<p class="active">基本资料</p></div>
+			</div>
+			<ul element-loading-text="数据加载中，请耐心等待" element-loading-background="rgba(0, 0, 0, 0.6)"
+				class="details_r_con resetLoading">
+				<li><p>名称&nbsp;：&nbsp;<span>比特币</span></p></li>
+				<li><p>英文&nbsp;：&nbsp;<span>Bitcoin</span></p>
+				</li>
+				<li><p>简称&nbsp;：&nbsp;<span>BTC</span></p></li>
+				<li><p>发布时间&nbsp;：&nbsp;<span>2008-11-01</span>
+				</p></li><!---->
+				<li><p>发行总量&nbsp;：&nbsp;<span>2,100万</span></p>
+				</li>
+				<li><p>官网&nbsp;：&nbsp;<a
+						href="https://bitcoin.org/"
+						title="比特币-BTC" target="_blank"
+						class="Href">bitcoin.org</a></p></li>
+				<!----><!----><!----><!---->
+				<li><p>是否可挖矿&nbsp;：&nbsp;<span>是</span></p>
+				</li>
+				<li class="B_letter"><p>共识机制&nbsp;：&nbsp;</p>
+					<p class="cont_letter">Proof of Work（PoW）机制</p></li>
+				<li class="B_letter"><p>币种简介&nbsp;：&nbsp;</p>
+					<p>
+						比特币（简称：BTC）是2009年中本聪提出并设计发布的开源分布式p2p网络形式的数字货币。比特币被认为是一种去中心化，非普遍全球可支付的电子加密货币，部分国家将其归为虚拟商品，而非货币。
+						
+						通常，首字母大写的“Bitcoin”是指其所使用的比特币技术与网络，而首字母小写的“bitcoin”才是指货币本身。比特币属性：黄金（背书属性）美金（交易属性） 股票（流通属性）。
+						
+						区块机制：
+						区块时间：10分钟。
+						挖矿难度调整周期：每2016个区块，大约2个星期。
+						挖矿参考算法：SHA256。
+						区块奖励：
+						1.创世区块奖励50个比特币，以后每210000个区块减半，即约4年调整一次。目前已两次减半，当前的区块奖励为12.5 BTC。
+						2.比特币的每个交易必须支付一定数额的手续费给矿工。</p><a href="/coin/bitcoin/intro" class="">查看更多</a>
+				</li>
+				<div class="el-loading-mask" style="background-color: rgba(0, 0, 0, 0.6); display: none;">
+					<div class="el-loading-spinner">
+						<svg viewBox="25 25 50 50" class="circular">
+							<circle cx="50" cy="50" r="20" fill="none" class="path"></circle>
+						</svg>
+						<p class="el-loading-text">数据加载中，请耐心等待</p></div>
+				</div>
+			</ul>
+			<ul class="details_r_bot">
+				<li><a href="http://www.bitcoin.org/bitcoin.pdf"
+					   title="http://www.bitcoin.org/bitcoin.pdf" target="_blank"><p
+						class="left"><img src="../static/images/newIndex/icon_link.png"
+										  alt=""><span>区块链浏览器</span></p>
+					<p><i class="icon-ken_right"></i></p></a></li>
+				<li><a href="http://www.bitcoin.org/bitcoin.pdf"
+					   title="http://www.bitcoin.org/bitcoin.pdf" target="_blank"><p
+						class="left"><img
+						src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAABS2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS42LWMxMzggNzkuMTU5ODI0LCAyMDE2LzA5LzE0LTAxOjA5OjAxICAgICAgICAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIi8+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+IEmuOgAAAahJREFUOI2t00+ITmEUx/HPTG/ErEZJhGZGLFCKyMJuWGlmzN5C+RNWkljI0oYymaWSLKxEo9fKjKwmRc1ikD+Nd0qKlP//U8biOVd33u597yzmV7duz3PO9zy/85yHeVZb4+7+lvtYhh7U8BJv8LcouKf3sloJqIZV6EZHbn0zfmIar/CnKDGvRQFZjQXYhv5YH8F4/K/HuoBO40czsDNsLcdi9KIPX3ALvzGAfajjDr5HTne0oYGPGXAHlmI3duIRLuB57vQPA7AHl3APt/EWK+Kr17AdJ7EJYziOd829CTWi0JJwcB6Pw8UzaMd9PMUBXGkBy+sDruIgnuBctpFZrueCO3EMG/ACFzGDo1iLKQzjPX6F7UNZcntB9cMB2osHOI0zmAzoFI6UHb0IuAU3ovoIvuErbuJz7G0sAxYN9id0iSYHIK810jjNGTgsWbwu9XYiF9uPQQyVAYssT+IUtkojslKasSHJ6olckTmdEF5Ll7ELZ6Vbvia9kJYqA2YalZ7YQullVKoKWDd7RjP1VQGbk2YqCrWVFP8PLAIUJWWxVQXnT/8AezpgCqTwJfsAAAAASUVORK5CYII="
+						alt=""><span>官方社区</span></p>
+					<p><i class="icon-ken_right"></i></p></a></li>
+				<li><a href="http://www.bitcoin.org/bitcoin.pdf"
+					   title="http://www.bitcoin.org/bitcoin.pdf" target="_blank"><p
+						class="left"><img
+						src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAABS2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS42LWMxMzggNzkuMTU5ODI0LCAyMDE2LzA5LzE0LTAxOjA5OjAxICAgICAgICAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIi8+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+IEmuOgAAANBJREFUOI3t1LFKglEYxvGfHyc3l4KIyEGHoKitO3Bq6Q4axEGIFhfnlpa6g6CpO9ClpYvoAtKxQdDZEHLQD77BsqNfkz7wcp6X97x/nuUcclah99ZIfYJTHGFnFVi19twNmf4ElbXiIaCIR9RRiti9mp+djBfwgGPcYvRHWOe3hNc4w0VEuh+VYBefecBSYK7aAjcBmH3Le2iZfRBh8fU44A3ecYfJOsAhDnGOJl6xv2RvgMaiQcALntDHJcr4igzWTU2CNj5wgHuM8R1R/6spL8IkbPz2fUoAAAAASUVORK5CYII="
+						alt=""><span>白皮书中文</span></p>
+					<p><i class="icon-ken_right"></i></p></a></li>
+				<li><a href="http://www.bitcoin.org/bitcoin.pdf"
+					   title="http://www.bitcoin.org/bitcoin.pdf" target="_blank"><p
+						class="left"><img
+						src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAABS2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS42LWMxMzggNzkuMTU5ODI0LCAyMDE2LzA5LzE0LTAxOjA5OjAxICAgICAgICAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIi8+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+IEmuOgAAANBJREFUOI3t1LFKglEYxvGfHyc3l4KIyEGHoKitO3Bq6Q4axEGIFhfnlpa6g6CpO9ClpYvoAtKxQdDZEHLQD77BsqNfkz7wcp6X97x/nuUcclah99ZIfYJTHGFnFVi19twNmf4ElbXiIaCIR9RRiti9mp+djBfwgGPcYvRHWOe3hNc4w0VEuh+VYBefecBSYK7aAjcBmH3Le2iZfRBh8fU44A3ecYfJOsAhDnGOJl6xv2RvgMaiQcALntDHJcr4igzWTU2CNj5wgHuM8R1R/6spL8IkbPz2fUoAAAAASUVORK5CYII="
+						alt=""><span>白皮书英文</span></p>
+					<p><i class="icon-ken_right"></i></p></a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<footer>
+	<div class="container">
+		<div class="links">
+			<div class="links-info">
+				<div class="links-info-title">
+					友情链接：
+				</div>
+				<div class="links-info-all">
+				</div>
+			</div>
+			<Vline></Vline>
+		</div>
+		<div class="cont">
+			<ul>
+				<li>
+					<p>关于我们</p>
+					<a href="/About" target="_blank">关于考拉</a>
+					<a href="/Join" target="_blank">加入我们</a>
+				</li>
+				<li>
+					<p>关注我们</p>
+					<a href="https://t.me/joinchat/FwW6lwrZ8CIDqxGIp1L1oA" target="_blank">Telegram</a>
+					<a href="https://www.facebook.com/coin.la.98" target="_blank">Facebook</a>
+					<a href="https://twitter.com/mpOSxKrPDcVzXr2" target="_blank">Twitter</a>
+				</li>
+			</ul>
+			<div class="guanZhu">
+				<img src="./static/images/icon/weiXin.jpg" alt="">
+				<p>关注考拉公众号</p>
+			</div>
+		</div>
+		<p class="Copyright">Copyright © 2018 - CoinLa.com All Rights Reserved <a target="_blank"
+																				  href="http://www.coinla.com/">备案号：</a><a
+				target="_blank" href="https://www.miibeian.gov.cn/">浙ICP备18008896号-1</a></p>
+	</div>
+
+</footer>
+</body>
+</html>

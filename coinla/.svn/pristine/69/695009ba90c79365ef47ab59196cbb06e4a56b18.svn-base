@@ -1,0 +1,122 @@
+<template>
+  <div class="ruleToast">
+    <div class="active_rule" @click="rule"><p>活动规则</p></div>
+    <div class="shadow_wrap"  v-show="ruleData" @click="hide">
+      <div class="rule_wrap">
+        <div class="x_btn" @click="rule">
+          <img src="/static/images/turntable/x_btn.png" alt="">
+        </div>
+        <div class="rule">
+          <div class="rule_text_wrap">1、<p> 活动时间：2018年8月16日-8月31日；</p></div>
+          <div class="rule_text_wrap">2、
+            <div class="rule_text">
+              <p>活动内容：</p>
+              <p>活动期间，用户可通过以下方式参与抽奖，每人每天最多10次抽奖机会，抽奖机会仅限当天使用，100%中奖。</p>
+              <p>1）免费抽奖：每人每天有1次免费抽奖机会；</p>
+              <p>2）好友助力：每邀请1个好友助力，可增加1次抽奖机会，1个好友只能为同一个用户助力1次。每天最多9次抽奖机会。</p>
+            </div>
+          </div>
+          <div class="rule_text_wrap">3、
+            <div class="rule_text">
+              <p>活动说明：</p>
+              <p>1）当天获得的抽奖机会请在当天使用，每天24点系统将会自动清零；</p>
+              <p>2）抽奖所得CLB系统自动发放，可在【我的】-【我的CLB】查看；ETH、EOS、CZR将于活动结束后5个工作日内由工作人员联系并发放，请保持手机畅通（若因用户手机停机、多次联系不上等情况，则视为自动放弃奖品）</p>
+              <p>3）<span  class="text_color">获得ETH、EOS、CZR的用户，请务必在活动结束前，前往活动页面登记钱包地址，否则视为自动放弃奖品；</span></p>
+              <p>4）因违规操作或通过不正当手段参与活动者，考拉行情有权在不事先通知的情况下取消其得奖资格；</p>
+              <p>5）如需帮助，请联系考拉行情客服。<span class="text_color">微信号：KAOLAhq123</span></p>
+              <p>本活动最终解释权在法律允许的范围内归考拉行情所有</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  export default {
+    name: "rule-toast",
+    data () {
+      return {
+        ruleData: false
+      }
+    },
+    methods: {
+      rule () {
+        this.ruleData = !this.ruleData
+      },
+      hide () {
+        let el1 = event.currentTarget;
+        let el2 = event.target;
+        if(el1 == el2){
+          this.ruleData = false
+        }
+      }
+    }
+  }
+</script>
+
+<style lang="stylus">
+  .ruleToast{
+    .active_rule{
+      width: 0.6rem
+      border-radius: 0.1rem
+      position: absolute
+      right: 0
+      background: rgba(255,255,255,0.3)
+      color: #fff
+      font-size:0.3rem
+      top:4.64rem
+      p{
+        width: 0.3rem
+        padding: 0.18rem 0
+        margin: 0 auto
+      }
+    }
+    .rule_wrap {
+      width: 6.81rem
+      position: absolute
+      z-index:1000
+      top: 50%
+      left: 50%
+      transform: translate(-50%,-50%)
+      padding: 0.36rem 0.24rem 0.36rem 0.24rem
+      border-radius: 16px
+      background-color: #fff
+      .rule {
+        font-size: 12px
+        line-height: 0.4rem
+        text-align: justify
+        .rule_text_wrap {
+          display: flex
+          .rule_text {
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+          }
+          .text_color {
+            color: #e7202a
+          }
+        }
+      }
+    }
+  }
+  .shadow_wrap {
+    position: fixed
+    width: 100%
+    height: 100%
+    z-index: 999
+    left: 0
+    top: 0
+    background: rgba(0, 0, 0, .6)
+  }
+  .x_btn {
+    position: absolute
+    right: -0.2rem
+    top: -0.5rem
+    z-index:1001
+    img {
+      width: 52px
+    }
+  }
+</style>

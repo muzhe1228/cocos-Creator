@@ -1,0 +1,159 @@
+.flex() {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+
+.flex-column() {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -moz-box-orient: vertical;
+  -moz-box-direction: normal;
+  flex-direction: column;
+  -webkit-flex-direction: column;
+}
+
+.flex-wrap() {
+  -webkit-flex-wrap: wrap;
+  -webkit-box-lines: multiple;
+  -moz-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+
+.flex-1(@variable) {
+  box-flex:@arguments;
+  -webkit-box-flex:@arguments;
+  -moz-box-flex:@arguments;
+  flex:@arguments;
+  -webkit-flex:@arguments;
+}
+
+.align-items(@variable) {
+  align-items:@arguments;
+  -webkit-align-items:@arguments;
+  box-align:@arguments;
+  -moz-box-align:@arguments;
+  -webkit-box-align:@arguments;
+}
+
+.justify-content(@variable) {
+  -webkit-justify-content: @arguments;
+  justify-content: @arguments;
+  -moz-box-pack: @arguments;
+  -webkit--moz-box-pack: @arguments;
+  box-pack: @arguments;
+}
+
+.transition (@variable) {
+  -webkit-transition: @arguments;
+  -moz-transition: @arguments;
+  -ms-transition: @arguments;
+  -o-transition: @arguments;
+  transition: @arguments;
+}
+
+.transition (@moveStyle :all;@delayTime : .2s;@moveType : linear; @moveTime : 2s) {
+  -webkit-transition: @arguments;
+  -moz-transition: @arguments;
+  -o-transition: @arguments;
+  -ms-transition: @arguments;
+  transition: @arguments;
+}
+
+.transform(@variable) {
+  -webkit-transform: @arguments;
+  -moz-transform: @arguments;
+  -ms-transform: @arguments;
+  -o-transform: @arguments;
+  transform: @arguments;
+}
+
+.radius(@variable) {
+  -webkit-border-radius: @arguments;
+  -moz-border-radius: @arguments;
+  -ms-border-radius: @arguments;
+  -o-border-radius: @arguments;
+  border-radius: @arguments;
+}
+
+//不换行
+.no-wrap() {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+//行数限制
+.text-hid(@variable) {
+  width: 100%;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: @arguments;
+  overflow: hidden;
+}
+
+//text-hid($h, $ah)
+//  position: relative
+//  line-height: $h
+//  height: $ah
+//  overflow: hidden
+//  &::after
+//    content: " "
+//    position: absolute;
+//    bottom: 0
+//    right: 0
+//    padding-left: 40px
+
+// 扩展点击区域
+.extend-click() {
+  position: relative;
+  &:before {
+    content: '';
+    position: absolute;
+    top: -9px;
+    left: -9px;
+    right: -9px;
+    bottom: -9px;
+  }
+
+}
+
+// hover-border
+.after-border(@variable) {
+  position: relative;
+  &::after {
+    content: ' ';
+    position: absolute;
+    bottom: 1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: @arguments;
+    height: 3px;
+    background-color: @main-color;
+    border-radius: calc(3px / 2);
+  }
+
+}
+
+.after-borderTab(@variable) {
+  position: relative;
+  &::after {
+    content: ' ';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: @arguments;
+    height: 4px;
+    background-color: @main-color;
+    border-radius: 2px;
+  }
+
+}
+
+//移入变手
+.hover-hand() {
+  cursor: pointer
+}
+

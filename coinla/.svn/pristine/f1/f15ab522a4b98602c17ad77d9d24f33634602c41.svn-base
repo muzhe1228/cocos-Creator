@@ -1,0 +1,29 @@
+import "babel-polyfill"
+import Vue from 'vue'
+import FastClick from 'fastclick'
+import MetaInfo from 'vue-meta-info'
+import VueClipboards from 'vue-clipboards'
+import $ from 'jquery'
+import 'assets/js/filters'
+import bridge from 'assets/js/nativeJsBridge'
+import App from './App'
+import router from './router'
+import preview from 'vue-photo-preview'
+import {Loading,Toast,button} from 'vant'
+import 'assets/stylus/index.styl'
+import 'vue-photo-preview/dist/skin.css'
+
+let options = {
+  fullscreenEl: false //关闭全屏按钮
+}
+FastClick.attach(document.body)
+Vue.use(MetaInfo).use(preview, options).use(VueClipboards).use(Loading).use(Toast).use(button)
+Vue.config.productionTip = false
+
+/* eslint-disable no-new */
+new Vue({
+  el: '#app',
+  router,
+  bridge,
+  render: h => h(App)
+})

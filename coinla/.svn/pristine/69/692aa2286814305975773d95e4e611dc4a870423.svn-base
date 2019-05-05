@@ -1,0 +1,356 @@
+<template>
+  <div class="group">
+    <div class="group_banner">
+      <img src="/static/images/group/group_banner.jpg" alt="">
+      <div class="my_wrap">
+        <div class="my_group" @click="groupRecord">
+          我参与的团
+        </div>
+        <div class="my_awards" @click="groupAward">
+          我的奖励
+          <p class="icon"></p>
+        </div>
+      </div>
+    </div>
+    <div class="group_main">
+      <div class="group_content">
+        <img src="/static/images/group/four_group.png" alt="" class="four_group_img">
+        <img v-show="!groupStatus" src="/static/images/group/group_ing.png" alt=""  class="group_status_img">
+        <img v-show="groupStatus" src="/static/images/group/group_success.png" alt=""  class="group_status_img">
+        <div class="content">
+          <div class="time" v-show="!groupStatus">
+            <p>距离组团结束还有</p>
+            <p class="count_down">
+              <span>{{hour}}</span> <em>:</em>
+              <span>{{minute}}</span> <em>:</em>
+              <span>{{seconds}}</span>
+            </p>
+          </div>
+          <div class="time" v-show="groupStatus">
+            恭喜你组团成功！团队可瓜分<span>88CLB</span>
+          </div>
+          <div class="time" v-show="groupFailure">
+            未在规定时间内组团成功奖励已失效
+          </div>
+          <div class="content_people">
+            <img src="/static/images/group/four_group_line.png" alt="" class="four_group_line">
+            <div class="content_people_detail">
+              <div class="captain">
+                <span>团长</span>
+                <img src="/static/images/billboard/coinla.png" alt="">
+                <p class="nick">kevin</p>
+              </div>
+              <div class="member">
+                <img src="/static/images/group/add_icon.png" alt="">
+                <p class="nick"></p>
+              </div>
+              <div class="member">
+                <img src="/static/images/group/add_icon.png" alt="">
+                <p class="nick"></p>
+              </div>
+              <div class="member">
+                <img src="/static/images/group/add_icon.png" alt="">
+                <p class="nick"></p>
+              </div>
+            </div>
+          </div>
+          <div class="btn" v-show="!isCaptain">
+            <img src="/static/images/group/add_btn.png" alt="" class="add_btn size" @click="addBtn">
+          </div>
+          <div class="btn" v-show="isCaptain">
+            <img src="/static/images/group/add_btn_small.png" alt="" class="add_btn_small" @click="addBtn">
+            <img src="/static/images/group/group_btn_small.png" alt="" class="group_btn_small">
+          </div>
+        </div>
+      </div>
+      <group-rule></group-rule>
+    </div>
+  </div>
+</template>
+
+<script>
+  import GroupRule from './page/groupRule.vue'
+  import {shareWeixin, isIos, openInApp} from 'assets/js/case'
+  import {getCoinlaSingle, getCoinlaToken} from 'assets/js/httpAll'
+  import {countDownTime} from 'assets/js/filters'
+  export default {
+    name: 'group',
+    metaInfo:{
+      title: '好友齐上阵 组团拿大奖'
+    },
+    data () {
+      return {
+        isCaptain: false, //是否为发团者
+        groupStatus: false, //成团状态：组团中或已成团
+        groupFailure: false, //组团失效
+        hour: '00', //组团结束倒计时
+        minute: '00',
+        seconds: '00',
+        shareInfo: '', //分享信息
+      }
+    },
+    components: {
+      GroupRule
+    },
+    mounted () {
+      this.isOpenInApp()
+    },
+    methods: {
+      //判断用户是否在app中打开，还是微信中或者其他地方打开
+      isOpenInApp () {
+        if(openInApp()){
+          // 在app内打开
+          alert('open in app')
+          //ios
+          if(isIos()){
+
+          }else{
+            //安卓
+
+          }
+        }else{
+          // 不是app内打开
+         //alert('not open in app')
+          //微信授权登录，获取code
+          //判断是否已经参加过该发起人的团，是提示语
+          //否判断是否已经成团，是否已经超时，是否成团（成团可拆红包，进入奖励明细页面）
+
+        }
+      },
+      //判断是否登录app账号,未登录跳转到app登录页面
+      turnAppLogin () {
+//        window.iosLoginSuccess = function (apiParams) {
+//          //登录成功之后
+            //判断用户有没有发起过团
+//        }
+//        window.webkit.messageHandlers.NativeMethod.postMessage("ios_showLogin"); //需要显示登录页面调用此
+
+      },
+      //获取token，通过获取token，有数据代表已经登录，否则就是没有登录app
+      getTokenData() {
+        let _this = this
+        if (isIos()) {
+          //ios
+          window.sendCLBRank = function (apiParams) {
+            //有结果代表登录
+          }
+          window.webkit.messageHandlers.NativeMethod.postMessage("getCLBRank");
+        } else {
+          //安卓
+          window.setData = function (apiParams) {
+
+          }
+          window.coinla.sendCLBRank('coinlaApp')
+        }
+      },
+      //登录app账号后，判断用户有没有发起过团，是进入最后发团页面，否判断是否绑定微信（绑定微信才可发团），然后自动发团
+      //进入最后发团页面判断成团状态：超时，成功，组团中
+      //如果为组团中，判断是否为发团者，不是显示邀请好友和我要组团按钮，是只显示邀请好于按钮
+      //组团成功判断是否已经拆红包，否拆红包进入获取奖励页面，是进入已成团页面
+      //组团结束倒计时
+      countDownTimeFunc (value) {
+        let time = countDownTime(value)
+         this.seconds = time.seconds
+         this.hour =time.hour
+         this.minute = time.minute
+         let timer = setTimeout(() => {
+            if(time.date >= 0){
+              this.countDownTimeFunc(value)
+            }else{
+              clearTimeout(timer)
+            }
+         }, 1000)
+      },
+      //跳转到我参与的团列表页面
+      groupRecord () {
+        this.$router.push({path: '/groupRecord'})
+      },
+      //跳转到我的奖励列表页面
+      groupAward (){
+        this.$router.push({path: '/groupAward'})
+      },
+      //邀请好友参团，分享
+      addBtn () {
+        if (isIos()) {
+          window.webkit.messageHandlers.NativeMethod.postMessage("ios_share");
+        } else {
+          window.coinla.getData(JSON.stringify(this.shareInfo))
+        }
+      },
+      //右上角按钮邀请，分享
+      getShareInfo () {
+        //let _this = this
+        getCoinlaSingle('/share/multi', {type: 7}).then((res) => {
+          if (res.data.code === 0) {
+            this.shareInfo = res.data.data
+            if (isIos()) {
+              window.setData = function () {
+                return res.data.data
+              }
+            } else {
+              window.sendData = function () {
+                window.coinla.getData(JSON.stringify(res.data.data))
+              }
+            }
+          }
+        }).catch((err) => {
+        })
+      }
+    }
+  }
+</script>
+
+<style scoped lang="stylus">
+  .group{
+    &_banner{
+      position: relative
+      img{
+        display: block
+        width: 100%
+      }
+      .my_wrap{
+        position: absolute
+        top: 0
+        left: 0
+        width: 100%
+        display: flex
+        justify-content: space-between
+        color: #fff
+        font-size: 0.3rem
+        padding: 0.42rem 0.26rem 0
+        .my_awards{
+          position: relative
+          .icon{
+            position: absolute
+            right: -0.12rem
+            top: -0.06rem
+            width: 0.18rem
+            height: 0.18rem
+            background-color: #e2571a
+            border-radius: 50%
+          }
+        }
+      }
+    }
+    &_main{
+      background: url(/static/images/group/group_main.jpg) no-repeat
+      background-size: 100% 100%
+      padding: 0 0.26rem 0.51rem
+      .group_content{
+        position: relative
+        background: url(/static/images/group/four_group_bac.png) no-repeat
+        background-size: 100% 100%
+        min-height: 4.13rem
+        padding-bottom: 0.3rem
+        max-width: 7.5rem
+        margin: 0 auto 1.04rem
+        .four_group_img{
+          position: absolute
+          top: -0.30rem
+          left: 50%
+          margin-left: -1.3rem
+          width: 2.6rem
+          height: 0.6rem
+        }
+        .group_status_img{
+          position: absolute
+          left: 0
+          top: 0
+          width: 1.54rem
+        }
+        .content{
+          .time{
+            display: flex
+            justify-content: center
+            align-items: center
+            color: #098ee1
+            font-size: 0.34rem
+            padding: 0.77rem 0 0.44rem
+            .count_down{
+              margin-left: 0.16rem
+              font-size: 0
+              span{
+                font-size: 0.24rem
+                width: 0.36rem
+                height: 0.38rem
+                display: inline-block
+                text-align: center
+                line-height: 0.38rem
+                background-color: #246bee
+                color: #fff
+                border-radius: 5px
+              }
+              em{
+                font-size: 0.24rem
+                margin: 0 0.1rem
+                font-style: normal
+              }
+            }
+          }
+          .content_people{
+            position: relative
+            padding: 0 0.48rem
+            .four_group_line{
+              position: absolute
+              left: 50%
+              top: 0.605rem
+              transform: translate(-50%, -50%)
+              width: 3.72rem
+              z-index: 0
+              display: block
+            }
+            .content_people_detail{
+              position: relative
+              z-index: 1
+              max-width: 6.02rem
+              display: flex
+              justify-content: space-between
+              margin: 0 auto
+              img{
+                width: 1.21rem
+                height: 1.21rem
+                border-radius: 50%
+                overflow: hidden
+              }
+              .captain{
+                span{
+                  display: block
+                  position: absolute
+                  left: 0.155rem
+                  top: -0.08rem
+                  width: 0.9rem
+                  height: 0.34rem
+                  line-height: 0.34rem
+                  background-color: #f3611f
+                  color: #fff
+                  font-size: 0.26rem
+                  text-align: center
+                  border-radius: 5px
+                }
+              }
+              .nick{
+                text-align: center
+                margin-top: 0.1rem
+                font-size: 0.24rem
+                color: #667379
+              }
+            }
+          }
+          .btn{
+            display: flex
+            justify-content: space-around
+            padding: 0.2rem 0 0
+            img{
+              width: 2.46rem
+              height: 0.61rem
+              display: block
+            }
+            .add_btn_small, .group_btn_small{
+              width: 1.98rem
+            }
+          }
+        }
+      }
+    }
+  }
+</style>

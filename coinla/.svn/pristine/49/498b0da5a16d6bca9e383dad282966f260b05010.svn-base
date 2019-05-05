@@ -1,0 +1,71 @@
+<template>
+    <div class="turntable">
+      <div class="turntable_text">
+        <h3>幸运转盘100%中奖</h3>
+        <p>ETH、EOS、CZR、CLB等你拿！</p>
+        <p>活动时间：8月15日~8月30日</p>
+      </div>
+      <!--轮播中奖信息-->
+      <div class="turnTable_active">
+        <img src="" alt="">
+        <div class="right"></div>
+      </div>
+      <div class="active_days">
+        距离活动结束还有<span>5</span>天
+      </div>
+      <!--幸运转盘-->
+      <div class="turntable_wrap">
+        <!--<v-lucky></v-lucky>-->
+      </div>
+      <div class="today">
+        <p>今日已抽奖<span>4</span>次</p>
+        <p>剩余<span>5</span>次抽奖机会</p>
+      </div>
+      <div class="turntable_share">
+        邀请好友助力  增加抽奖机会
+      </div>
+      <div class="my_prize">
+          <h3>我的奖品</h3>
+          <div></div>
+      </div>
+      <div class="turntable_record">
+        <div>
+          <p>我的中奖记录</p>
+          <p>好友助力记录</p>
+        </div>
+        <div>
+          <div>
+            <p>时间</p>
+            <p>奖品</p>
+          </div>
+          <ul>
+            <li>
+              <span>08-09 13：32</span>
+              <span>88CLB</span>
+            </li>
+            <li>
+              <span>08-09 13：32</span>
+              <span>88CLB</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+</template>
+
+<script>
+  /*import Lucky from './page/lucky'*/
+    export default {
+      name: "turntable",
+      metaInfo:{
+        title: '幸运转盘'
+      }/*,
+      components: {
+        'v-lucky': Lucky
+      }*/
+    }
+</script>
+
+<style lang="stylus">
+
+</style>

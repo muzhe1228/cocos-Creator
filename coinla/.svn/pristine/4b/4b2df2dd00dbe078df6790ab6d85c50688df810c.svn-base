@@ -1,0 +1,16 @@
+@import "variable.styl"
+
+*
+  box-sizing: border-box
+  font-family: "Microsoft YaHei Regular"
+
+body, html
+  line-height: 1
+  -webkit-tap-highlight-color: transparent
+  background: $color-main
+  color: $color-text
+  a
+    color: $color-blue
+
+.model
+  z-index: 999999999 !important;
